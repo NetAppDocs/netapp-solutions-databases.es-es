@@ -1,0 +1,45 @@
+---
+sidebar: sidebar 
+permalink: dbops/hybrid-dbops-sc-gs.html 
+summary: Esta sección proporciona un resumen de las tareas que deben completarse para cumplir con los requisitos previos descritos en la sección anterior.  La siguiente sección proporciona una lista de tareas de alto nivel para operaciones locales y en la nube pública.  Se puede acceder a los procesos y procedimientos detallados haciendo clic en los enlaces correspondientes. 
+keywords: introduction, workflow 
+---
+= Descripción general de primeros pasos
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta sección proporciona un resumen de las tareas que deben completarse para cumplir con los requisitos previos descritos en la sección anterior.  La siguiente sección proporciona una lista de tareas de alto nivel para operaciones locales y en la nube pública.  Se puede acceder a los procesos y procedimientos detallados haciendo clic en los enlaces correspondientes.
+
+
+
+== En las instalaciones
+
+* Configurar el usuario administrador de la base de datos en SnapCenter
+* Requisitos previos para la instalación del complemento SnapCenter
+* Instalación del complemento de host de SnapCenter
+* Descubrimiento de recursos de base de datos
+* Configurar el emparejamiento de clústeres de almacenamiento y la replicación de volúmenes de base de datos
+* Agregue el almacenamiento de base de datos CVO SVM a SnapCenter
+* Configurar la política de copia de seguridad de la base de datos en SnapCenter
+* Implementar una política de respaldo para proteger la base de datos
+* Validar copia de seguridad
+
+
+
+
+== Nube pública de AWS
+
+* Comprobación previa al vuelo
+* Pasos para implementar Cloud Manager y Cloud Volumes ONTAP en AWS
+* Implementar una instancia de cómputo EC2 para la carga de trabajo de la base de datos
+
+
+Haga clic en los siguientes enlaces para obtener más detalles:
+
+link:hybrid-dbops-sc-gs-onprem.html["En las instalaciones"],link:hybrid-dbops-sc-gs-aws.html["Nube pública - AWS"]

@@ -1,0 +1,78 @@
+---
+sidebar: sidebar 
+permalink: dbops/hybrid-dbops-sc-requirements.html 
+summary: Esta solución está diseñada en un entorno de nube híbrida para soportar bases de datos de producción locales que pueden conectarse a todas las nubes públicas populares para operaciones de desarrollo/prueba y recuperación ante desastres. 
+keywords: requirements, virtualized, bare metal, versions, automation 
+---
+= Requisitos de SnapCenter
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta solución está diseñada en un entorno de nube híbrida para soportar bases de datos de producción locales que pueden conectarse a todas las nubes públicas populares para operaciones de desarrollo/prueba y recuperación ante desastres.
+
+Esta solución admite todas las bases de datos actualmente compatibles con SnapCenter, aunque aquí solo se muestran las bases de datos Oracle y SQL Server.  Esta solución está validada con cargas de trabajo de bases de datos virtualizadas, aunque también se admiten cargas de trabajo de hardware.
+
+Suponemos que los servidores de bases de datos de producción están alojados localmente y los volúmenes de bases de datos se presentan a los hosts de bases de datos desde un clúster de almacenamiento ONTAP .  El SnapCenter software se instala localmente para realizar copias de seguridad de bases de datos y replicar datos en la nube.  Se recomienda un controlador Ansible, pero no es obligatorio, para la automatización de la implementación de bases de datos o la sincronización de la configuración de la base de datos y el kernel del sistema operativo con una instancia de recuperación ante desastres en espera o instancias de desarrollo y prueba en la nube pública.
+
+
+
+== Requisitos
+
+[cols="3, 9"]
+|===
+| Ambiente | Requisitos 
+
+
+.7+| *En las instalaciones* | Cualquier base de datos y versiones compatibles con SnapCenter 
+
+
+| SnapCenter v4.4 o superior 
+
+
+| Ansible v2.09 o superior 
+
+
+| Clúster ONTAP 9.x 
+
+
+| LIF entre clústeres configurados 
+
+
+| Conectividad desde las instalaciones locales a una VPC en la nube (VPN, interconexión, etc.) 
+
+
+| Puertos de red abiertos: ssh 22, tcp 8145, 8146, 10000, 11104, 11105 
+
+
+.3+| *Nube - AWS* | https://docs.netapp.com/us-en/occm/task_creating_connectors_aws.html["Conector de Cloud Manager"^] 
+
+
+| https://docs.netapp.com/us-en/occm/task_getting_started_aws.html["Cloud Volumes ONTAP"^] 
+
+
+| Coincidencia de instancias EC2 de DB OS con las instalaciones locales 
+
+
+.3+| *Nube - Azure* | https://docs.netapp.com/us-en/occm/task_creating_connectors_azure.html["Conector de Cloud Manager"^] 
+
+
+| https://docs.netapp.com/us-en/occm/task_getting_started_azure.html["Cloud Volumes ONTAP"^] 
+
+
+| Adecuación de las máquinas virtuales de Azure del sistema operativo de base de datos a las instalaciones locales 
+
+
+.3+| *Nube - GCP* | https://docs.netapp.com/us-en/occm/task_creating_connectors_gcp.html["Conector de Cloud Manager"^] 
+
+
+| https://docs.netapp.com/us-en/occm/task_getting_started_gcp.html["Cloud Volumes ONTAP"^] 
+
+
+| Coincidencia de las instancias de Google Compute Engine del sistema operativo de base de datos con las instalaciones locales 
+|===

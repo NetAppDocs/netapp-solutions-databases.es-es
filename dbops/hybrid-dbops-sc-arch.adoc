@@ -1,0 +1,21 @@
+---
+sidebar: sidebar 
+permalink: dbops/hybrid-dbops-sc-arch.html 
+summary: Esta sección describe una arquitectura de nube híbrida típica para operaciones de desarrollo/prueba y recuperación ante desastres. 
+keywords: architecture, synchronized database 
+---
+= Arquitectura de la solución
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+El siguiente diagrama de arquitectura ilustra una implementación típica de la operación de una base de datos empresarial en una nube híbrida para operaciones de desarrollo/prueba y recuperación ante desastres.
+
+image:hybrid-cloud-db-diagram.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+En operaciones comerciales normales, los volúmenes de bases de datos sincronizados en la nube se pueden clonar y montar en instancias de bases de datos de desarrollo/prueba para el desarrollo o prueba de aplicaciones.  En caso de fallo, los volúmenes de base de datos sincronizados en la nube se pueden activar para la recuperación ante desastres.

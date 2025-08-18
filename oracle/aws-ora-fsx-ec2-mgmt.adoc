@@ -1,0 +1,272 @@
+---
+sidebar: sidebar 
+permalink: oracle/aws-ora-fsx-ec2-mgmt.html 
+summary: Esta sección proporciona detalles sobre cómo se administran las bases de datos AWS RDS Custom para Oracle a través de la interfaz de usuario de SnapCenter como complemento para la interfaz de usuario de la consola AWS RDS. 
+keywords: HA, DR, database, Oracle, RDS, AWS, SnapCenter 
+---
+= Gestión de bases de datos Oracle EC2 y FSx
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Además de la consola de administración de AWS EC2 y FSx, el nodo de control Ansible y la herramienta de interfaz de usuario SnapCenter se implementan para la administración de bases de datos en este entorno de Oracle.
+
+Se puede utilizar un nodo de control Ansible para administrar la configuración del entorno de Oracle, con actualizaciones paralelas que mantienen las instancias principales y en espera sincronizadas para las actualizaciones del kernel o de parches.  La conmutación por error, la resincronización y la recuperación se pueden automatizar con NetApp Automation Toolkit para lograr una rápida recuperación y disponibilidad de las aplicaciones con Ansible.  Algunas tareas de gestión de bases de datos repetibles se pueden ejecutar utilizando un manual de estrategias para reducir los errores humanos.
+
+La herramienta de interfaz de usuario de SnapCenter puede realizar copias de seguridad de instantáneas de bases de datos, recuperaciones de puntos en el tiempo, clonación de bases de datos, etc., con el complemento SnapCenter para bases de datos Oracle.  Para obtener más información sobre las características del complemento de Oracle, consultelink:https://docs.netapp.com/ocsc-43/index.jsp?topic=%2Fcom.netapp.doc.ocsc-con%2FGUID-CF6B23A3-2B2B-426F-826B-490706880EE8.html["Descripción general del complemento SnapCenter para Oracle Database"^] .
+
+Las siguientes secciones proporcionan detalles sobre cómo se cumplen las funciones clave de administración de bases de datos de Oracle con la interfaz de usuario de SnapCenter :
+
+* Copias de seguridad de instantáneas de bases de datos
+* Restauración de la base de datos en un punto en el tiempo
+* Creación de clones de bases de datos
+
+
+La clonación de bases de datos crea una réplica de una base de datos principal en un host EC2 separado para la recuperación de datos en caso de error lógico o corrupción de datos, y los clones también se pueden usar para pruebas de aplicaciones, depuración, validación de parches, etc.
+
+
+
+== Tomando una instantánea
+
+Se realizan copias de seguridad de una base de datos Oracle EC2/FSx periódicamente en intervalos configurados por el usuario.  Un usuario también puede realizar una copia de seguridad instantánea única en cualquier momento.  Esto se aplica tanto a las copias de seguridad de instantáneas de bases de datos completas como a las copias de seguridad de instantáneas solo de registros de archivo.
+
+
+
+=== Tomar una instantánea completa de la base de datos
+
+Una instantánea de base de datos completa incluye todos los archivos de Oracle, incluidos archivos de datos, archivos de control y archivos de registro de archivo.
+
+. Inicie sesión en la interfaz de usuario de SnapCenter y haga clic en Recursos en el menú del lado izquierdo.  Desde el menú desplegable Ver, cambie a la vista Grupo de recursos.
++
+image:aws-rds-custom-deploy-snp-010.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en el nombre completo del recurso de respaldo y, a continuación, haga clic en el ícono Realizar copia de seguridad ahora para iniciar una copia de seguridad adicional.
++
+image:aws-rds-custom-deploy-snp-011.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en Copia de seguridad y luego confirme la copia de seguridad para iniciar una copia de seguridad completa de la base de datos.
++
+image:aws-rds-custom-deploy-snp-012.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+Desde la vista de Recursos de la base de datos, abra la página Copias de seguridad administradas de la base de datos para verificar que la copia de seguridad única se haya completado correctamente.  Una copia de seguridad completa de la base de datos crea dos instantáneas: una para el volumen de datos y otra para el volumen de registro.
+
++
+image:aws-rds-custom-deploy-snp-013.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+=== Tomar una instantánea del registro de archivo
+
+Solo se toma una instantánea del registro de archivo para el volumen de registro de archivo de Oracle.
+
+. Inicie sesión en la interfaz de usuario de SnapCenter y haga clic en la pestaña Recursos en la barra de menú del lado izquierdo.  Desde el menú desplegable Ver, cambie a la vista Grupo de recursos.
++
+image:aws-rds-custom-deploy-snp-010.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en el nombre del recurso de copia de seguridad del registro y, a continuación, haga clic en el ícono Realizar copia de seguridad ahora para iniciar una copia de seguridad adicional para los registros de archivo.
++
+image:aws-rds-custom-deploy-snp-014.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en Copia de seguridad y luego confirme la copia de seguridad para iniciar una copia de seguridad del registro de archivo.
++
+image:aws-rds-custom-deploy-snp-015.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+Desde la vista de Recursos de la base de datos, abra la página Copias de seguridad administradas de la base de datos para verificar que la copia de seguridad única del registro de archivo se haya completado correctamente.  Una copia de seguridad del registro de archivo crea una instantánea para el volumen de registro.
+
++
+image:aws-rds-custom-deploy-snp-016.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Restaurando a un punto en el tiempo
+
+La restauración basada en SnapCenter a un punto en el tiempo se ejecuta en el mismo host de instancia EC2.  Complete los siguientes pasos para realizar la restauración:
+
+. Desde la pestaña Recursos de SnapCenter > Vista de base de datos, haga clic en el nombre de la base de datos para abrir la copia de seguridad de la base de datos.
++
+image:aws-rds-custom-deploy-snp-017.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione la copia de seguridad de la base de datos y el punto en el tiempo que desea restaurar.  Anote también el número SCN correspondiente al momento en que se encuentre.  La restauración a un punto en el tiempo se puede realizar utilizando la hora o el SCN.
++
+image:aws-rds-custom-deploy-snp-018.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Resalte la instantánea del volumen de registro y haga clic en el botón Montar para montar el volumen.
++
+image:aws-rds-custom-deploy-snp-019.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Elija la instancia EC2 principal para montar el volumen de registro.
++
+image:aws-rds-custom-deploy-snp-020.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Verifique que el trabajo de montaje se complete exitosamente.  Verifique también el host de la instancia EC2 para ver el volumen de registro montado y también la ruta del punto de montaje.
++
+image:aws-rds-custom-deploy-snp-021-a.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"] image:aws-rds-custom-deploy-snp-021-b.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Copie los registros de archivo del volumen de registro montado al directorio de registro de archivo actual.
++
+[listing]
+----
+[ec2-user@ip-10-0-0-151 ~]$ cp /var/opt/snapcenter/sco/backup_mount/ip-10-0-0-151_03-25-2022_11.15.01.1503_1/ORCL/1/db/ORCL_A/arch/*.arc /ora_nfs_log/db/ORCL_A/arch/
+----
+. Regrese a la pestaña Recursos de SnapCenter > página de copia de seguridad de la base de datos, resalte la copia de la instantánea de datos y haga clic en el botón Restaurar para iniciar el flujo de trabajo de restauración de la base de datos.
++
+image:aws-rds-custom-deploy-snp-022.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Marque “Todos los archivos de datos” y “Cambiar el estado de la base de datos si es necesario para restaurar y recuperar” y haga clic en Siguiente.
++
+image:aws-rds-custom-deploy-snp-023.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione el alcance de recuperación deseado utilizando SCN o tiempo.  En lugar de copiar los registros de archivo montados al directorio de registro actual como se muestra en el paso 6, la ruta del registro de archivo montado se puede incluir en "Especificar ubicaciones de archivos de registro de archivo externos" para su recuperación.
++
+image:aws-rds-custom-deploy-snp-024-a.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique una prescripción opcional para ejecutar si es necesario.
++
+image:aws-rds-custom-deploy-snp-025.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique un script posterior opcional para ejecutar si es necesario.  Verifique la base de datos abierta después de la recuperación.
++
+image:aws-rds-custom-deploy-snp-026.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Proporcione un servidor SMTP y una dirección de correo electrónico si se necesita una notificación de trabajo.
++
+image:aws-rds-custom-deploy-snp-027.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Restaurar el resumen del trabajo.  Haga clic en Finalizar para iniciar el trabajo de restauración.
++
+image:aws-rds-custom-deploy-snp-028.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Validar la restauración desde SnapCenter.
++
+image:aws-rds-custom-deploy-snp-029-a.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Validar la restauración desde el host de la instancia EC2.
++
+image:aws-rds-custom-deploy-snp-029-b.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Para desmontar el volumen del registro de restauración, invierta los pasos del paso 4.
+
+
+
+
+== Creando un clon de base de datos
+
+La siguiente sección demuestra cómo utilizar el flujo de trabajo de clonación de SnapCenter para crear un clon de base de datos desde una base de datos principal a una instancia EC2 en espera.
+
+. Realice una copia de seguridad instantánea completa de la base de datos principal desde SnapCenter utilizando el grupo de recursos de copia de seguridad completa.
++
+image:aws-rds-custom-deploy-replica-002.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Desde la pestaña Recursos de SnapCenter > Vista Base de datos, abra la página Administración de copias de seguridad de la base de datos principal desde la cual se creará la réplica.
++
+image:aws-rds-custom-deploy-replica-004.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Monte la instantánea del volumen de registro tomada en el paso 4 en el host de instancia EC2 en espera.
++
+image:aws-rds-custom-deploy-replica-013.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"] image:aws-rds-custom-deploy-replica-014.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Resalte la copia de instantánea que se clonará para la réplica y haga clic en el botón Clonar para iniciar el procedimiento de clonación.
++
+image:aws-rds-custom-deploy-replica-005.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Cambie el nombre de la copia de réplica para que sea diferente del nombre de la base de datos principal. Haga clic en Siguiente.
++
+image:aws-rds-custom-deploy-replica-006.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Cambie el host clonado al host EC2 en espera, acepte el nombre predeterminado y haga clic en Siguiente.
++
+image:aws-rds-custom-deploy-replica-007.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Cambie la configuración de inicio de Oracle para que coincida con aquellas configuradas para el host del servidor Oracle de destino y haga clic en Siguiente.
++
+image:aws-rds-custom-deploy-replica-008.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique un punto de recuperación utilizando el tiempo o el SCN y la ruta del registro de archivo montado.
++
+image:aws-rds-custom-deploy-replica-015.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Envíe la configuración de correo electrónico SMTP si es necesario.
++
+image:aws-rds-custom-deploy-replica-011.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Clone el resumen del trabajo y haga clic en Finalizar para iniciar el trabajo de clonación.
++
+image:aws-rds-custom-deploy-replica-012.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Valide el clon de réplica revisando el registro del trabajo de clonación.
++
+image:aws-rds-custom-deploy-replica-017.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+La base de datos clonada se registra en SnapCenter inmediatamente.
+
++
+image:aws-rds-custom-deploy-replica-018.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Desactive el modo de registro de archivo de Oracle.  Inicie sesión en la instancia EC2 como usuario Oracle y ejecute el siguiente comando:
++
+[source, cli]
+----
+sqlplus / as sysdba
+----
++
+[source, cli]
+----
+shutdown immediate;
+----
++
+[source, cli]
+----
+startup mount;
+----
++
+[source, cli]
+----
+alter database noarchivelog;
+----
++
+[source, cli]
+----
+alter database open;
+----
+
+
+
+NOTE: En lugar de copias de seguridad primarias de Oracle, también se puede crear un clon a partir de copias de seguridad secundarias replicadas en el clúster FSx de destino con los mismos procedimientos.
+
+
+
+== Conmutación por error de HA a modo de espera y resincronización
+
+El clúster Oracle HA en espera proporciona alta disponibilidad en caso de falla en el sitio principal, ya sea en la capa de cómputo o en la capa de almacenamiento.  Un beneficio importante de la solución es que un usuario puede probar y validar la infraestructura en cualquier momento o con cualquier frecuencia.  La conmutación por error puede ser simulada por el usuario o activada por un fallo real.  Los procesos de conmutación por error son idénticos y pueden automatizarse para una recuperación rápida de la aplicación.
+
+Consulte la siguiente lista de procedimientos de conmutación por error:
+
+. Para una conmutación por error simulada, ejecute una copia de seguridad de instantánea de registro para vaciar las últimas transacciones en el sitio en espera, como se muestra en la sección<<Tomar una instantánea del registro de archivo>> .  En caso de una conmutación por error provocada por una falla real, los últimos datos recuperables se replican en el sitio en espera con la última copia de seguridad del volumen de registro programada exitosa.
+. Romper el SnapMirror entre el clúster FSx principal y el de reserva.
+. Monte los volúmenes de base de datos en espera replicados en el host de instancia EC2 en espera.
+. Vuelva a vincular el binario de Oracle si el binario de Oracle replicado se utiliza para la recuperación de Oracle.
+. Recupere la base de datos Oracle en espera al último registro de archivo disponible.
+. Abra la base de datos Oracle en espera para el acceso de aplicaciones y usuarios.
+. En caso de una falla real del sitio principal, la base de datos Oracle en espera ahora asume el rol del nuevo sitio principal y los volúmenes de la base de datos se pueden usar para reconstruir el sitio principal fallido como un nuevo sitio en espera con el método SnapMirror inverso.
+. En caso de una falla simulada del sitio primario para realizar pruebas o validaciones, apague la base de datos Oracle en espera después de completar los ejercicios de prueba.  Luego, desmonte los volúmenes de base de datos en espera del host de instancia EC2 en espera y resincronice la replicación desde el sitio principal al sitio en espera.
+
+
+Estos procedimientos se pueden realizar con el NetApp Automation Toolkit disponible para descargar en el sitio público de GitHub de NetApp .
+
+[source, cli]
+----
+git clone https://github.com/NetApp-Automation/na_ora_hadr_failover_resync.git
+----
+Lea atentamente las instrucciones README antes de intentar realizar la configuración y las pruebas de conmutación por error.

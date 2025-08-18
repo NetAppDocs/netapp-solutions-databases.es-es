@@ -1,0 +1,184 @@
+---
+sidebar: sidebar 
+permalink: dbops/hybrid-dbops-snapcenter-dr.html 
+summary: Soluciones de bases de datos en la nube híbrida con flujo de trabajo de recuperación ante desastres de SnapCenter 
+keywords: 'netapp, solutions, database, SnapCenter, DR, "business continuity", "disaster recovery"' 
+---
+= Flujo de trabajo de recuperación ante desastres
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Las empresas han adoptado la nube pública como un recurso viable y un destino para la recuperación ante desastres.  SnapCenter hace que este proceso sea lo más sencillo posible.  Este flujo de trabajo de recuperación ante desastres es muy similar al flujo de trabajo de clonación, pero la recuperación de la base de datos se ejecuta a través del último registro disponible que se replicó en la nube para recuperar todas las transacciones comerciales posibles.  Sin embargo, existen pasos adicionales de preconfiguración y posconfiguración específicos para la recuperación ante desastres.
+
+
+
+== Clonar una base de datos de producción Oracle local a la nube para recuperación ante desastres
+
+. Para validar que la recuperación del clon se ejecute a través del último registro disponible, creamos una pequeña tabla de prueba e insertamos una fila.  Los datos de prueba se recuperarían después de una recuperación completa al último registro disponible.
++
+image:snapctr-ora-dr-001.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Inicie sesión en SnapCenter como un ID de usuario de administración de base de datos para Oracle.  Vaya a la pestaña Recursos, que muestra las bases de datos de Oracle que están protegidas por SnapCenter.
++
+image:snapctr-ora-dr-002.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione el grupo de recursos de registro de Oracle y haga clic en Realizar copia de seguridad ahora para ejecutar manualmente una copia de seguridad del registro de Oracle para vaciar la última transacción en el destino en la nube.  En un escenario de DR real, la última transacción recuperable depende de la frecuencia de replicación del volumen del registro de la base de datos a la nube, que a su vez depende de la política de RTO o RPO de la empresa.
++
+image:snapctr-ora-dr-003.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:snapctr-ora-dr-004.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+
+NOTE: SnapMirror asincrónico pierde datos que no llegaron al destino en la nube en el intervalo de respaldo del registro de la base de datos en un escenario de recuperación ante desastres.  Para minimizar la pérdida de datos, se pueden programar copias de seguridad de registros más frecuentes.  Sin embargo, existe un límite en la frecuencia de las copias de seguridad de registros que es técnicamente alcanzable.
+
+. Seleccione la última copia de seguridad del registro en las copias de seguridad del espejo secundario y monte la copia de seguridad del registro.
++
+image:snapctr-ora-dr-005.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:snapctr-ora-dr-006.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione la última copia de seguridad completa de la base de datos y haga clic en Clonar para iniciar el flujo de trabajo de clonación.
++
+image:snapctr-ora-dr-007.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione un ID de base de datos clonada único en el host.
++
+image:snapctr-ora-dr-008.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Aprovisione un volumen de registro y móntelo en el servidor DR de destino para el área de recuperación flash de Oracle y los registros en línea.
++
+image:snapctr-ora-dr-009.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:snapctr-ora-dr-010.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+
+NOTE: El procedimiento de clonación de Oracle no crea un volumen de registro, que debe aprovisionarse en el servidor DR antes de la clonación.
+
+. Seleccione el host de clonación de destino y la ubicación para colocar los archivos de datos, los archivos de control y los registros de rehacer.
++
+image:snapctr-ora-dr-011.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione las credenciales para el clon.  Complete los detalles de la configuración de inicio de Oracle en el servidor de destino.
++
+image:snapctr-ora-dr-012.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique los scripts que se ejecutarán antes de la clonación.  Los parámetros de la base de datos se pueden ajustar si es necesario.
++
+image:snapctr-ora-dr-013.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione Hasta cancelar como la opción de recuperación para que la recuperación se ejecute en todos los registros de archivo disponibles para recuperar la última transacción replicada en la ubicación de la nube secundaria.
++
+image:snapctr-ora-dr-014.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configure el servidor SMTP para notificaciones por correo electrónico si es necesario.
++
+image:snapctr-ora-dr-015.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Resumen del clon DR.
++
+image:snapctr-ora-dr-016.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Las bases de datos clonadas se registran en SnapCenter inmediatamente después de completarse la clonación y luego están disponibles para protección de respaldo.
++
+image:snapctr-ora-dr-016-a.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Validación y configuración posterior a la clonación DR para Oracle
+
+. Valide la última transacción de prueba que se ha vaciado, replicado y recuperado en la ubicación de recuperación ante desastres en la nube.
++
+image:snapctr-ora-dr-017.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configurar el área de recuperación flash.
++
+image:snapctr-ora-dr-018.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configure el escucha de Oracle para el acceso de usuarios.
+. Divida el volumen clonado del volumen de origen replicado.
+. Replicación inversa de la nube a las instalaciones locales y reconstrucción del servidor de base de datos local fallido.
+
+
+
+NOTE: La división de clones puede generar un uso de espacio de almacenamiento temporal mucho mayor que el funcionamiento normal.  Sin embargo, una vez reconstruido el servidor de base de datos local, se puede liberar espacio adicional.
+
+
+
+== Clonar una base de datos de producción SQL local a la nube para recuperación ante desastres
+
+. De manera similar, para validar que la recuperación del clon SQL se ejecutó a través del último registro disponible, creamos una pequeña tabla de prueba e insertamos una fila.  Los datos de prueba se recuperarían después de una recuperación completa al último registro disponible.
++
+image:snapctr-sql-dr-001.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Inicie sesión en SnapCenter con un ID de usuario de administración de base de datos para SQL Server.  Vaya a la pestaña Recursos, que muestra el grupo de recursos de protección de SQL Server.
++
+image:snapctr-sql-dr-002.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Ejecute manualmente una copia de seguridad del registro para borrar la última transacción que se replicará en el almacenamiento secundario en la nube pública.
++
+image:snapctr-sql-dr-003.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione la última copia de seguridad completa de SQL Server para el clon.
++
+image:snapctr-sql-dr-004.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Establezca la configuración de clonación, como el servidor de clonación, la instancia de clonación, el nombre de clonación y la opción de montaje.  La ubicación de almacenamiento secundaria donde se realiza la clonación se completa automáticamente.
++
+image:snapctr-sql-dr-005.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione todas las copias de seguridad de registros que se aplicarán.
++
+image:snapctr-sql-dr-006.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique cualquier script opcional para ejecutar antes o después de la clonación.
++
+image:snapctr-sql-dr-007.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique un servidor SMTP si desea recibir notificaciones por correo electrónico.
++
+image:snapctr-sql-dr-008.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Resumen del clon DR.  Las bases de datos clonadas se registran inmediatamente en SnapCenter y están disponibles para protección de respaldo.
++
+image:snapctr-sql-dr-009.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:snapctr-sql-dr-010.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Validación y configuración posterior a la clonación DR para SQL
+
+. Supervisar el estado del trabajo de clonación.
++
+image:snapctr-sql-dr-011.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Validar que la última transacción se haya replicado y recuperado con todos los clones y la recuperación de archivos de registro.
++
+image:snapctr-sql-dr-012.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configure un nuevo directorio de registro de SnapCenter en el servidor DR para la copia de seguridad del registro de SQL Server.
+. Divida el volumen clonado del volumen de origen replicado.
+. Replicación inversa de la nube a las instalaciones locales y reconstrucción del servidor de base de datos local fallido.
+
+
+
+
+== ¿A dónde acudir para obtener ayuda?
+
+Si necesita ayuda con esta solución y casos de uso, únase a lalink:https://netapppub.slack.com/archives/C021R4WC0LC["Canal de Slack de soporte de la comunidad de automatización de soluciones de NetApp"] y busca el canal de automatización de soluciones para publicar tus dudas o consultas.

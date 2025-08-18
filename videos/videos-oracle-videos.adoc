@@ -1,0 +1,62 @@
+---
+sidebar: sidebar 
+permalink: videos/videos-oracle-videos.html 
+summary: Serie de videos y demostraciones que analizan las características de muchas de las soluciones de NetApp 
+keywords: netapp, solutions, videos, demos 
+---
+= Vea videos y demostraciones sobre soluciones de bases de datos para Oracle con NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Explore la completa biblioteca de videos de NetApp que presenta soluciones de bases de datos para Oracle con NetApp.  Cada colección destaca soluciones prácticas, mejores prácticas de integración y gestión de bases de datos moderna para cargas de trabajo empresariales.
+
+
+
+== Implementación y automatización
+
+.Implementación de Oracle simplificada y automatizada en Azure NetApp Files con NFS
+video::d1c859b6-e45a-44c7-8361-b10f012fc89b[panopto,width=360]
+.Implementación de Oracle simplificada y automatizada en Amazon FSx ONTAP con iSCSI
+video::81e389a0-d9b8-495c-883b-b0d701710847[panopto,width=360]
+.Implementación de Oracle simplificada y automatizada en NetApp ASA con iSCSI
+video::79095731-6b02-41d5-9fa1-b0c00100d055[panopto,width=360]
+.Clonación automatizada de Oracle DB desde el servidor en espera de DataGuard en GCNV con ASM
+video::74062c18-b120-45b7-9bf9-b2db00f73675[panopto,width=360]
+.Implementación automatizada de Oracle 19c RAC en FlexPod con Ansible
+video::VcQMJIRzhoY[youtube,width=360]
+
+
+== Copia de seguridad, recuperación y clonación
+
+.Copia de seguridad, recuperación y clonación de bases de datos Oracle en ANF con SnapCenter
+video::960fb370-c6e0-4406-b6d5-b110014130e8[panopto,width=360]
+.Parte 4a: Clonación de base de datos para desarrollo/pruebas con la interfaz de usuario de SnapCenter desde una copia en espera replicada
+video::2f731d7c-0873-4a4d-8491-b01200f90a82[panopto,width=360]
+.Parte 4b: Copia de seguridad, restauración y clonación de bases de datos con la interfaz de usuario de SnapCenter
+video::97790d62-ff19-40e0-9784-b01200f920ed[panopto,width=360]
+.Parte 4c - Copia de seguridad y restauración de bases de datos con BlueXP SaaS Apps backup y recuperación
+video::4b0fd212-7641-46b8-9e55-b01200f9383a[panopto,width=360]
+.Clon de base de datos conectable multiinquilino de Oracle mediante instantáneas de almacenamiento
+video::krzMWjrrMb0[youtube,width=360]
+
+
+== Modernización y migración
+
+.Parte 1: Modernización de Oracle con nube híbrida en AWS y FSx ONTAP
+video::b1a7bb05-caea-44a0-bd9a-b01200f372e9[panopto,width=360]
+.Parte 2a: Migración de bases de datos locales a AWS mediante reubicación automatizada de PDB con máxima disponibilidad
+video::bb088a3e-bbfb-4927-bf44-b01200f38b17[panopto,width=360]
+.Parte 2b: Migración de bases de datos desde las instalaciones locales a AWS mediante la consola BlueXP a través de SnapMirror
+video::c0df32f8-d6d3-4b79-b0bd-b01200f3a2e8[panopto,width=360]
+
+
+== Alta disponibilidad, recuperación ante desastres y replicación
+
+.Parte 3: Configuración automatizada de replicación HA/DR de bases de datos, conmutación por error y resincronización
+video::5fd03759-a691-4007-9748-b01200f3b79c[panopto,width=360]

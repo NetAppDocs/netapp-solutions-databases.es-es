@@ -1,0 +1,24 @@
+= 
+:allow-uri-read: 
+
+
+[.underline]*Programación del manual de replicación de registros*
+
+*Configurar y ejecutar la plantilla de trabajo.*
+
+. Copiar la plantilla de trabajo creada anteriormente.
++
+.. Vaya a Recursos → Plantillas.
+.. Busque la plantilla de configuración de ONTAP/CVO y, en el extremo derecho, haga clic en Copiar plantilla
+.. Haga clic en Editar plantilla en la plantilla copiada y cambie el nombre a Manual de restauración y recuperación.
+.. Mantenga el mismo inventario, proyecto y credenciales para la plantilla.
+.. Seleccione ora_recovery.yml como el libro de estrategias que se ejecutará.
+.. Las variables seguirán siendo las mismas, pero será necesario configurar la IP del clúster CVO en la variable dst_cluster_ip.
+.. Haga clic en Guardar.
+
+
++
+
+NOTE: Este manual no se ejecutará hasta que esté listo para restaurar su base de datos en el sitio remoto.
+
+

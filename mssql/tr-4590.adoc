@@ -1,0 +1,21 @@
+---
+sidebar: sidebar 
+permalink: mssql/tr-4590.html 
+keywords:  
+summary:  
+---
+= TR-4590: Guía de mejores prácticas para Microsoft SQL Server con ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+Manohar Kulkarni y Pat Sinthusan, NetApp
+
+[role="lead"]
+Este documento describe las mejores prácticas y ofrece información sobre consideraciones de diseño para implementar SQL Server en sistemas de almacenamiento NetApp que ejecutan el software NetApp ONTAP , con el objetivo de lograr una implementación de almacenamiento efectiva y eficiente y una planificación de retención y protección de datos de extremo a extremo.
+
+link:https://www.netapp.com/pdf.html?item=/media/8585-tr4590.pdf["TR-4590: Guía de mejores prácticas para Microsoft SQL Server con ONTAP"^]

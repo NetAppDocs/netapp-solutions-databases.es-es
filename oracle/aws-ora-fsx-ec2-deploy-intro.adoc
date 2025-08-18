@@ -1,0 +1,29 @@
+---
+sidebar: sidebar 
+permalink: oracle/aws-ora-fsx-ec2-deploy-intro.html 
+summary: Este documento técnico proporciona un esquema y la validación de una solución para la alta disponibilidad y recuperación ante desastres de la base de datos Oracle RDS personalizada de AWS, aprovechando el servicio de almacenamiento de AWS FSx en una implementación de múltiples zonas de disponibilidad. 
+keywords: HA, DR, database, Oracle, RDS, AWS 
+---
+= WP-7357: Introducción a las mejores prácticas para la implementación de bases de datos Oracle en EC2 y FSx
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+Allen Cao, Niyaz Mohamed, Jeffrey Steiner, NetApp
+
+[role="lead"]
+Muchas bases de datos Oracle empresariales de misión crítica aún están alojadas localmente, y muchas empresas buscan migrar estas bases de datos Oracle a una nube pública.  A menudo, estas bases de datos de Oracle están centradas en las aplicaciones y, por lo tanto, requieren configuraciones específicas del usuario, una capacidad que falta en muchas ofertas de nube pública de bases de datos como servicio.  Por lo tanto, el panorama actual de bases de datos requiere una solución de base de datos Oracle basada en la nube pública construida a partir de un servicio de almacenamiento y computación escalable y de alto rendimiento que pueda adaptarse a requisitos únicos.  Las instancias de cómputo de AWS EC2 y el servicio de almacenamiento de AWS FSx pueden ser las piezas faltantes de este rompecabezas que puede aprovechar para crear y migrar sus cargas de trabajo de base de datos Oracle de misión crítica a una nube pública.
+
+Amazon Elastic Compute Cloud (Amazon EC2) es un servicio web que proporciona capacidad informática segura y redimensionable en la nube.  Está diseñado para facilitar la computación en la nube a escala web para las empresas.  La sencilla interfaz del servicio web Amazon EC2 le permite obtener y configurar capacidad con una fricción mínima.  Le proporciona control total sobre sus recursos informáticos y le permite trabajar en el entorno informático probado de Amazon.
+
+Amazon FSx ONTAP es un servicio de almacenamiento de AWS que utiliza almacenamiento de archivos y bloques NetApp ONTAP líder en la industria, que expone NFS, SMB e iSCSI.  Con un motor de almacenamiento tan poderoso, nunca ha sido tan fácil reubicar aplicaciones de bases de datos Oracle de misión crítica en AWS con tiempos de respuesta de submilisegundos, múltiples GBps de rendimiento y más de 100,000 IOPS por instancia de base de datos.  Mejor aún, el servicio de almacenamiento FSx viene con capacidad de replicación nativa que le permite migrar fácilmente su base de datos Oracle local a AWS o replicar su base de datos Oracle de misión crítica a una zona de disponibilidad secundaria de AWS para HA o DR.
+
+El objetivo de esta documentación es proporcionar procesos paso a paso, procedimientos y orientación sobre las mejores prácticas sobre cómo implementar y configurar una base de datos Oracle con almacenamiento FSx y una instancia EC2 que ofrezca un rendimiento similar al de un sistema local.  NetApp también proporciona un kit de herramientas de automatización que automatiza la mayoría de las tareas necesarias para la implementación, configuración y gestión de su carga de trabajo de base de datos Oracle en la nube pública de AWS.
+
+Para obtener más información sobre la solución y el caso de uso, mire el siguiente video de descripción general:
+
+link:https://www.netapp.tv/insight/details/30000?playlist_id=275&mcid=04891225598830484314259903524057913910["Modernice su base de datos Oracle con la nube híbrida en AWS y FSx ONTAP, Parte 1: Caso de uso y arquitectura de la solución"^]

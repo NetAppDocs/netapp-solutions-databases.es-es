@@ -1,0 +1,43 @@
+---
+sidebar: sidebar 
+permalink: dbops/hybrid-dbops-snapcenter-usecases.html 
+summary: Esta solución proporciona a los clientes y al campo de NetApp instrucciones y orientación para configurar, operar y migrar bases de datos a un entorno de nube híbrida utilizando la herramienta basada en GUI SnapCenter de NetApp y el servicio de almacenamiento CVO de NetApp en nubes públicas. 
+keywords: tr-4908, tr4908, 4908, hybrid cloud, database, snapcenter, gui 
+---
+= TR-4908: Descripción general de soluciones de bases de datos en la nube híbrida con SnapCenter
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+Alan Cao, Félix Melligan, NetApp
+
+[role="lead"]
+Esta solución proporciona a los clientes y al campo de NetApp instrucciones y orientación para configurar, operar y migrar bases de datos a un entorno de nube híbrida utilizando la herramienta basada en GUI SnapCenter de NetApp y el servicio de almacenamiento CVO de NetApp en nubes públicas para los siguientes casos de uso:
+
+* Operaciones de desarrollo y prueba de bases de datos en la nube híbrida
+* Recuperación ante desastres de bases de datos en la nube híbrida
+
+
+Hoy en día, muchas bases de datos empresariales todavía residen en centros de datos corporativos privados por motivos de rendimiento, seguridad u otros.  Esta solución de base de datos en nube híbrida permite a las empresas operar sus bases de datos principales en el sitio mientras utilizan una nube pública para operaciones de base de datos de desarrollo y prueba, así como para recuperación ante desastres a fin de reducir los costos operativos y de licencias.
+
+Muchas bases de datos empresariales, como Oracle, SQL Server, SAP HANA, etc., conllevan altos costos operativos y de licencia.  Muchos clientes pagan una tarifa de licencia única, así como costos de soporte anuales basados en la cantidad de núcleos de cómputo en su entorno de base de datos, ya sea que los núcleos se utilicen para desarrollo, pruebas, producción o recuperación ante desastres.  Es posible que muchos de esos entornos no se utilicen por completo durante todo el ciclo de vida de la aplicación.
+
+Las soluciones brindan a los clientes una opción para reducir potencialmente la cantidad de núcleos licenciables al trasladar sus entornos de bases de datos dedicados al desarrollo, las pruebas o la recuperación ante desastres a la nube.  Al utilizar la escala de la nube pública, redundancia, alta disponibilidad y un modelo de facturación basado en el consumo, el ahorro en costos de licencia y operación puede ser sustancial, sin sacrificar la usabilidad ni la disponibilidad de las aplicaciones.
+
+Más allá del potencial ahorro en costos de licencia de base de datos, el modelo de licencia CVO basado en capacidad de NetApp permite a los clientes ahorrar costos de almacenamiento por GB al tiempo que les brinda un alto nivel de capacidad de administración de base de datos que no está disponible en los servicios de almacenamiento de la competencia.  El siguiente gráfico muestra una comparación de costos de almacenamiento de los servicios de almacenamiento más populares disponibles en la nube pública.
+
+image:cvo-cloud-cost-comparision.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+Esta solución demuestra que, al utilizar la herramienta de software basada en GUI SnapCenter y la tecnología SnapMirror de NetApp , las operaciones de bases de datos en nube híbrida se pueden configurar, implementar y operar fácilmente.
+
+Los siguientes videos muestran SnapCenter en acción:
+
+* https://www.youtube.com/watch?v=-DDTVtd868Q&list=PLdXI3bZJEw7nofM6lN44eOe4aOSoryckg&index=35["Copia de seguridad de una base de datos Oracle en una nube híbrida mediante SnapCenter"^]
+* https://www.youtube.com/watch?v=NpeDbhK5f4c["SnapCenter: clonación de DEV/TEST en AWS Cloud para una base de datos Oracle"^]
+
+
+En particular, si bien las ilustraciones de este documento muestran a CVO como una instancia de almacenamiento de destino en la nube pública, la solución también está completamente validada para la nueva versión del motor de almacenamiento FSx ONTAP para AWS.

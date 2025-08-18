@@ -1,0 +1,63 @@
+---
+sidebar: sidebar 
+permalink: mssql/customer-usecase-mssql-fsx1.html 
+keywords: SQL Server, WSFC, AWS, FSx ONTAP, EC2, SnapCenter 
+summary: Este ejemplo de caso de uso de un cliente del mundo real ilustra los desafíos, las soluciones y los resultados de migrar cargas de trabajo del servidor SQL desde las instalaciones locales a Amazon FSx ONTAP para reducir costos. 
+---
+= Una empresa de productos médicos migra la carga de trabajo SQL local a Amazon FSx ONTAP para reducir costos
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+Equipo de ingeniería de soluciones de NetApp
+
+[role="lead"]
+Este ejemplo de caso de uso de un cliente del mundo real ilustra los desafíos, las soluciones y los resultados de migrar cargas de trabajo del servidor SQL desde las instalaciones locales a Amazon FSx ONTAP para reducir costos.
+
+
+
+== El desafío
+
+* El cliente había estado ejecutando cargas de trabajo del servidor SQL en un centro de datos privado alojado por un tercero.  El aumento del coste del alojamiento se había convertido en un problema.
+* Carecía de conocimientos tribales sobre la arquitectura de aplicaciones y la infraestructura existente debido a la subcontratación y la pérdida de personal.
+* Tenía poca o ninguna experiencia en la gestión de NetApp ONTAP.
+* Se está trabajando contra un cronograma ajustado antes de tomar una decisión sobre la renovación de la infraestructura existente.
+* El entorno de SQL Server es grande (100 TB) y complejo con alta disponibilidad entre dos centros de datos a través de SQL Always On.  Tres entornos transitorios creados a partir de una copia de datos secundarios mediante AppSync y datos actualizados diariamente o semanalmente.  Se requieren cambios en los indicadores de datos dedicados a través de scripts SQL después de cada actualización de los datos de producción.
+
+
+image:customer-usecase-mssql-fsx1-before.png["Esta imagen proporciona una imagen detallada de la configuración del entorno del cliente antes de la migración."]
+
+
+
+== La solución
+
+* Migración desde un entorno local alojado de Dell Unity SAN y AppSync a AWS Amazon FSx ONTAP con NetApp SnapCenter.
+* La capacidad de clonación fina de Amazon FSx ONTAP ayuda a reducir los costos de almacenamiento, mientras que la administración totalmente automatizada del ciclo de vida de las clonaciones de SnapCenter cumple con todos los demás requisitos del entorno transitorio.
+* Base de datos de SQL Server principal implementada en AWS EBS y copia secundaria replicada en Single-AZ Amazon FSx ONTAP.
+* PoC demostró que SnapCenter era el reemplazo adecuado para AppSync.
+* Socios confiables y experimentados para configuración, migración y soporte continuo.  Las guías detalladas de implementación de soluciones ayudaron a los usuarios principiantes e inexpertos de Amazon FSx ONTAP y SnapCenter .
+
+
+image:customer-usecase-mssql-fsx1-after.png["Esta imagen proporciona una imagen detallada de la configuración del entorno del cliente después de la migración."]
+
+
+
+== El resultado
+
+* Reducción de costos del 40% en comparación con el alojamiento continuo en un centro de datos privado.
+* Servicio Amazon FSx ONTAP totalmente administrado con SnapCenter para brindar soporte a 300 clientes.
+* Se mantuvo la capacidad de automatizar clones de aprovisionamiento fino casi instantáneos para entornos de preproducción, UAT y control de calidad.
+* Migración a tiempo, evitación de costos de renovación y transición de una relación insatisfactoria con un proveedor a una experiencia gratificante en la nube pública.
+* SQL Server en Amazon FSx logró una capa adicional de redundancia de datos manteniendo el rendimiento.
+* Capacidad de habilitar fácilmente recuperación ante desastres entre regiones en el futuro.
+
+
+
+
+== Dónde encontrar información adicional
+
+Para obtener más información sobre las soluciones de bases de datos empresariales de NetApp , consulte el siguiente sitio weblink:https://docs.netapp.com/us-en/netapp-solutions/databases/index.html["Soluciones de bases de datos empresariales de NetApp"^]

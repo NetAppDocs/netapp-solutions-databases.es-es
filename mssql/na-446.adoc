@@ -1,0 +1,19 @@
+---
+sidebar: sidebar 
+permalink: mssql/na-446.html 
+keywords:  
+summary:  
+---
+= Modernización de su entorno de Microsoft SQL Server
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Optimice las operaciones y libere el poder de sus datos, en las instalaciones o en la nube.
+
+link:https://www.netapp.com/pdf.html?item=/media/15613-na-446.pdf["Modernización de su entorno de Microsoft SQL Server"^]

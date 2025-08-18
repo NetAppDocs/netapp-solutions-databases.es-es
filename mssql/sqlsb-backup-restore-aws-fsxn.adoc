@@ -1,0 +1,619 @@
+---
+sidebar: sidebar 
+permalink: mssql/sqlsb-backup-restore-aws-fsxn.html 
+keywords: SQL server, SQL, backup, recover, AWS, aws, sql 
+summary:  
+---
+= TR-4951: Copia de seguridad y recuperación para Microsoft SQL Server en AWS FSx ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Este documento cubre los pasos necesarios para realizar copias de seguridad y recuperaciones de Microsoft SQL Server en AWS FSx ONTAP con SnapCenter.  Esto incluye la siguiente información:
+
+* Configuración de NetApp SnapCenter
+* Operaciones de copia de seguridad de SnapCenter
+* Operación de respaldo para una base de datos de FCI
+* Operación de respaldo para múltiples bases de datos
+* Restaurar y recuperar
+
+
+
+
+== Configuración de SnapCenter
+
+Se deben realizar los siguientes pasos para la configuración de SnapCenter y la protección de los recursos de Microsoft SQL Server.  Cada uno de los siguientes pasos se detalla en las siguientes secciones.
+
+. Configure las credenciales de administrador del sistema para el usuario de copia de seguridad y restauración de SQL Server.
+. Configurar los ajustes de almacenamiento.  Proporcione las credenciales de administración de Amazon Web Services (AWS) para acceder a las máquinas virtuales de almacenamiento (SVM) de Amazon FSx ONTAP desde SnapCenter.
+. Agregue un host de SQL Server a SnapCenter.  Implemente e instale los complementos de SnapCenter necesarios.
+. Configurar políticas.  Defina el tipo de operación de respaldo, la retención y la replicación de respaldo de instantánea opcional.
+. Configurar y proteger la base de datos de Microsoft SQL Server.
+
+
+
+
+== Interfaz de usuario recién instalada de SnapCenter
+
+Configurar credenciales para la copia de seguridad de SQL Server y restaurar al usuario con derechos de administrador del sistema.
+
+image:sqlsb-aws-001.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+NetApp recomienda utilizar el control de acceso basado en roles (RBAC) para delegar capacidades de gestión y protección de datos a usuarios individuales en los hosts de SnapCenter y Windows.  El usuario debe tener acceso al servidor SQL que aloja la base de datos.  Para varios hosts, el nombre de usuario y la contraseña deben ser los mismos en todos los hosts.  Además, para permitir que SnapCenter implemente el complemento requerido en los hosts de SQL Server, debe registrar la información del dominio para que SnapCenter valide sus credenciales y hosts.
+
+Amplíe las siguientes secciones para ver las instrucciones detalladas sobre cómo completar cada paso.
+
+.Añade las credenciales
+[%collapsible%open]
+====
+Vaya a *Configuración*, seleccione *Credenciales* y haga clic en (*)+*.
+
+image:sqlsb-aws-002.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+El nuevo usuario debe tener derechos de administrador en el host de SQL Server.
+
+image:sqlsb-aws-003.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+====
+.Configurar el almacenamiento
+[%collapsible%open]
+====
+Para configurar el almacenamiento en SnapCenter, complete los siguientes pasos:
+
+. En la interfaz de usuario de SnapCenter , seleccione *Sistemas de almacenamiento*.  Hay dos tipos de almacenamiento, * ONTAP SVM* y * ONTAP Cluster*.  De forma predeterminada, el tipo de almacenamiento es * ONTAP SVM*.
+. Haga clic en (*)+*) para agregar la información del sistema de almacenamiento.
++
+image:sqlsb-aws-004.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Proporcione el punto final de *administración de FSx ONTAP *.
++
+image:sqlsb-aws-005.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. El SVM ahora está configurado en SnapCenter.
++
+image:sqlsb-aws-006.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+====
+.Agregar un host de SQL Server a SnapCenter
+[%collapsible%open]
+====
+Para agregar un host de SQL Server, complete los siguientes pasos:
+
+. Desde la pestaña Host, haga clic en (*)+*) para agregar el host de Microsoft SQL Server.
++
+image:sqlsb-aws-007.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Proporcione el nombre de dominio completo (FQDN) o la dirección IP del host remoto.
++
+
+NOTE: Las credenciales se completan de forma predeterminada.
+
+. Seleccione la opción para Microsoft Windows y Microsoft SQL Server y luego envíe.
++
+image:sqlsb-aws-008.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+Se instalan los paquetes de SQL Server.
+
+image:sqlsb-aws-009.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Una vez completada la instalación, vaya a la pestaña *Recursos* para verificar si todos los volúmenes iSCSI de FSx ONTAP están presentes.
++
+image:sqlsb-aws-010.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+====
+.Configurar el directorio de registro
+[%collapsible%open]
+====
+Para configurar un directorio de registro de host, complete los siguientes pasos:
+
+. Haga clic en la casilla de verificación.  Se abre una nueva pestaña.
++
+image:sqlsb-aws-011.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en el enlace *configurar directorio de registro*.
++
+image:sqlsb-aws-012.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione la unidad para el directorio de registro del host y el directorio de registro de la instancia FCI.  Haga clic en *Guardar*.  Repita el mismo proceso para el segundo nodo del clúster.  Cerrar la ventana.
++
+image:sqlsb-aws-013.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+El host ahora está en estado de ejecución.
+
+image:sqlsb-aws-014.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Desde la pestaña *Recursos*, tenemos todos los servidores y bases de datos.
++
+image:sqlsb-aws-015.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+====
+
+
+== Configurar una política de copias de seguridad
+
+Una política de respaldo es un conjunto de reglas que rigen cómo administrar, programar y conservar las copias de seguridad.  Ayuda con el tipo y la frecuencia de las copias de seguridad en función del SLA de su empresa.
+
+Amplíe las siguientes secciones para ver las instrucciones detalladas sobre cómo completar cada paso.
+
+.Configurar la operación de respaldo para una base de datos FCI
+[%collapsible%open]
+====
+Para configurar una política de respaldo para una base de datos FCI, complete los siguientes pasos:
+
+. Vaya a *Configuración* y seleccione *Políticas* en la parte superior izquierda.  Luego haga clic en *Nuevo*.
++
+image:sqlsb-aws-016.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Introduzca el nombre de la política y una descripción.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-017.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione *Copia de seguridad completa* como tipo de copia de seguridad.
++
+image:sqlsb-aws-018.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione la frecuencia de programación (esto se basa en el SLA de la empresa).  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-019.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configure los ajustes de retención para la copia de seguridad.
++
+image:sqlsb-aws-020.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configurar las opciones de replicación.
++
+image:sqlsb-aws-021.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique un script de ejecución para ejecutar antes y después de ejecutar un trabajo de copia de seguridad (si corresponde).
++
+image:sqlsb-aws-022.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Ejecute la verificación según el programa de copia de seguridad.
++
+image:sqlsb-aws-023.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. La página *Resumen* proporciona detalles de la política de respaldo.  Cualquier error se puede corregir aquí.
++
+image:sqlsb-aws-024.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+====
+
+
+== Configurar y proteger la base de datos de MSSQL Server
+
+. Configure la fecha de inicio y la fecha de vencimiento de la política de respaldo.
++
+image:sqlsb-aws-025.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Define el cronograma para la copia de seguridad.  Para ello, haga clic en (*)+*) para configurar un horario.  Introduzca la *Fecha de inicio* y la *Fecha de vencimiento*.  Establezca el tiempo en función del SLA de la empresa.
++
+image:sqlsb-aws-026.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configurar el servidor de verificación.  Desde el menú desplegable, seleccione el servidor.
++
+image:sqlsb-aws-027.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Confirme el cronograma configurado haciendo clic en el signo más y confirme.
+. Proporcionar información para notificación por correo electrónico.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-028.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+Ahora está configurado el resumen de la política de respaldo para la base de datos de SQL Server.
+
+image:sqlsb-aws-029.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+== Operaciones de copia de seguridad de SnapCenter
+
+Para crear copias de seguridad de SQL Server a pedido, complete los siguientes pasos:
+
+. Desde la vista *Recursos*, seleccione el recurso y seleccione *Hacer copia de seguridad ahora*.
++
+image:sqlsb-aws-030.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. En el cuadro de diálogo *Copia de seguridad*, haga clic en *Copia de seguridad*.
++
+image:sqlsb-aws-031.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Se muestra una pantalla de confirmación.  Haga clic en *Sí* para confirmar.
++
+image:sqlsb-aws-032.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Supervisar el trabajo de respaldo
+
+. Desde la pestaña *Monitor*, haga clic en el trabajo y seleccione *Detalles* a la derecha para ver los trabajos.
++
+image:sqlsb-aws-033.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:sqlsb-aws-034.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+Cuando se completa la copia de seguridad, se muestra una nueva entrada en la vista Topología.
+
+
+
+== Operación de respaldo para múltiples bases de datos
+
+Para configurar una política de respaldo para varias bases de datos de SQL Server, cree políticas de grupo de recursos completando los siguientes pasos:
+
+. En la pestaña *Recursos* del menú *Ver*, cambie a un grupo de recursos usando el menú desplegable.
++
+image:sqlsb-aws-035.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en (*)+* para crear un nuevo grupo de recursos.
++
+image:sqlsb-aws-036.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Proporcione un nombre y una etiqueta.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-037.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Agregar recursos al grupo de recursos:
++
+** *Anfitrión.*  Seleccione el servidor del menú desplegable que aloja la base de datos.
+** *Tipo de recurso.*  En el menú desplegable, seleccione *Base de datos*.
+** *Instancia de SQL Server.*  Seleccione el servidor.
++
+image:sqlsb-aws-038.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+La *opción* Seleccionar automáticamente todos los recursos del mismo volumen de almacenamiento* está seleccionada de forma predeterminada.  Desmarque la opción y seleccione solo las bases de datos que necesita agregar al grupo de recursos. Haga clic en la flecha para agregar y haga clic en *Siguiente*.
+
++
+image:sqlsb-aws-039.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+. En las políticas, haga clic en (*)+*.
++
+image:sqlsb-aws-040.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Introduzca el nombre de la política del grupo de recursos.
++
+image:sqlsb-aws-041.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione *Copia de seguridad completa* y la frecuencia de programación según el SLA de su empresa.
++
+image:sqlsb-aws-042.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configurar los ajustes de retención.
++
+image:sqlsb-aws-043.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configurar las opciones de replicación.
++
+image:sqlsb-aws-044.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configure los scripts para que se ejecuten antes de realizar una copia de seguridad.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-045.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Confirme la verificación para los siguientes programas de respaldo.
++
+image:sqlsb-aws-046.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. En la página *Resumen*, verifique la información y haga clic en *Finalizar*.
++
+image:sqlsb-aws-047.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Configurar y proteger múltiples bases de datos de SQL Server
+
+. Haga clic en el signo (*)+* para configurar la fecha de inicio y la fecha de vencimiento.
++
+image:sqlsb-aws-048.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Establezca la hora.
++
+image:sqlsb-aws-049.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:sqlsb-aws-050.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Desde la pestaña *Verificación*, seleccione el servidor, configure la programación y haga clic en *Siguiente*.
++
+image:sqlsb-aws-051.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configurar notificaciones para enviar un correo electrónico.
++
+image:sqlsb-aws-052.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+La política ahora está configurada para realizar copias de seguridad de varias bases de datos de SQL Server.
+
+image:sqlsb-aws-053.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+== Activar copias de seguridad a pedido para múltiples bases de datos de SQL Server
+
+. Desde la pestaña *Recursos*, seleccione ver.  En el menú desplegable, seleccione *Grupo de recursos*.
++
+image:sqlsb-aws-054.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione el nombre del grupo de recursos.
+. Haga clic en *Hacer copia de seguridad ahora* en la esquina superior derecha.
++
+image:sqlsb-aws-055.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Se abre una nueva ventana.  Haga clic en la casilla de verificación *Verificar después de la copia de seguridad* y luego haga clic en realizar copia de seguridad.
++
+image:sqlsb-aws-056.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Se muestra un mensaje de confirmación.  Haga clic en *Sí*.
++
+image:sqlsb-aws-057.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Supervisar trabajos de copia de seguridad de múltiples bases de datos
+
+Desde la barra de navegación izquierda, haga clic en *Monitor*, seleccione el trabajo de respaldo y haga clic en *Detalles* para ver el progreso del trabajo.
+
+image:sqlsb-aws-058.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+Haga clic en la pestaña *Recursos* para ver el tiempo que tarda en completarse la copia de seguridad.
+
+image:sqlsb-aws-059.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+== Copia de seguridad del registro de transacciones para copias de seguridad de múltiples bases de datos
+
+SnapCenter admite los modelos de recuperación completa, registrada en masa y simple.  El modo de recuperación simple no admite la copia de seguridad del registro transaccional.
+
+Para realizar una copia de seguridad del registro de transacciones, complete los siguientes pasos:
+
+. Desde la pestaña *Recursos*, cambie el menú de vista de *Base de datos* a *Grupo de recursos*.
++
+image:sqlsb-aws-060.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione la política de respaldo del grupo de recursos creada.
+. Seleccione *Modificar grupo de recursos* en la parte superior derecha.
++
+image:sqlsb-aws-061.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. La sección *Nombre* tiene como valor predeterminado el nombre y la etiqueta de la política de respaldo.  Haga clic en *Siguiente*.
++
+La pestaña *Recursos* resalta las bases en las que se configurará la política de respaldo de transacciones.
+
++
+image:sqlsb-aws-062.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Introduzca el nombre de la política.
++
+image:sqlsb-aws-063.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione las opciones de copia de seguridad de SQL Server.
+. Seleccionar copia de seguridad del registro.
+. Establezca la frecuencia de programación en función del RTO de su empresa.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-064.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configure los ajustes de retención de copias de seguridad de registros.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-065.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. (Opcional) Configure las opciones de replicación.
++
+image:sqlsb-aws-066.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. (Opcional) Configure cualquier script para que se ejecute antes de realizar un trabajo de copia de seguridad.
++
+image:sqlsb-aws-067.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. (Opcional) Configurar la verificación de copia de seguridad.
++
+image:sqlsb-aws-068.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. En la página *Resumen*, haga clic en *Finalizar*.
++
+image:sqlsb-aws-069.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Configurar y proteger múltiples bases de datos de MSSQL Server
+
+. Haga clic en la política de copia de seguridad del registro de transacciones recién creada.
++
+image:sqlsb-aws-070.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Establezca la *Fecha de inicio* y la *Fecha de vencimiento*.
+. Ingrese la frecuencia de la política de copia de seguridad de registros según el SLA, RTP y RPO.  Haga clic en Aceptar.
++
+image:sqlsb-aws-071.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Puedes ver ambas políticas.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-072.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configurar el servidor de verificación.
++
+image:sqlsb-aws-073.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configurar la notificación por correo electrónico.
++
+image:sqlsb-aws-074.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. En la página *Resumen*, haga clic en *Finalizar*.
++
+image:sqlsb-aws-075.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Activación de una copia de seguridad del registro de transacciones a pedido para varias bases de datos de SQL Server
+
+Para activar una copia de seguridad a pedido del registro transaccional de varias bases de datos del servidor SQL, complete los siguientes pasos:
+
+. En la página de política recién creada, seleccione *Hacer copia de seguridad ahora* en la parte superior derecha de la página.
++
+image:sqlsb-aws-076.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Desde la ventana emergente de la pestaña *Política*, seleccione el menú desplegable, seleccione la política de respaldo y configure la copia de seguridad del registro de transacciones.
++
+image:sqlsb-aws-077.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en *Copia de seguridad*.  Se muestra una nueva ventana.
+. Haga clic en *Sí* para confirmar la política de respaldo.
++
+image:sqlsb-aws-078.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Escucha
+
+Vaya a la pestaña *Monitoreo* y monitoree el progreso del trabajo de respaldo.
+
+image:sqlsb-aws-079.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+== Restaurar y recuperar
+
+Consulte los siguientes requisitos previos necesarios para restaurar una base de datos de SQL Server en SnapCenter.
+
+* La instancia de destino debe estar en línea y ejecutándose antes de que se complete un trabajo de restauración.
+* Las operaciones de SnapCenter que están programadas para ejecutarse en la base de datos de SQL Server deben estar deshabilitadas, incluidos todos los trabajos programados en servidores de administración remota o de verificación remota.
+* Si está restaurando copias de seguridad del directorio de registro personalizado en un host alternativo, el servidor de SnapCenter y el host del complemento deben tener la misma versión de SnapCenter instalada.
+* Puede restaurar la base de datos del sistema en un host alternativo.
+* SnapCenter puede restaurar una base de datos en un clúster de Windows sin desconectar el grupo de clústeres de SQL Server.
+
+
+
+
+== Restaurar tablas eliminadas en una base de datos de SQL Server a un punto en el tiempo
+
+Para restaurar una base de datos de SQL Server a un punto en el tiempo, complete los siguientes pasos:
+
+. La siguiente captura de pantalla muestra el estado inicial de la base de datos de SQL Server antes de las tablas eliminadas.
++
+image:sqlsb-aws-080.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+La captura de pantalla muestra que se eliminaron 20 filas de la tabla.
+
++
+image:sqlsb-aws-081.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Inicie sesión en SnapCenter Server.  Desde la pestaña *Recursos*, seleccione la base de datos.
++
+image:sqlsb-aws-082.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione la copia de seguridad más reciente.
+. A la derecha, seleccione *Restaurar*.
++
+image:sqlsb-aws-083.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Se muestra una nueva ventana.  Seleccione la opción *Restaurar*.
+. Restaurar la base de datos en el mismo host donde se creó la copia de seguridad.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-084.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Para el *Tipo de recuperación*, seleccione *Todas las copias de seguridad de registros*.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-085.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:sqlsb-aws-086.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+*Opciones de pre-restauración:*
+
+. Seleccione la opción *Sobrescribir la base de datos con el mismo nombre durante la restauración*.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-087.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+*Opciones posteriores a la restauración:*
+
+. Seleccione la opción *Operacional, pero no disponible para restaurar registros de transacciones adicionales*.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-088.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Proporcione la configuración del correo electrónico.  Haga clic en *Siguiente*.
++
+image:sqlsb-aws-089.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. En la página *Resumen*, haga clic en *Finalizar*.
++
+image:sqlsb-aws-090.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Monitoreo del progreso de la restauración
+
+. Desde la pestaña *Monitoreo*, haga clic en los detalles del trabajo de restauración para ver el progreso del trabajo de restauración.
++
+image:sqlsb-aws-091.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Restaurar los detalles del trabajo.
++
+image:sqlsb-aws-092.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Regresar al host de SQL Server > base de datos > la tabla están presentes.
++
+image:sqlsb-aws-093.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Dónde encontrar información adicional
+
+Para obtener más información sobre la información que se describe en este documento, revise los siguientes documentos y/o sitios web:
+
+* https://www.netapp.com/pdf.html?item=/media/12400-tr4714pdf.pdf["TR-4714: Guía de mejores prácticas para Microsoft SQL Server con NetApp SnapCenter"^]
++
+https://www.netapp.com/pdf.html?item=/media/12400-tr4714pdf.pdf["https://www.netapp.com/pdf.html?item=/media/12400-tr4714pdf.pdf"^]
+
+* https://docs.netapp.com/us-en/snapcenter-45/protect-scsql/concept_requirements_for_restoring_a_database.html["Requisitos para restaurar una base de datos"^]
++
+https://docs.netapp.com/us-en/snapcenter-45/protect-scsql/concept_requirements_for_restoring_a_database.html["https://docs.netapp.com/us-en/snapcenter-45/protect-scsql/concept_requirements_for_restoring_a_database.html"^]
+
+* Comprensión de los ciclos de vida de las bases de datos clonadas
++
+https://library.netapp.com/ecmdocs/ECMP1217281/html/GUID-4631AFF4-64FE-4190-931E-690FCADA5963.html["https://library.netapp.com/ecmdocs/ECMP1217281/html/GUID-4631AFF4-64FE-4190-931E-690FCADA5963.html"^]
+
+

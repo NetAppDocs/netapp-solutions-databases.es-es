@@ -1,0 +1,130 @@
+---
+sidebar: sidebar 
+permalink: oracle/azure-ora-nfile-factors.html 
+summary: Esta sección proporciona detalles sobre los factores que se deben tener en cuenta al implementar una base de datos de Oracle en una máquina virtual de Azure y en el almacenamiento de Azure NetApp Files . 
+keywords: database, Oracle, Azure, Azure NetApp Files 
+---
+= Factores a considerar para la implementación de una base de datos Oracle
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Una nube pública ofrece muchas opciones de computación y almacenamiento, y usar el tipo correcto de instancia de computación y motor de almacenamiento es un buen lugar para comenzar a implementar una base de datos.  También debe seleccionar configuraciones de almacenamiento y computación que estén optimizadas para las bases de datos Oracle.
+
+Las siguientes secciones describen las consideraciones clave al implementar una base de datos de Oracle en la nube pública de Azure en una instancia de máquina virtual de Azure con almacenamiento de Azure NetApp Files .
+
+
+
+== Tipo y tamaño de máquina virtual
+
+Seleccionar el tipo y tamaño de VM correctos es importante para el rendimiento óptimo de una base de datos relacional en una nube pública.  Una máquina virtual de Azure proporciona una variedad de instancias de computo que pueden usarse para alojar cargas de trabajo de bases de datos de Oracle.  Consulte la documentación de Microsoftlink:https://docs.microsoft.com/en-us/azure/virtual-machines/sizes["Tamaños de las máquinas virtuales en Azure"^] para diferentes tipos de máquinas virtuales de Azure y su tamaño.  En general, NetApp recomienda utilizar una máquina virtual de Azure de uso general para la implementación de bases de datos Oracle de tamaño pequeño y mediano.  Para la implementación de bases de datos Oracle más grandes, es adecuada una máquina virtual de Azure optimizada para memoria.  Con más RAM disponible, se puede configurar un Oracle SGA o un caché flash inteligente más grande para reducir la E/S física, lo que a su vez mejora el rendimiento de la base de datos.
+
+Azure NetApp Files funciona como un montaje NFS conectado a una máquina virtual de Azure, lo que ofrece un mayor rendimiento y supera el límite de rendimiento de la máquina virtual optimizada para almacenamiento con almacenamiento local.  Por lo tanto, ejecutar Oracle en Azure NetApp Files podría reducir la cantidad de núcleos de CPU de Oracle licenciables y los costos de licencia.  Verlink:https://www.netapp.com/media/17105-tr4780.pdf["TR-4780: Bases de datos Oracle en Microsoft Azure"^] Sección 7 - ¿Cómo funciona el licenciamiento de Oracle?
+
+Otros factores a considerar incluyen los siguientes:
+
+* Elija la combinación correcta de vCPU y RAM según las características de la carga de trabajo.  A medida que aumenta el tamaño de RAM en la máquina virtual, también aumenta la cantidad de núcleos de vCPU.  Debería haber un equilibrio en algún momento, ya que las tarifas de licencia de Oracle se cobran según la cantidad de núcleos de vCPU.
+* Agregar espacio de intercambio a una máquina virtual.  La implementación de máquina virtual de Azure predeterminada no crea un espacio de intercambio, lo que no es óptimo para una base de datos.
+
+
+
+
+== Rendimiento de Azure NetApp Files
+
+Los volúmenes de Azure NetApp Files se asignan desde un grupo de capacidad que el cliente debe aprovisionar en su cuenta de almacenamiento de Azure NetApp Files .  Cada grupo de capacidad se asigna de la siguiente manera:
+
+* A un nivel de servicio que define la capacidad de rendimiento general.
+* La capacidad de almacenamiento aprovisionada inicialmente o los niveles para ese grupo de capacidad.  Un nivel de calidad de servicio (QoS) que define el rendimiento máximo general por espacio aprovisionado.
+
+
+El nivel de servicio y la capacidad de almacenamiento aprovisionada inicialmente determinan el nivel de rendimiento para un volumen de base de datos Oracle en particular.
+
+
+
+=== 1. Niveles de servicio para Azure NetApp Files
+
+Azure NetApp Files admite tres niveles de servicio: Ultra, Premium y Estándar.
+
+* *Almacenamiento ultra.*  Este nivel proporciona hasta 128 MiBps de rendimiento por cada 1 TiB de cuota de volumen asignada.
+* *Almacenamiento premium.*  Este nivel proporciona hasta 64 MiBps de rendimiento por cada 1 TiB de cuota de volumen asignada.
+* *Almacenamiento estándar.*  Este nivel proporciona hasta 16 MiBps de rendimiento por cada 1 TiB de cuota de volumen asignada.
+
+
+
+
+=== 2. Capacidad de reserva y calidad del servicio
+
+Cada uno de los niveles de servicio deseados tiene un costo asociado por capacidad aprovisionada e incluye un nivel de calidad de servicio (QoS) que define el rendimiento máximo general para el espacio aprovisionado.
+
+Por ejemplo, un grupo de capacidad única aprovisionado con 10 TiB con el nivel de servicio premium proporciona un rendimiento general disponible para todos los volúmenes en este grupo de capacidad de 10 x 64 MBps, es decir, 640 MBps con 40 000 (16 000) IOP o 80 000 (8 000) IOP.
+
+El tamaño mínimo del grupo de capacidad es 4 TiB.  Puede cambiar el tamaño de un grupo de capacidad en incrementos de 1 TiB en respuesta a los cambios en sus requisitos de carga de trabajo para administrar las necesidades y los costos de almacenamiento.
+
+
+
+=== 3. Calcular el nivel de servicio en un volumen de base de datos
+
+El límite de rendimiento de un volumen de base de datos de Oracle está determinado por una combinación de los siguientes factores: el nivel de servicio del grupo de capacidad al que pertenece el volumen y la cuota asignada al volumen.
+
+El siguiente diagrama muestra cómo se calcula el límite de rendimiento para un volumen de base de datos Oracle.
+
+image:db-ora-azure-anf-factors-001.png["Esta imagen muestra la ecuación aplicada a los tres niveles de capacidad para determinar el rendimiento bruto."]
+
+En el ejemplo 1, a un volumen de un grupo de capacidad con el nivel de almacenamiento Premium al que se le asignan 2 TiB de cuota se le asigna un límite de rendimiento de 128 MiBps (2 TiB * 64 MiBps).  Este escenario se aplica independientemente del tamaño del grupo de capacidad o del consumo de volumen real.
+
+En el ejemplo 2, a un volumen de un grupo de capacidad con el nivel de almacenamiento Premium al que se le asignan 100 GiB de cuota se le asigna un límite de rendimiento de 6,25 MiBps (0,09765625 TiB * 64 MiBps).  Este escenario se aplica independientemente del tamaño del grupo de capacidad o del consumo de volumen real.
+
+Tenga en cuenta que el tamaño mínimo del volumen es 100 GiB.
+
+
+
+== Disposición y configuración del almacenamiento
+
+NetApp recomienda el siguiente diseño de almacenamiento:
+
+* Para bases de datos pequeñas, utilice un diseño de volumen único para todos los archivos de Oracle.
++
+image:db-ora-azure-anf-factors-002.png["Esta imagen muestra tres bases de datos (DB1, DB2 y DB3), cada una de las cuales contiene archivos de datos, registros de rehacer, registros de archivo y archivos de control, todo dentro de un único grupo de capacidad."]
+
+* Para bases de datos grandes, el diseño de volumen recomendado es de varios volúmenes: uno para los datos de Oracle y un archivo de control duplicado y otro para el registro activo, el registro archivado y el archivo de control de Oracle.  NetApp recomienda encarecidamente asignar un volumen para el binario de Oracle en lugar de la unidad local para que la base de datos pueda reubicarse en un nuevo host y restaurarse rápidamente.
++
+image:db-ora-azure-anf-factors-003.png["Esta imagen muestra dos bases de datos con dos volúmenes cada una.  El primer volumen contiene archivos de datos, mientras que el segundo volumen de cada base de datos contiene registros de rehacer, registros de archivo y archivos de control.  Todo dentro de una piscina de capacidad única."]
+
+
+
+
+
+== Configuración de NFS
+
+Linux, el sistema operativo más común, incluye capacidades NFS nativas.  Oracle ofrece un cliente NFS directo (dNFS) integrado de forma nativa en Oracle.  Oracle dNFS omite el caché del sistema operativo y permite el procesamiento paralelo para mejorar el rendimiento de la base de datos.  Oracle ha admitido NFSv3 durante más de 20 años y NFSv4 es compatible con Oracle 12.1.0.2 y versiones posteriores.
+
+Al usar dNFS (disponible desde Oracle 11g), una base de datos Oracle que se ejecuta en una máquina virtual de Azure puede generar significativamente más E/S que el cliente NFS nativo.  La implementación automatizada de Oracle mediante el kit de herramientas de automatización de NetApp configura automáticamente dNFS en NFSv3.
+
+El siguiente diagrama muestra la prueba comparativa SLOB en Azure NetApp Files con Oracle dNFS.
+
+image:db-ora-azure-anf-factors-004.png["Este gráfico demuestra dramáticamente que dNFS mejora la latencia del archivo secuencial de la base de datos (ms) con respecto a KNFS."]
+
+Otros factores a considerar:
+
+* Las tablas de ranuras TCP son el equivalente NFS de la profundidad de la cola del adaptador de bus host (HBA).  Estas tablas controlan la cantidad de operaciones NFS que pueden estar pendientes en un momento dado.  El valor predeterminado suele ser 16, que es demasiado bajo para un rendimiento óptimo.  El problema opuesto ocurre en los kernels de Linux más nuevos, que pueden aumentar automáticamente el límite de la tabla de ranuras TCP a un nivel que satura el servidor NFS con solicitudes.
++
+Para obtener un rendimiento óptimo y evitar problemas de rendimiento, ajuste los parámetros del kernel que controlan las tablas de ranuras TCP a 128.
+
++
+[source, cli]
+----
+sysctl -a | grep tcp.*.slot_table
+----
+* La siguiente tabla proporciona las opciones de montaje NFS recomendadas para una sola instancia de Linux NFSv3.
++
+image:aws-ora-fsx-ec2-nfs-001.png["Esta tabla muestra las opciones de montaje NFS detalladas para los siguientes tipos de archivos: archivos de control, archivos de datos, registros de rehacer, ORACLE_HOME y ORACLE_BASE."]
+
+
+
+
+NOTE: Antes de usar dNFS, verifique que estén instalados los parches descritos en Oracle Doc 1495104.1.  La matriz de soporte de NetApp para NFSv3 y NFSv4 no incluye sistemas operativos específicos.  Se admiten todos los sistemas operativos que obedecen el RFC.  Al buscar en el IMT en línea compatibilidad con NFSv3 o NFSv4, no seleccione un sistema operativo específico porque no se mostrarán coincidencias.  Todos los sistemas operativos están respaldados implícitamente por la política general.

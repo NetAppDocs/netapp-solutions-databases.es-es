@@ -1,0 +1,157 @@
+---
+sidebar: sidebar 
+permalink: dbops/hybrid-dbops-snapcenter-devtest.html 
+summary: La agilidad de la nube pública, el tiempo para obtener valor y el ahorro de costos son propuestas de valor significativas para que las empresas adopten la nube pública para el desarrollo de aplicaciones de bases de datos y el esfuerzo de prueba.  No hay mejor herramienta que SnapCenter para hacer esto realidad rápidamente.  SnapCenter no solo puede proteger su base de datos de producción local, sino que también puede clonar rápidamente una copia para el desarrollo de aplicaciones o pruebas de código en la nube pública consumiendo muy poco almacenamiento adicional.  A continuación se detallan los procesos paso a paso utilizando la herramienta. 
+keywords: hybrid cloud, database, solutions, dev/test, workflow 
+---
+= Flujo de trabajo para desarrollo y pruebas que se trasladan a la nube
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+La agilidad de la nube pública, el tiempo para obtener valor y el ahorro de costos son propuestas de valor significativas para las empresas que adoptan la nube pública para el desarrollo de aplicaciones de bases de datos y el esfuerzo de prueba.  No hay mejor herramienta que SnapCenter para hacer esto realidad.  SnapCenter no solo puede proteger su base de datos de producción local, sino que también puede clonar rápidamente una copia para el desarrollo de aplicaciones o pruebas de código en la nube pública consumiendo muy poco almacenamiento adicional.  A continuación se detallan los procesos paso a paso para utilizar esta herramienta.
+
+
+
+== Clonar una base de datos Oracle para desarrollo/prueba a partir de una copia de seguridad de instantánea replicada
+
+. Inicie sesión en SnapCenter con un ID de usuario de administración de base de datos para Oracle.  Vaya a la pestaña Recursos, que muestra las bases de datos de Oracle que están protegidas por SnapCenter.
++
+image:snapctr-ora-clone-001.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en el nombre de la base de datos local deseada para la topología de respaldo y la vista detallada.  Si se habilita una ubicación replicada secundaria, se muestran copias de seguridad reflejadas vinculadas.
++
+image:snapctr-ora-clone-002.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Cambié a la vista de copias de seguridad reflejadas haciendo clic en copias de seguridad reflejadas.  Luego se muestran las copias de seguridad del espejo secundario.
++
+image:snapctr-ora-clone-003.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione una copia de seguridad de la base de datos secundaria reflejada para clonar y determine un punto de recuperación ya sea por hora y número de cambio del sistema o por SCN.  Generalmente, el punto de recuperación debe estar detrás del tiempo total de la copia de seguridad de la base de datos o del SCN que se va a clonar.  Una vez decidido un punto de recuperación, se debe montar la copia de seguridad del archivo de registro necesaria para la recuperación.  La copia de seguridad del archivo de registro debe montarse en el servidor de base de datos de destino donde se alojará la base de datos clonada.
++
+image:snapctr-ora-clone-004.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:snapctr-ora-clone-005.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+
+NOTE: Si la poda de registros está habilitada y el punto de recuperación se extiende más allá de la última poda de registros, es posible que sea necesario montar varias copias de seguridad de registros de archivo.
+
+. Resalte la copia de seguridad completa de la base de datos que se va a clonar y, a continuación, haga clic en el botón Clonar para iniciar el flujo de trabajo de clonación de base de datos.
++
+image:snapctr-ora-clone-006.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Elija un SID de base de datos clonada adecuado para una base de datos de contenedor completa o un clon de CDB.
++
+image:snapctr-ora-clone-007.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione el host de clonación de destino en la nube, y el flujo de trabajo de clonación creará los directorios de archivo de datos, archivo de control y registro de rehacer.
++
+image:snapctr-ora-clone-008.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. El nombre de credencial Ninguno se utiliza para la autenticación basada en el sistema operativo, lo que hace que el puerto de la base de datos sea irrelevante.  Complete los datos adecuados de Oracle Home, Oracle OS User y Oracle OS Group tal como están configurados en el servidor de base de datos clonado de destino.
++
+image:snapctr-ora-clone-009.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique los scripts que se ejecutarán antes de la operación de clonación.  Más importante aún, el parámetro de instancia de base de datos se puede ajustar o definir aquí.
++
+image:snapctr-ora-clone-010.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique el punto de recuperación por fecha y hora o por SCN.  Hasta Cancelar recupera la base de datos hasta los registros de archivo disponibles.  Especifique la ubicación del registro de archivo externo desde el host de destino donde está montado el volumen del registro de archivo.  Si el propietario de Oracle del servidor de destino es diferente del servidor de producción local, verifique que el propietario de Oracle del servidor de destino pueda leer el directorio de registro de archivo.
++
+image:snapctr-ora-clone-011.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:snapctr-ora-clone-012.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configure el servidor SMTP para notificaciones por correo electrónico si lo desea.
++
+image:snapctr-ora-clone-013.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Resumen del clon.
++
+image:snapctr-ora-clone-014.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Debe validar después de la clonación para asegurarse de que la base de datos clonada esté operativa.  Se pueden realizar algunas tareas adicionales, como iniciar el escucha o desactivar el modo de archivo de registro de la base de datos, en la base de datos de desarrollo/prueba.
++
+image:snapctr-ora-clone-015.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Clonar una base de datos SQL para desarrollo/prueba desde una copia de seguridad instantánea replicada
+
+. Inicie sesión en SnapCenter con un ID de usuario de administración de base de datos para SQL Server.  Navegue a la pestaña Recursos, que muestra las bases de datos de usuario de SQL Server protegidas por SnapCenter y una instancia de SQL en espera de destino en la nube pública.
++
+image:snapctr-sql-clone-001.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Haga clic en el nombre de la base de datos del usuario de SQL Server local deseado para ver la topología de las copias de seguridad y la vista detallada.  Si se habilita una ubicación replicada secundaria, se muestran copias de seguridad reflejadas vinculadas.
++
+image:snapctr-sql-clone-002.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Cambie a la vista Copias de seguridad reflejadas haciendo clic en Copias de seguridad reflejadas.  A continuación se muestran las copias de seguridad del espejo secundario.  Dado que SnapCenter realiza copias de seguridad del registro de transacciones de SQL Server en una unidad dedicada para la recuperación, aquí solo se muestran las copias de seguridad completas de la base de datos.
++
+image:snapctr-sql-clone-003.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione una copia de seguridad y luego haga clic en el botón Clonar para iniciar el flujo de trabajo Clonar desde copia de seguridad.
++
+image:snapctr-sql-clone-004-a.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
++
+image:snapctr-sql-clone-004.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Seleccione un servidor en la nube como servidor de clonación de destino, el nombre de la instancia de clonación y el nombre de la base de datos de clonación.  Elija un punto de montaje asignado automáticamente o una ruta de punto de montaje definida por el usuario.
++
+image:snapctr-sql-clone-005.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Determine un punto de recuperación ya sea por el tiempo de copia de seguridad del registro o por una fecha y hora específicas.
++
+image:snapctr-sql-clone-006.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Especifique scripts opcionales para ejecutar antes y después de la operación de clonación.
++
+image:snapctr-sql-clone-007.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Configure un servidor SMTP si desea recibir notificaciones por correo electrónico.
++
+image:snapctr-sql-clone-008.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Resumen del clon.
++
+image:snapctr-sql-clone-009.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+. Supervise el estado del trabajo y valide que la base de datos del usuario previsto se haya adjuntado a una instancia de SQL de destino en el servidor clon en la nube.
++
+image:snapctr-sql-clone-010.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+
+
+== Configuración posterior a la clonación
+
+. Una base de datos de producción de Oracle local generalmente se ejecuta en modo de archivo de registro.  Este modo no es necesario para una base de datos de desarrollo o prueba.  Para desactivar el modo de archivo de registro, inicie sesión en Oracle DB como sysdba, ejecute un comando de cambio de modo de registro e inicie la base de datos para acceder.
+. Configure un escucha de Oracle o registre la base de datos recién clonada con un escucha existente para el acceso de los usuarios.
+. Para SQL Server, cambie el modo de registro de Completo a Fácil para que el archivo de registro de desarrollo/prueba de SQL Server se pueda reducir fácilmente cuando esté llenando el volumen de registro.
+
+
+
+
+== Actualizar la base de datos de clones
+
+. Elimine las bases de datos clonadas y limpie el entorno del servidor de bases de datos en la nube.  A continuación, siga los procedimientos anteriores para clonar una nueva base de datos con datos nuevos.  Sólo se necesitan unos minutos para clonar una nueva base de datos.
+. Apague la base de datos clonada y ejecute un comando de actualización de clonación mediante la CLI.  Consulte la siguiente documentación de SnapCenter para obtener más detalles:link:https://docs.netapp.com/us-en/snapcenter/protect-sco/task_refresh_a_clone.html["Actualizar un clon"^] .
+
+
+
+
+== ¿A dónde acudir para obtener ayuda?
+
+Si necesita ayuda con esta solución y casos de uso, únase a lalink:https://netapppub.slack.com/archives/C021R4WC0LC["Canal de Slack de soporte de la comunidad de automatización de soluciones de NetApp"] y busca el canal de automatización de soluciones para publicar tus dudas o consultas.

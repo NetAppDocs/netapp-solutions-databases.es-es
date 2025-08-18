@@ -1,0 +1,32 @@
+---
+sidebar: sidebar 
+permalink: mssql/sql-srv-anf-conclusion.html 
+keywords: takeaways, hybrid-cloud 
+summary: Ya sea que su objetivo sea una nube completa o una nube híbrida con bases de datos extendidas, Azure NetApp Files ofrece excelentes opciones para implementar y administrar las cargas de trabajo de la base de datos y, al mismo tiempo, reducir el TCO al hacer que los requisitos de datos se integren perfectamente con la capa de aplicación. 
+---
+= Conclusión
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ya sea que su objetivo sea una nube completa o una nube híbrida con bases de datos extendidas, Azure NetApp Files ofrece excelentes opciones para implementar y administrar las cargas de trabajo de la base de datos y, al mismo tiempo, reducir el TCO al hacer que los requisitos de datos se integren perfectamente con la capa de aplicación.
+
+Este documento cubre recomendaciones para planificar, diseñar, optimizar y escalar implementaciones de Microsoft SQL Server con Azure NetApp Files, que pueden variar considerablemente entre implementaciones.  La solución adecuada depende tanto de los detalles técnicos de la implementación como de los requisitos comerciales que impulsan el proyecto.
+
+
+
+== Comida para llevar
+
+Los puntos clave de este documento incluyen:
+
+* Ahora puede usar Azure NetApp Files para hospedar la base de datos y el testigo de recurso compartido de archivos para el clúster de SQL Server.
+* Puede aumentar los tiempos de respuesta de las aplicaciones y ofrecer una disponibilidad del 99,9999 % para proporcionar acceso a los datos de SQL Server cuándo y dónde se necesite.
+* Puede simplificar la complejidad general de la implementación de SQL Server y la administración continua, como la distribución en bandas RAID, con un cambio de tamaño simple e instantáneo.
+* Puede confiar en las funciones de operaciones inteligentes para ayudarlo a implementar bases de datos de SQL Server en minutos y acelerar los ciclos de desarrollo.
+* Si Azure Cloud es el destino, Azure NetApp Files es la solución de almacenamiento adecuada para una implementación optimizada.
+
