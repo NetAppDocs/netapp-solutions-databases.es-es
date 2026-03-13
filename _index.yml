@@ -44,6 +44,8 @@ indexpage:
       url: "/oracle/azure-ora-nfile-usecase.html"
   - title: Oracle para Google Cloud
     links:
+    - title: Implementa Oracle SI en Google NetApp Volumes con NFS
+      url: "/oracle/gcp-ora-gcnv-si-nfs.html"
     - title: Optimice la copia de seguridad y la recuperación de Oracle VLDB en Google
         Cloud
       url: "/oracle/gcp-ora-gcnv-inc-merge.html"
