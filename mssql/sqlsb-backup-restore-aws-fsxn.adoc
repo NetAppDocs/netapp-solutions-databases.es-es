@@ -25,6 +25,7 @@ Este documento cubre los pasos necesarios para realizar copias de seguridad y re
 
 
 
+[[snapcenter-configuration]]
 == Configuración de SnapCenter
 
 Se deben realizar los siguientes pasos para la configuración de SnapCenter y la protección de los recursos de Microsoft SQL Server.  Cada uno de los siguientes pasos se detalla en las siguientes secciones.
@@ -38,6 +39,7 @@ Se deben realizar los siguientes pasos para la configuración de SnapCenter y la
 
 
 
+[[snapcenter-newly-installed-user-interface]]
 == Interfaz de usuario recién instalada de SnapCenter
 
 Configurar credenciales para la copia de seguridad de SQL Server y restaurar al usuario con derechos de administrador del sistema.
@@ -144,6 +146,7 @@ image:sqlsb-aws-015.png["Figura que muestra el diálogo de entrada/salida o repr
 ====
 
 
+[[configure-a-backup-policy]]
 == Configurar una política de copias de seguridad
 
 Una política de respaldo es un conjunto de reglas que rigen cómo administrar, programar y conservar las copias de seguridad.  Ayuda con el tipo y la frecuencia de las copias de seguridad en función del SLA de su empresa.
@@ -196,6 +199,7 @@ image:sqlsb-aws-024.png["Figura que muestra el diálogo de entrada/salida o repr
 ====
 
 
+[[configure-and-protect-mssql-server-database]]
 == Configurar y proteger la base de datos de MSSQL Server
 
 . Configure la fecha de inicio y la fecha de vencimiento de la política de respaldo.
@@ -223,6 +227,7 @@ image:sqlsb-aws-029.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[snapcenter-backup-operations]]
 == Operaciones de copia de seguridad de SnapCenter
 
 Para crear copias de seguridad de SQL Server a pedido, complete los siguientes pasos:
@@ -243,6 +248,7 @@ image:sqlsb-aws-032.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[monitor-backup-job]]
 == Supervisar el trabajo de respaldo
 
 . Desde la pestaña *Monitor*, haga clic en el trabajo y seleccione *Detalles* a la derecha para ver los trabajos.
@@ -258,6 +264,7 @@ Cuando se completa la copia de seguridad, se muestra una nueva entrada en la vis
 
 
 
+[[backup-operation-for-multiple-databases]]
 == Operación de respaldo para múltiples bases de datos
 
 Para configurar una política de respaldo para varias bases de datos de SQL Server, cree políticas de grupo de recursos completando los siguientes pasos:
@@ -326,6 +333,7 @@ image:sqlsb-aws-047.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[configure-and-protect-multiple-sql-server-databases]]
 == Configurar y proteger múltiples bases de datos de SQL Server
 
 . Haga clic en el signo (*)+* para configurar la fecha de inicio y la fecha de vencimiento.
@@ -355,6 +363,7 @@ image:sqlsb-aws-053.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[trigger-on-demand-backup-for-multiple-sql-server-databases]]
 == Activar copias de seguridad a pedido para múltiples bases de datos de SQL Server
 
 . Desde la pestaña *Recursos*, seleccione ver.  En el menú desplegable, seleccione *Grupo de recursos*.
@@ -378,6 +387,7 @@ image:sqlsb-aws-057.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[monitor-multiple-database-backup-jobs]]
 == Supervisar trabajos de copia de seguridad de múltiples bases de datos
 
 Desde la barra de navegación izquierda, haga clic en *Monitor*, seleccione el trabajo de respaldo y haga clic en *Detalles* para ver el progreso del trabajo.
@@ -390,6 +400,7 @@ image:sqlsb-aws-059.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[transaction-log-backup-for-multiple-database-backup]]
 == Copia de seguridad del registro de transacciones para copias de seguridad de múltiples bases de datos
 
 SnapCenter admite los modelos de recuperación completa, registrada en masa y simple.  El modo de recuperación simple no admite la copia de seguridad del registro transaccional.
@@ -446,6 +457,7 @@ image:sqlsb-aws-069.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[configure-and-protect-multiple-mssql-server-databases]]
 == Configurar y proteger múltiples bases de datos de MSSQL Server
 
 . Haga clic en la política de copia de seguridad del registro de transacciones recién creada.
@@ -477,6 +489,7 @@ image:sqlsb-aws-075.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[triggering-an-on-demand-transaction-log-backup-for-mutiple-sql-server-databases]]
 == Activación de una copia de seguridad del registro de transacciones a pedido para varias bases de datos de SQL Server
 
 Para activar una copia de seguridad a pedido del registro transaccional de varias bases de datos del servidor SQL, complete los siguientes pasos:
@@ -498,6 +511,7 @@ image:sqlsb-aws-078.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[monitoring]]
 == Escucha
 
 Vaya a la pestaña *Monitoreo* y monitoree el progreso del trabajo de respaldo.
@@ -506,6 +520,7 @@ image:sqlsb-aws-079.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[restore-and-recovery]]
 == Restaurar y recuperar
 
 Consulte los siguientes requisitos previos necesarios para restaurar una base de datos de SQL Server en SnapCenter.
@@ -519,6 +534,7 @@ Consulte los siguientes requisitos previos necesarios para restaurar una base de
 
 
 
+[[restoring-deleted-tables-on-a-sql-server-database-to-a-point-in-time]]
 == Restaurar tablas eliminadas en una base de datos de SQL Server a un punto en el tiempo
 
 Para restaurar una base de datos de SQL Server a un punto en el tiempo, complete los siguientes pasos:
@@ -582,6 +598,7 @@ image:sqlsb-aws-090.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[monitoring-the-restore-progress]]
 == Monitoreo del progreso de la restauración
 
 . Desde la pestaña *Monitoreo*, haga clic en los detalles del trabajo de restauración para ver el progreso del trabajo de restauración.
@@ -600,6 +617,7 @@ image:sqlsb-aws-093.png["Figura que muestra el diálogo de entrada/salida o repr
 
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información que se describe en este documento, revise los siguientes documentos y/o sitios web:

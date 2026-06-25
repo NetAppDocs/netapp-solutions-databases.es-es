@@ -20,6 +20,7 @@ La solución proporciona un kit de herramientas de automatización basado en Ans
 
 
 
+[[purpose]]
 == Objetivo
 
 A los clientes les encanta la función FlexClone del almacenamiento NetApp ONTAP para realizar clones de bases de datos grandes rápidamente (en minutos) y ahorrar almacenamiento adicional si la función de clonación delgada está habilitada en la oferta de almacenamiento particular en un centro de datos privado o una nube pública.  Este kit de herramientas basado en Ansible automatiza la configuración, clonación y actualización de bases de datos Oracle clonadas según lo programado mediante las utilidades de línea de comandos de NetApp SnapCenter para una gestión optimizada del ciclo de vida.  El kit de herramientas se aplica a las bases de datos Oracle implementadas en el almacenamiento ONTAP , ya sea local o en la nube pública (AWS o Azure) y administradas por la herramienta de interfaz de usuario SnapCenter de NetApp .
@@ -32,6 +33,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -43,6 +45,7 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[license]]
 == Licencia
 
 Al acceder, descargar, instalar o utilizar el contenido de este repositorio de GitHub, usted acepta los términos de la Licencia establecidos enlink:https://github.com/NetApp/na_ora_hadr_failover_resync/blob/master/LICENSE.TXT["Archivo de licencia"^] .
@@ -52,10 +55,12 @@ NOTE: Existen ciertas restricciones en torno a la producción y/o intercambio de
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -89,6 +94,7 @@ NOTE: Para simplificar, el servidor Oracle de destino clonado debe configurarse 
 ====
 
 
+[[download-the-toolkit]]
 === Descargar el kit de herramientas
 
 [%collapsible%open]
@@ -103,6 +109,7 @@ NOTE: En este momento, solo los usuarios internos de NetApp con acceso a Bitbuck
 ====
 
 
+[[ansible-target-hosts-file-configuration]]
 === Configuración del archivo de hosts de destino de Ansible
 
 [%collapsible%open]
@@ -120,6 +127,7 @@ ora_04.cie.netapp.com ansible_host=10.61.180.29 ansible_ssh_private_key_file=ora
 ====
 
 
+[[global-variables-configuration]]
 === Configuración de variables globales
 
 [%collapsible%open]
@@ -138,6 +146,7 @@ snapctr_pwd: 'xxxxxxxx'
 ====
 
 
+[[host-variables-configuration]]
 === Configuración de variables del host
 
 [%collapsible%open]
@@ -158,6 +167,7 @@ clone_db_sid: NTAP1DEV
 ====
 
 
+[[additional-clone-target-oracle-server-configuration]]
 === Configuración del servidor Oracle de destino de clonación adicional
 
 [%collapsible%open]
@@ -179,6 +189,7 @@ export ORACLE_HOME=/u01/app/oracle/product/19.0.0/NTAP1
 ====
 
 
+[[playbook-execution]]
 === Ejecución del libro de jugadas
 
 [%collapsible%open]
@@ -213,6 +224,7 @@ Para una base de datos clonada adicional, cree un clone_n_setup.yml y un clone_n
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la automatización de soluciones de NetApp , consulte el siguiente sitio weblink:https://docs.netapp.com/us-en/netapp-solutions-dataops/automation/automation-introduction.html["Automatización de soluciones de NetApp ^"^]

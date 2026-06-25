@@ -20,6 +20,7 @@ La solución proporciona una descripción general y detalles para la copia de se
 
 
 
+[[purpose]]
 == Objetivo
 
 El software NetApp SnapCenter software es una plataforma empresarial fácil de usar para coordinar y administrar de forma segura la protección de datos en aplicaciones, bases de datos y sistemas de archivos.  Simplifica la gestión del ciclo de vida de las copias de seguridad, la restauración y la clonación al delegar estas tareas a los propietarios de las aplicaciones sin sacrificar la capacidad de supervisar y regular la actividad en los sistemas de almacenamiento.  Al aprovechar la gestión de datos basada en almacenamiento, se permite un mayor rendimiento y disponibilidad, así como una reducción de los tiempos de prueba y desarrollo.
@@ -34,6 +35,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -46,18 +48,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 Las pruebas y la validación de esta solución se realizaron en un entorno de laboratorio que podría no coincidir con el entorno de implementación final.  Ver la sección<<Factores clave a considerar en la implementación>> Para más información.
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:snapctr-psql-brc-architecture.png["Esta imagen proporciona una imagen detallada de la copia de seguridad, la recuperación y la clonación de PostgreSQL con SnapCenter."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -98,6 +103,7 @@ image:snapctr-psql-brc-architecture.png["Esta imagen proporciona una imagen deta
 |===
 
 
+[[postgresql-database-configuration-in-the-lab-environment]]
 === Configuración de la base de datos PostgreSQL en el entorno de laboratorio
 
 [cols="33%, 33%, 33%"]
@@ -117,6 +123,7 @@ image:snapctr-psql-brc-architecture.png["Esta imagen proporciona una imagen deta
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * * Implementación de SnapCenter . *  SnapCenter se puede implementar en un dominio de Windows o en un entorno de grupo de trabajo.  Para la implementación basada en dominio, la cuenta de usuario del dominio debe ser una cuenta de administrador de dominio, o el usuario del dominio debe pertenecer al grupo de administradores locales en el servidor de alojamiento de SnapCenter .
@@ -128,12 +135,14 @@ image:snapctr-psql-brc-architecture.png["Esta imagen proporciona una imagen deta
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 Las siguientes secciones proporcionan procedimientos paso a paso para la implementación, configuración y copia de seguridad, recuperación y clonación de bases de datos PostgreSQL de SnapCenter en el almacenamiento de NetApp ONTAP en la nube pública o en las instalaciones locales.
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -145,6 +154,7 @@ Las siguientes secciones proporcionan procedimientos paso a paso para la impleme
 ====
 
 
+[[snapcenter-installation-and-setup]]
 === Instalación y configuración de SnapCenter
 
 [%collapsible%open]
@@ -205,6 +215,7 @@ image:snapctr-psql-bkup-001.png["Esta imagen proporciona configuraciones y polí
 ====
 
 
+[[database-backup]]
 === Copia de seguridad de la base de datos
 
 [%collapsible%open]
@@ -296,6 +307,7 @@ image:snapctr-psql-bkup-019.png["Esta imagen proporciona una copia de seguridad 
 ====
 
 
+[[database-recovery]]
 === Recuperación de base de datos
 
 [%collapsible%open]
@@ -404,6 +416,7 @@ postgres=# select now();
 ====
 
 
+[[database-clone]]
 === Clon de base de datos
 
 [%collapsible%open]
@@ -479,6 +492,7 @@ postgres=# select pg_read_file('/etc/hostname') as hostname;
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

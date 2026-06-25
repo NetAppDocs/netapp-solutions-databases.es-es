@@ -18,6 +18,7 @@ La agilidad de la nube pública, el tiempo para obtener valor y el ahorro de cos
 
 
 
+[[clone-an-oracle-database-for-devtest-from-a-replicated-snapshot-backup]]
 == Clonar una base de datos Oracle para desarrollo/prueba a partir de una copia de seguridad de instantánea replicada
 
 . Inicie sesión en SnapCenter con un ID de usuario de administración de base de datos para Oracle.  Vaya a la pestaña Recursos, que muestra las bases de datos de Oracle que están protegidas por SnapCenter.
@@ -86,6 +87,7 @@ image:snapctr-ora-clone-015.png["Figura que muestra el diálogo de entrada/salid
 
 
 
+[[clone-a-sql-database-for-devtest-from-a-replicated-snapshot-backup]]
 == Clonar una base de datos SQL para desarrollo/prueba desde una copia de seguridad instantánea replicada
 
 . Inicie sesión en SnapCenter con un ID de usuario de administración de base de datos para SQL Server.  Navegue a la pestaña Recursos, que muestra las bases de datos de usuario de SQL Server protegidas por SnapCenter y una instancia de SQL en espera de destino en la nube pública.
@@ -135,6 +137,7 @@ image:snapctr-sql-clone-010.png["Figura que muestra el diálogo de entrada/salid
 
 
 
+[[post-clone-configuration]]
 == Configuración posterior a la clonación
 
 . Una base de datos de producción de Oracle local generalmente se ejecuta en modo de archivo de registro.  Este modo no es necesario para una base de datos de desarrollo o prueba.  Para desactivar el modo de archivo de registro, inicie sesión en Oracle DB como sysdba, ejecute un comando de cambio de modo de registro e inicie la base de datos para acceder.
@@ -144,6 +147,7 @@ image:snapctr-sql-clone-010.png["Figura que muestra el diálogo de entrada/salid
 
 
 
+[[refresh-clone-database]]
 == Actualizar la base de datos de clones
 
 . Elimine las bases de datos clonadas y limpie el entorno del servidor de bases de datos en la nube.  A continuación, siga los procedimientos anteriores para clonar una nueva base de datos con datos nuevos.  Sólo se necesitan unos minutos para clonar una nueva base de datos.
@@ -152,6 +156,7 @@ image:snapctr-sql-clone-010.png["Figura que muestra el diálogo de entrada/salid
 
 
 
+[[where-to-go-for-help]]
 == ¿A dónde acudir para obtener ayuda?
 
 Si necesita ayuda con esta solución y casos de uso, únase a lalink:https://netapppub.slack.com/archives/C021R4WC0LC["Canal de Slack de soporte de la comunidad de automatización de soluciones de NetApp"] y busca el canal de automatización de soluciones para publicar tus dudas o consultas.

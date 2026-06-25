@@ -15,6 +15,8 @@ Crea la base de datos física en espera de Oracle utilizando la replicación en 
 
 
 
+[[step-1-configure-listener-and-data-guard-parameters]]
+[[primary-sys-password-and-dg-params]]
 == Paso 1: Configura los parámetros del listener y de Data Guard
 
 Configura el listener en ambos servidores de base de datos para que admita conexiones de Data Guard, incluido el servicio requerido para el broker. `_DGMGRL` Configura el archivo de contraseñas y los parámetros de registro de archivos en la base de datos principal.
@@ -61,6 +63,8 @@ $GRID_HOME/bin/lsnrctl status
 
 
 
+[[step-2-prepare-standby-pfile-and-nomount]]
+[[standby-init-ora-and-nomount]]
 == Paso 2: Prepara el pfile de reserva y NOMOUNT
 
 Prepara la instancia de base de datos de reserva copiando el archivo de contraseñas desde la principal, creando un archivo init.ora mínimo con los parámetros de Data Guard e iniciando la instancia en modo NOMOUNT.
@@ -140,6 +144,8 @@ La instancia en espera se encuentra ahora en modo NOMOUNT sin archivos de datos 
 
 
 
+[[step-3-initialize-standby-storage-with-gcnv]]
+[[gcnv-standby-initialization]]
 == Paso 3: inicializa el almacenamiento en espera con GCNV
 
 Inicia los volúmenes de reserva en `oracle-pool-b`, conéctalos a `oracdb2`, monta los grupos de discos ASM y finaliza la instancia de reserva en estado MOUNT.
@@ -148,6 +154,7 @@ Utiliza la replicación GCNV para la inicialización de entornos de producción 
 
 
 
+[[choose-the-seeding-path]]
 === Elige la ruta de siembra
 
 Elige el método de siembra en espera según tu entorno y tus requisitos de recuperación.
@@ -160,6 +167,8 @@ Todos los enlaces se reúnen en <<standby-iscsi-and-asm-before-rman,Montar grupo
 
 
 
+[[check-prerequisites]]
+[[gcnv-seed-prereqs]]
 === Comprueba los requisitos previos
 
 Confirma los siguientes requisitos previos antes de inicializar los volúmenes de reserva.
@@ -190,6 +199,8 @@ gcloud netapp storage-pools create oracle-pool-b \
 
 
 
+[[create-and-sync-replications]]
+[[create-volume-replications]]
 === Crear y sincronizar replicaciones
 
 Crea relaciones de replicación desde los volúmenes primarios a los volúmenes de reserva y luego espera a que termine la sincronización inicial.
@@ -212,6 +223,8 @@ Espera hasta que `mirrorState` esté `MIRRORED` y se haya completado la sincroni
 
 
 
+[[cut-over-and-attach-standby-volumes]]
+[[cutover-quiesce-stop-repl-attach]]
 === Realiza el corte y conecta los volúmenes de reserva
 
 Pon en reposo el servidor principal, detén la replicación después de la última sincronización y conecta los volúmenes de destino al grupo de hosts en espera.
@@ -252,6 +265,8 @@ ALTER DATABASE END BACKUP;
 ----
 
 
+[[seed-from-snapshot]]
+[[snapshot-seed]]
 === Semilla a partir de una instantánea
 
 Utiliza esta ruta para la inicialización puntual de laboratorio cuando no sea necesaria la replicación continua.
@@ -260,6 +275,8 @@ Para una instalación inicial de laboratorio, crea una instantánea de origen y 
 
 
 
+[[mount-standby-asm-disk-groups]]
+[[standby-iscsi-and-asm-before-rman]]
 === Montar grupos de discos ASM en modo de espera
 
 En el servidor de reserva, identifica las rutas de almacenamiento conectadas y monta los grupos de discos ASM antes de la recuperación de bases de datos.
@@ -274,6 +291,8 @@ ALTER DISKGROUP FRA MOUNT FORCE;
 ----
 
 
+[[finalize-the-standby-instance]]
+[[oracle-finalize]]
 === Finaliza la instancia en espera
 
 Restaura el archivo de control de espera, recupera hasta el SCN capturado, convierte a espera física e inicia la recuperación gestionada.
@@ -299,6 +318,8 @@ En este momento, el servidor de reserva debería ser `PHYSICAL STANDBY` y `MOUNT
 
 
 
+[[step-4-register-standby-with-oracle-restart]]
+[[register-standby-with-oracle-restart]]
 == Paso 4: Registrar el standby con Oracle Restart
 
 Registra la base de datos de reserva en Oracle Restart para que, al reiniciar, se recuperen automáticamente los grupos de discos ASM, se monte la base de datos de reserva y se reinicie la recuperación gestionada. Añade también el servicio de aplicación a ambos recursos de base de datos.
@@ -379,6 +400,7 @@ srvctl status database -db orcls
 
 
 
+[[whats-next]]
 == ¿Qué sigue?
 
 *Específico de cada nivel:*

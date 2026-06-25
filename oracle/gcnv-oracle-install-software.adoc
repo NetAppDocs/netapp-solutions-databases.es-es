@@ -15,6 +15,8 @@ Instala Oracle Grid Infrastructure con Oracle Restart y ASM en Google Cloud NetA
 
 
 
+[[step-1-install-grid-infrastructure-on-each-db-host]]
+[[install-grid-infrastructure]]
 == Paso 1: instala Grid Infrastructure en cada servidor de base de datos
 
 Instala Oracle Grid Infrastructure GoldImage en cada host de base de datos para habilitar Oracle Restart y ASM. Ambos hosts requieren su propio Grid home, instancia de ASM y grupos de discos; Data Guard replica los datos a través de Oracle Net, no a través de almacenamiento compartido. Completa todos los pasos en `oracdb1` antes de repetirlos en `oracdb2`.
@@ -136,6 +138,8 @@ Utiliza los mismos nombres de grupos de discos ASM — Data Guard replica a trav
 
 
 
+[[step-2-install-oracle-database-on-each-db-host]]
+[[install-oracle-db-home]]
 == Paso 2: instala Oracle Database en cada servidor de base de datos
 
 Instala el software home de Oracle Database 26ai en cada host de base de datos usando una instalación silenciosa, solo de software, con la última Release Update aplicada. Completa todos los pasos en `oracdb1` antes de repetirlos en `oracdb2`.
@@ -204,6 +208,7 @@ La base de datos de espera se crea en xref:gcnv-oracle-standby-database.adoc[Cre
 
 
 
+[[whats-next]]
 == ¿Qué sigue?
 
 Para crear la instancia primaria de producción para tu implementación de alta disponibilidad, ve a xref:gcnv-oracle-primary-database.adoc[Crear la base de datos principal de Oracle] en `oracdb1`.

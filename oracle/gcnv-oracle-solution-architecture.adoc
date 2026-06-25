@@ -15,6 +15,7 @@ Google Cloud NetApp Volumes ofrece almacenamiento en bloques iSCSI de alto rendi
 
 
 
+[[architecture-overview]]
 == Descripción general de la arquitectura
 
 Esta arquitectura utiliza el almacenamiento en bloques iSCSI *Google Cloud NetApp Volumes (GCNV)* para proporcionar alta disponibilidad para *Oracle Database 26ai* en Google Cloud con *Oracle Data Guard*.
@@ -58,6 +59,7 @@ Usa *GCNV replicate, snapshot o clone* para inicializar la base de datos en espe
 |===
 
 
+[[zoning]]
 === Zonificación
 
 Implementa un grupo unificado GCNV Flex por cada zona de base de datos y asigna volúmenes dedicados a cada host. Utiliza discos de arranque únicamente para el sistema operativo.
@@ -66,6 +68,8 @@ Implementa un grupo unificado GCNV Flex por cada zona de base de datos y asigna 
 
 
 
+[[architecture-reference-diagram]]
+[[reference-diagram]]
 == Diagrama de arquitectura de referencia
 
 La arquitectura de la solución ofrece tres rutas de datos independientes. La replicación de almacenamiento y el transporte de redo de Data Guard son rutas independientes.
@@ -80,6 +84,7 @@ image::gcnv-oracle-26ai-ha.png[Arquitectura de referencia de GCNV]
 
 
 
+[[platform-roles]]
 == Funciones de la plataforma
 
 La siguiente tabla resume qué capa de la plataforma proporciona servicios de almacenamiento y qué capa proporciona la sincronización de bases de datos y el control de conmutación por error.
@@ -98,6 +103,7 @@ La replicación GCNV ejecuta una copia de referencia y luego actualizaciones inc
 
 
 
+[[topology-and-storage]]
 == Topología y almacenamiento
 
 Esta topología distribuye los roles de primario, de reserva y de observador entre zonas distintas y asigna cada host de base de datos a grupos GCNV y volúmenes iSCSI dedicados.
@@ -133,6 +139,7 @@ Ejemplo `n4-highmem-8` en esta solución; las cargas de trabajo OLTP suelen usar
 
 
 
+[[whats-next]]
 == ¿Qué sigue?
 
 Para elegir la vía de implementación que mejor se adapte a tus objetivos de recuperación y disponibilidad, visita xref:gcnv-oracle-deployment-options.adoc[Descubre las opciones de implementación de Oracle Database 26ai en Google Cloud NetApp Volumes].

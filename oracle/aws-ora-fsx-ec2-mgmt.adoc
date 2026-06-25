@@ -31,12 +31,14 @@ La clonación de bases de datos crea una réplica de una base de datos principal
 
 
 
+[[taking-a-snapshot]]
 == Tomando una instantánea
 
 Se realizan copias de seguridad de una base de datos Oracle EC2/FSx periódicamente en intervalos configurados por el usuario.  Un usuario también puede realizar una copia de seguridad instantánea única en cualquier momento.  Esto se aplica tanto a las copias de seguridad de instantáneas de bases de datos completas como a las copias de seguridad de instantáneas solo de registros de archivo.
 
 
 
+[[taking-a-full-database-snapshot]]
 === Tomar una instantánea completa de la base de datos
 
 Una instantánea de base de datos completa incluye todos los archivos de Oracle, incluidos archivos de datos, archivos de control y archivos de registro de archivo.
@@ -63,6 +65,7 @@ image:aws-rds-custom-deploy-snp-013.png["Figura que muestra el diálogo de entra
 
 
 
+[[taking-an-archive-log-snapshot]]
 === Tomar una instantánea del registro de archivo
 
 Solo se toma una instantánea del registro de archivo para el volumen de registro de archivo de Oracle.
@@ -89,6 +92,7 @@ image:aws-rds-custom-deploy-snp-016.png["Figura que muestra el diálogo de entra
 
 
 
+[[restoring-to-a-point-in-time]]
 == Restaurando a un punto en el tiempo
 
 La restauración basada en SnapCenter a un punto en el tiempo se ejecuta en el mismo host de instancia EC2.  Complete los siguientes pasos para realizar la restauración:
@@ -160,6 +164,7 @@ image:aws-rds-custom-deploy-snp-029-b.png["Figura que muestra el diálogo de ent
 
 
 
+[[creating-a-database-clone]]
 == Creando un clon de base de datos
 
 La siguiente sección demuestra cómo utilizar el flujo de trabajo de clonación de SnapCenter para crear un clon de base de datos desde una base de datos principal a una instancia EC2 en espera.
@@ -247,6 +252,7 @@ NOTE: En lugar de copias de seguridad primarias de Oracle, también se puede cre
 
 
 
+[[ha-failover-to-standby-and-resync]]
 == Conmutación por error de HA a modo de espera y resincronización
 
 El clúster Oracle HA en espera proporciona alta disponibilidad en caso de falla en el sitio principal, ya sea en la capa de cómputo o en la capa de almacenamiento.  Un beneficio importante de la solución es que un usuario puede probar y validar la infraestructura en cualquier momento o con cualquier frecuencia.  La conmutación por error puede ser simulada por el usuario o activada por un fallo real.  Los procesos de conmutación por error son idénticos y pueden automatizarse para una recuperación rápida de la aplicación.

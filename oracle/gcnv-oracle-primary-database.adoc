@@ -13,6 +13,7 @@ summary: Crea la base de datos principal de Oracle en el almacenamiento iSCSI de
 [role="lead"]
 Crea la base de datos principal de Oracle en el almacenamiento iSCSI de Google Cloud NetApp Volumes utilizando el Asistente de configuración de bases de datos de Oracle en modo silencioso. Este procedimiento cubre ejecutar `dbca` para crear la base de datos de contenedor y la base de datos conectable en grupos de discos ASM respaldados por GCNV, configurar los destinos de los registros de archivo y añadir un servicio de aplicación basado en roles para la conmutación por error transparente después de habilitar Data Guard.
 
+[[create-primary-database]]
 .Pasos
 Crea la base de datos contenedora de Oracle y la base de datos conectable en `oracdb1` usando `dbca` en modo silencioso, configura los destinos de los registros de archivo, verifica el registro de Oracle Restart y añade un servicio de aplicación basado en roles para la conmutación por error transparente de los clientes.
 
@@ -92,6 +93,7 @@ Después de habilitar Data Guard Broker, `orclapp` se ejecuta solo en el PRIMARY
 
 
 
+[[whats-next]]
 == ¿Qué sigue?
 
 Para establecer la protección en modo de espera y la preparación para la conmutación por error, ve a xref:gcnv-oracle-standby-database.adoc[Crear la base de datos de reserva de Oracle] en `oracdb2`.

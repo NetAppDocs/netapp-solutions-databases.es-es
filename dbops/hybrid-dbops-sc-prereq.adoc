@@ -18,6 +18,7 @@ Se deben configurar ciertos requisitos previos tanto en las instalaciones como e
 
 
 
+[[on-premises]]
 == En las instalaciones
 
 * Instalación y configuración de SnapCenter
@@ -29,6 +30,7 @@ Se deben configurar ciertos requisitos previos tanto en las instalaciones como e
 
 
 
+[[public-cloud]]
 == Nube pública
 
 * Un inicio de sesión en NetApp Cloud Central

@@ -20,6 +20,7 @@ Esta solución proporciona una descripción general y detalles para la implement
 
 
 
+[[purpose]]
 == Objetivo
 
 ASM (Automatic Storage Management) es un popular administrador de volúmenes de almacenamiento de Oracle que se emplea en muchas instalaciones de Oracle.  También es la solución de gestión de almacenamiento recomendada por Oracle.  Proporciona una alternativa a los administradores de volúmenes y sistemas de archivos convencionales.  Desde la versión 11g de Oracle, ASM se incluye con una infraestructura de red en lugar de una base de datos.  Como resultado, para utilizar Oracle ASM para la gestión de almacenamiento sin RAC, debe instalar la infraestructura de red de Oracle en un servidor independiente, también conocido como Oracle Restart.  Al hacerlo así, sin duda se agrega más complejidad a una implementación de base de datos Oracle que de otro modo sería más sencilla.  Sin embargo, como su nombre lo indica, cuando Oracle se implementa en modo de reinicio, cualquier servicio de Oracle que falle se reinicia después de reiniciar el host sin intervención del usuario, lo que proporciona un cierto grado de alta disponibilidad o funcionalidad HA.
@@ -35,6 +36,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -47,18 +49,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 La prueba y validación de esta solución se realizó en un entorno AWS FSx y EC2 que podría no coincidir con el entorno de implementación final. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:aws-ora-fsx-ec2-nfs-asm-architecture.png["Esta imagen proporciona una imagen detallada de la configuración de implementación de Oracle en la nube pública de AWS con iSCSI y ASM."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -93,6 +98,7 @@ image:aws-ora-fsx-ec2-nfs-asm-architecture.png["Esta imagen proporciona una imag
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * *Instancias de cómputo EC2.*  En estas pruebas y validaciones, utilizamos un tipo de instancia AWS EC2 t2.xlarge para la instancia de cómputo de la base de datos Oracle.  NetApp recomienda utilizar una instancia EC2 de tipo M5 como instancia de cómputo para Oracle en una implementación de producción porque está optimizada para cargas de trabajo de bases de datos.  Debe dimensionar la instancia EC2 adecuadamente para la cantidad de vCPU y la cantidad de RAM en función de los requisitos de carga de trabajo reales.
@@ -106,12 +112,14 @@ image:aws-ora-fsx-ec2-nfs-asm-architecture.png["Esta imagen proporciona una imag
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 La siguiente sección proporciona procedimientos de implementación paso a paso.
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -134,6 +142,7 @@ NOTE: Asegúrese de haber asignado al menos 50G en el volumen raíz de la instan
 ====
 
 
+[[ec2-instance-kernel-configuration]]
 === Configuración del kernel de la instancia EC2
 
 [%collapsible%open]
@@ -243,6 +252,7 @@ usermod -a -G asm oracle
 ====
 
 
+[[provision-and-export-nfs-volumes-to-be-mounted-to-ec2-instance-host]]
 === Aprovisionar y exportar volúmenes NFS para montarlos en el host de instancia EC2
 
 [%collapsible%open]
@@ -295,6 +305,7 @@ svm_ora   svm_ora_root aggr1        online     RW          1GB    972.1MB    0%
 ====
 
 
+[[database-storage-configuration]]
 === Configuración de almacenamiento de la base de datos
 
 [%collapsible%open]
@@ -404,6 +415,7 @@ chmod 640 /oralogs/asm/*
 ====
 
 
+[[oracle-grid-infrastructure-installation]]
 === Instalación de infraestructura de red de Oracle
 
 [%collapsible%open]
@@ -540,6 +552,7 @@ ora.evmd            ONLINE  ONLINE       ip-172-30-15-58          STABLE
 ====
 
 
+[[oracle-database-installation]]
 === Instalación de la base de datos Oracle
 
 [%collapsible%open]
@@ -895,18 +908,21 @@ This completes Oracle 19c version 19.18 Restart deployment on an Amazon FSx ONTA
 ====
 
 
+[[automated-deployment-option]]
 === Opción de implementación automatizada
 
 NetApp lanzará un kit de herramientas de implementación de soluciones totalmente automatizadas con Ansible para facilitar la implementación de esta solución.  Vuelva a consultar la disponibilidad del kit de herramientas.  Después de su lanzamiento, se publicará un enlace aquí.
 
 
 
+[[oracle-database-backup-restore-and-clone-with-snapcenter-service]]
 == Copia de seguridad, restauración y clonación de bases de datos de Oracle con el servicio SnapCenter
 
 En este momento, la base de datos Oracle con opción de almacenamiento NFS y ASM solo es compatible con la herramienta de interfaz de usuario tradicional de SnapCenter Server. Consultelink:../dbops/hybrid-dbops-snapcenter-usecases.html["Soluciones de bases de datos en la nube híbrida con SnapCenter"^] para obtener detalles sobre la copia de seguridad, restauración y clonación de bases de datos de Oracle con la herramienta de interfaz de usuario SnapCenter de NetApp .
 
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

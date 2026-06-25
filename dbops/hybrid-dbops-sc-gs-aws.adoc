@@ -18,6 +18,7 @@ Esta sección describe el proceso de implementación de Cloud Manager y Cloud Vo
 
 
 
+[[aws-public-cloud]]
 == Nube pública de AWS
 
 
@@ -25,6 +26,7 @@ NOTE: Para facilitar el seguimiento, hemos creado este documento basado en una i
 
 
 
+[[1-pre-flight-check]]
 === 1. Comprobación previa al vuelo
 
 Antes de la implementación, asegúrese de que la infraestructura esté en su lugar para permitir la implementación en la siguiente etapa.  Esto incluye lo siguiente:
@@ -38,6 +40,7 @@ Antes de la implementación, asegúrese de que la infraestructura esté en su lu
 
 
 
+[[2-steps-to-deploy-cloud-manager-and-cloud-volumes-ontap-in-aws]]
 === 2. Pasos para implementar Cloud Manager y Cloud Volumes ONTAP en AWS
 
 
@@ -292,6 +295,7 @@ image:cloud-central-replication-013.png["Figura que muestra el diálogo de entra
 
 
 
+[[3-deploy-ec2-compute-instance-for-database-workload]]
 === 3. Implementar una instancia de cómputo EC2 para la carga de trabajo de la base de datos
 
 AWS ha preconfigurado instancias de cómputo EC2 para diversas cargas de trabajo.  La elección del tipo de instancia determina la cantidad de núcleos de CPU, la capacidad de memoria, el tipo y la capacidad de almacenamiento y el rendimiento de la red.  Para los casos de uso, con excepción de la partición del sistema operativo, el almacenamiento principal para ejecutar la carga de trabajo de la base de datos se asigna desde CVO o el motor de almacenamiento FSx ONTAP .  Por lo tanto, los principales factores a considerar son la elección de los núcleos de CPU, la memoria y el nivel de rendimiento de la red.  Los tipos de instancias típicos de AWS EC2 se pueden encontrar aquí: https://us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2#InstanceTypes:["Tipo de instancia EC2"] .

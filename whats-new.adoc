@@ -15,6 +15,7 @@ Conozca las novedades en soluciones de bases de datos.
 
 
 
+[[18-august-2025]]
 == 18 de agosto de 2025
 
 El sitio de NetApp Solutions ahora es ellink:https://docs.netapp.com/us-en/netapp-solutions-family/index.html["Familia de soluciones NetApp"^] , que incluye los siguientes sitios:

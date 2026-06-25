@@ -18,6 +18,7 @@ Esta página describe el método automatizado para implementar Oracle19c en el a
 
 
 
+[[automated-deployment-of-oracle19c-for-ontap-on-nfs]]
 == Implementación automatizada de Oracle19c para ONTAP en NFS
 
 Las organizaciones están automatizando sus entornos para ganar eficiencia, acelerar las implementaciones y reducir el esfuerzo manual.  Se están utilizando herramientas de gestión de configuración como Ansible para optimizar las operaciones de bases de datos empresariales.  En esta solución, demostramos cómo puede utilizar Ansible para automatizar el aprovisionamiento y la configuración de Oracle 19c con NetApp ONTAP.  Al permitir que los administradores de almacenamiento, administradores de sistemas y DBA implementen de manera consistente y rápida nuevo almacenamiento, configuren servidores de bases de datos e instalen el software Oracle 19c, obtiene los siguientes beneficios:
@@ -39,6 +40,7 @@ Para obtener más detalles o comenzar, consulte los videos de descripción gener
 
 
 
+[[awxtower-deployments]]
 === Implementaciones de AWX/Torre
 
 Parte 1: Primeros pasos, requisitos, detalles de automatización y configuración inicial de AWX/Tower
@@ -51,6 +53,7 @@ Parte 2: Variables y ejecución del libro de jugadas
 video::6da1b960-e1c9-4950-b750-b01200f0bdfa[panopto]
 
 
+[[cli-deployment]]
 === Implementación de CLI
 
 Parte 1: Primeros pasos, requisitos, detalles de automatización y configuración del host de control de Ansible

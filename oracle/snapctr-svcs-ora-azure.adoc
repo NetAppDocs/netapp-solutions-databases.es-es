@@ -20,6 +20,7 @@ Esta solución proporciona una descripción general y detalles para la copia de 
 
 
 
+[[purpose]]
 == Objetivo
 
 SnapCenter Services es la versión SaaS de la clásica herramienta de interfaz de usuario de administración de bases de datos SnapCenter que está disponible a través de la consola de administración en nube NetApp BlueXP .  Es una parte integral de la oferta de protección de datos y respaldo en la nube de NetApp para bases de datos como Oracle y HANA que se ejecutan en Azure NetApp Files.  Este servicio basado en SaaS simplifica la implementación tradicional del servidor independiente SnapCenter que generalmente requiere un servidor Windows que funcione en un entorno de dominio Windows.
@@ -35,6 +36,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a los siguientes públicos:
@@ -47,12 +49,14 @@ Esta solución está destinada a los siguientes públicos:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 La prueba y validación de esta solución se realizó en un entorno de laboratorio que podría no coincidir con el entorno de implementación final. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:snapctr-svcs-azure-architect.png["Esta imagen proporciona una imagen detallada de la BlueXP backup and recovery para las aplicaciones dentro de la consola BlueXP , incluida la interfaz de usuario, el conector y los recursos que administra."]
@@ -61,6 +65,7 @@ Esta imagen proporciona una imagen detallada de la BlueXP backup and recovery pa
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 *Hardware*
@@ -93,6 +98,7 @@ Esta imagen proporciona una imagen detallada de la BlueXP backup and recovery pa
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * *Conector que se implementará en la misma red virtual/subred que las bases de datos y Azure NetApp Files.*  Cuando sea posible, el conector se debe implementar en las mismas redes virtuales y grupos de recursos de Azure, lo que permite la conectividad con el almacenamiento de Azure NetApp Files y las instancias de cómputo de Azure.
@@ -104,6 +110,7 @@ Esta imagen proporciona una imagen detallada de la BlueXP backup and recovery pa
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 Existe una extensa documentación de NetApp con un alcance más amplio para ayudarlo a proteger los datos de sus aplicaciones nativas de la nube.  El objetivo de esta documentación es proporcionar procedimientos paso a paso que cubren la implementación del servicio SnapCenter con la consola BlueXP para proteger su base de datos Oracle implementada en un almacenamiento de Azure NetApp Files y una instancia de cómputo de Azure.
@@ -119,6 +126,7 @@ video::48adf2d8-3f5e-4ab3-b25c-b04a014635ac[panopto]
 
 
 
+[[prerequisites-for-snapcenter-service-deployment]]
 === Requisitos previos para la implementación del servicio SnapCenter
 
 [%collapsible%open]
@@ -134,6 +142,7 @@ La implementación requiere los siguientes requisitos previos.
 ====
 
 
+[[onboarding-to-bluexp-preparation]]
 === Preparación para la incorporación a BlueXP
 
 [%collapsible%open]
@@ -147,6 +156,7 @@ La implementación requiere los siguientes requisitos previos.
 ====
 
 
+[[deploy-a-connector-for-snapcenter-services]]
 === Implementar un conector para los servicios de SnapCenter
 
 [%collapsible%open]
@@ -196,6 +206,7 @@ image:snapctr-svcs-connector-011-azure.png["Captura de pantalla que muestra este
 ====
 
 
+[[define-a-credential-in-bluexp-for-azure-resources-access]]
 === Definir una credencial en BlueXP para acceder a recursos de Azure
 
 [%collapsible%open]
@@ -219,6 +230,7 @@ image:snapctr-svcs-credential-003-azure.png["Captura de pantalla que muestra est
 ====
 
 
+[[snapcenter-services-setup]]
 === Configuración de los servicios de SnapCenter
 
 [%collapsible%open]
@@ -280,6 +292,7 @@ Esto completa la configuración inicial de los servicios de SnapCenter para Orac
 ====
 
 
+[[oracle-database-backup]]
 === Copia de seguridad de la base de datos de Oracle
 
 [%collapsible%open]
@@ -337,6 +350,7 @@ image:snapctr-svcs-bkup-006-azure.png["Captura de pantalla que muestra este paso
 ====
 
 
+[[oracle-database-restore-and-recovery]]
 === Restauración y recuperación de bases de datos de Oracle
 
 [%collapsible%open]
@@ -370,6 +384,7 @@ image:snapctr-svcs-restore-006-azure.png["Captura de pantalla que muestra este p
 ====
 
 
+[[oracle-database-clone]]
 === Clon de base de datos de Oracle
 
 [%collapsible%open]
@@ -418,6 +433,7 @@ Esto completa la demostración de una copia de seguridad, restauración y clonac
 ====
 
 
+[[additional-information]]
 == Información adicional
 
 Para obtener más información sobre la información que se describe en este documento, revise los siguientes documentos y/o sitios web:

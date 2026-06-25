@@ -20,6 +20,7 @@ Este documento cubre recomendaciones para planificar, diseñar, optimizar y esca
 
 
 
+[[takeaways]]
 == Comida para llevar
 
 Los puntos clave de este documento incluyen:

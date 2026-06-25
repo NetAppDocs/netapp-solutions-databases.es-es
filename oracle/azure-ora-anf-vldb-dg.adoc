@@ -20,6 +20,7 @@ La solución proporciona una descripción general y detalles para configurar una
 
 
 
+[[purpose]]
 == Objetivo
 
 Oracle VLDB, de alto rendimiento y misión crítica, exige mucho del almacenamiento de bases de datos backend.  Para cumplir con el acuerdo de nivel de servicio (SLA), el almacenamiento de la base de datos debe brindar la capacidad requerida y un alto número de operaciones de entrada/salida por segundo (IOPS) mientras mantiene un rendimiento de latencia de submilisegundos.  Esto es particularmente desafiante cuando se implementa una carga de trabajo de base de datos de este tipo en la nube pública con un entorno de recursos de almacenamiento compartido.  No todas las plataformas de almacenamiento son iguales.  El almacenamiento premium de Azure NetApp Files en combinación con la infraestructura de Azure puede satisfacer las necesidades de una carga de trabajo de Oracle tan exigente.  En un punto de referencia de rendimiento validado (link:https://learn.microsoft.com/en-us/azure/azure-netapp-files/performance-oracle-multiple-volumes["Rendimiento de la base de datos de Oracle en varios volúmenes de Azure NetApp Files"^] ), ANF entregó 2,5 millones de IOPS de lectura con una latencia de 700 microsegundos en una carga de trabajo de selección aleatoria 100 % sintética a través de la herramienta SLOB.  Con un tamaño de bloque estándar de 8k, esto se traduce en un rendimiento de aproximadamente 20 GiB/s.
@@ -34,6 +35,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -46,18 +48,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 La prueba y validación de esta solución se realizó en una configuración de laboratorio en la nube de Azure que podría no coincidir con el entorno de implementación del usuario real. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:azure-ora-anf-vldb-dg-architecture.png["Esta imagen proporciona una imagen detallada de la implementación de Oracle Data Guard en la nube de Azure en ANF."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -98,6 +103,7 @@ image:azure-ora-anf-vldb-dg-architecture.png["Esta imagen proporciona una imagen
 |===
 
 
+[[oracle-vldb-data-guard-configuration-with-a-simulated-ny-to-la-dr-setup]]
 === Configuración de Oracle VLDB Data Guard con una configuración simulada de DR de NY a LA
 
 [cols="33%, 33%, 33%"]
@@ -117,6 +123,7 @@ image:azure-ora-anf-vldb-dg-architecture.png["Esta imagen proporciona una imagen
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * * Configuración de Azure NetApp Files .*  Los Azure NetApp Files se asignan en la cuenta de almacenamiento de Azure NetApp como `Capacity Pools` .  En estas pruebas y validaciones, implementamos un grupo de capacidad de 2 TiB para alojar la base de datos principal de Oracle en la región Este y un grupo de capacidad de 4 TiB para alojar la base de datos en espera y el clon de base de datos en la región Oeste 2.  El fondo de capacidad de ANF tiene tres niveles de servicio: Estándar, Premium y Ultra.  La capacidad de E/S del grupo de capacidad de ANF se basa en el tamaño del grupo de capacidad y su nivel de servicio.  Al crear un grupo de capacidad, puede configurar la calidad de servicio en Automático o Manual y el cifrado de datos en reposo en Simple o Doble.
@@ -129,12 +136,14 @@ image:azure-ora-anf-vldb-dg-architecture.png["Esta imagen proporciona una imagen
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 Se supone que ya tiene su base de datos Oracle principal implementada en un entorno de nube de Azure dentro de una VNet como punto de partida para configurar Oracle Data Guard.  Lo ideal es que la base de datos principal se implemente en un almacenamiento ANF con montaje NFS.  Su base de datos Oracle principal también puede ejecutarse en un almacenamiento NetApp ONTAP o en cualquier otro almacenamiento de su elección, ya sea dentro del ecosistema de Azure o en un centro de datos privado.  La siguiente sección demuestra la configuración de Oracle VLDB en ANF en una configuración de Oracle Data Guard entre una base de datos Oracle principal en Azure con almacenamiento ANF y una base de datos Oracle física en espera en Azure con almacenamiento ANF.
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -175,6 +184,7 @@ Validar que los flujos de tráfico estén establecidos (click en los tres puntos
 ====
 
 
+[[primary-oracle-vldb-configuration-for-data-guard]]
 === Configuración principal de Oracle VLDB para Data Guard
 
 [%collapsible%open]
@@ -503,6 +513,7 @@ Esto completa la demostración de una configuración de Data Guard para VLDB NTA
 ====
 
 
+[[standby-oracle-vldb-configuration-for-data-guard]]
 === Configuración de Oracle VLDB en espera para Data Guard
 
 [%collapsible%open]
@@ -823,6 +834,7 @@ Esto completa la demostración de una configuración de Data Guard para VLDB NTA
 ====
 
 
+[[setup-data-guard-broker]]
 === Configurar Data Guard Broker
 
 [%collapsible%open]
@@ -920,6 +932,7 @@ En caso de falla, se puede utilizar Data Guard Broker para conmutar por error la
 ====
 
 
+[[clone-standby-database-for-other-use-cases-via-automation]]
 === Clonar la base de datos en espera para otros casos de uso mediante automatización
 
 [%collapsible%open]
@@ -936,6 +949,7 @@ NOTE: En este momento, solo los usuarios internos de NetApp con acceso a Bitbuck
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

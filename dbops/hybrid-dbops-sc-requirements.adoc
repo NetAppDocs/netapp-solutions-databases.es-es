@@ -22,6 +22,7 @@ Suponemos que los servidores de bases de datos de producción están alojados lo
 
 
 
+[[requirements]]
 == Requisitos
 
 [cols="3, 9"]

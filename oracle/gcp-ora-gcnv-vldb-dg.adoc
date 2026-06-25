@@ -20,6 +20,7 @@ La solución proporciona una descripción general y detalles para configurar Ora
 
 
 
+[[purpose]]
 == Objetivo
 
 Oracle VLDB, de alto rendimiento y misión crítica, exige mucho del almacenamiento de bases de datos backend.  Para cumplir con el acuerdo de nivel de servicio (SLA), el almacenamiento de la base de datos debe brindar la capacidad requerida y un alto número de operaciones de entrada/salida por segundo (IOPS) mientras mantiene un rendimiento de latencia de submilisegundos.  Esto es particularmente desafiante cuando se implementa una carga de trabajo de base de datos de este tipo en la nube pública con un entorno de recursos de almacenamiento compartido.  No todas las plataformas de almacenamiento son iguales.  GCNV es un servicio de almacenamiento premium ofrecido por Google que puede soportar implementaciones de bases de datos Oracle de misión crítica en la nube de Google que requieren IOPS sostenidas y características de rendimiento de baja latencia.  La arquitectura admite cargas de trabajo OLTP y OLAP, con niveles de servicio configurables que admiten diversos perfiles de rendimiento.  GCNV ofrece un rendimiento increíblemente rápido con una latencia de menos de milisegundos y logra un rendimiento de hasta 4,5 GiBps por volumen con cargas de trabajo mixtas de lectura y escritura.
@@ -36,6 +37,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -48,18 +50,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 La prueba y validación de esta solución se realizó en una configuración de laboratorio de Google Cloud que podría no coincidir con el entorno de implementación del usuario real. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:gcnv-ora-vldb-dg-architecture.png["Esta imagen proporciona una imagen detallada de la implementación de Oracle Data Guard en la nube de Google en GCNV."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -100,6 +105,7 @@ image:gcnv-ora-vldb-dg-architecture.png["Esta imagen proporciona una imagen deta
 |===
 
 
+[[oracle-vldb-data-guard-configuration-with-a-simulated-ny-to-la-dr-setup]]
 === Configuración de Oracle VLDB Data Guard con una configuración simulada de DR de NY a LA
 
 [cols="33%, 33%, 33%"]
@@ -119,6 +125,7 @@ image:gcnv-ora-vldb-dg-architecture.png["Esta imagen proporciona una imagen deta
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * * Configuración de Google Cloud NetApp Volumes .*  Los GCNV se asignan en la nube de Google como `Storage Pools` .  En estas pruebas y validaciones, implementamos un grupo de almacenamiento de 2 TiB para alojar la base de datos principal de Oracle en la región East4 y un grupo de almacenamiento de 4 TiB para alojar la base de datos en espera y el clon de base de datos en la región West4.  El grupo de almacenamiento de GCNV tiene cuatro niveles de servicio: Flex, Standard, Premium y Extreme.  La capacidad de E/S del grupo de capacidad de ANF se basa en el tamaño del grupo de capacidad y su nivel de servicio.  Al crear un grupo de capacidad, se establece la ubicación del grupo de almacenamiento, el nivel de servicio, la zona de disponibilidad y la capacidad del grupo de almacenamiento.  Para la configuración de Oracle Data Guard, la disponibilidad zonal debería ser suficiente ya que Data Guard proporciona protección contra conmutación por error de la base de datos debido a una falla a nivel de zona.
@@ -130,12 +137,14 @@ image:gcnv-ora-vldb-dg-architecture.png["Esta imagen proporciona una imagen deta
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 La siguiente sección demuestra la configuración de Oracle VLDB en GCNV en una configuración de Oracle Data Guard entre una base de datos Oracle principal en la nube de Google de la región Este con almacenamiento GCNV y una base de datos Oracle física en espera en la nube de Google de la región Oeste con almacenamiento GCNV.
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -167,6 +176,7 @@ image:gcnv-ora-vldb-dg-vol-001.png["Captura de pantalla que muestra la configura
 ====
 
 
+[[primary-oracle-vldb-configuration-for-data-guard]]
 === Configuración principal de Oracle VLDB para Data Guard
 
 [%collapsible%open]
@@ -589,6 +599,7 @@ Esto completa la demostración de una configuración de Data Guard para VLDB NTA
 ====
 
 
+[[standby-oracle-vldb-configuration-for-data-guard]]
 === Configuración de Oracle VLDB en espera para Data Guard
 
 [%collapsible%open]
@@ -941,6 +952,7 @@ Esto completa la demostración de una configuración de Data Guard para VLDB NTA
 ====
 
 
+[[setup-data-guard-broker-and-fsfo-with-an-observer]]
 === Configurar Data Guard Broker y FSFO con un observador
 
 
@@ -1329,6 +1341,7 @@ NOTE: Para lograr una pérdida de datos cero, el modo de protección de Oracle D
 ====
 
 
+[[clone-standby-database-for-other-use-cases-via-automation]]
 === Clonar la base de datos en espera para otros casos de uso mediante automatización
 
 [%collapsible%open]
@@ -1345,6 +1358,7 @@ NOTE: En este momento, solo los usuarios internos de NetApp con acceso a Bitbuck
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

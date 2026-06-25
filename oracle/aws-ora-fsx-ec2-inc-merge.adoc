@@ -20,6 +20,7 @@ Esta solución proporciona una descripción general y detalles para la recuperac
 
 
 
+[[purpose]]
 == Objetivo
 
 Recuperar una base de datos muy grande (VLDB) en Oracle mediante la herramienta de respaldo Oracle Recovery Manager (RMAN) puede ser una tarea muy desafiante.  El proceso de restauración de la base de datos desde medios de respaldo en caso de falla puede consumir mucho tiempo, retrasar la recuperación de la base de datos y potencialmente afectar significativamente su Acuerdo de Nivel de Servicio (SLA).  Sin embargo, a partir de la versión 10g, Oracle introdujo una función RMAN que permite a los usuarios crear copias de imágenes preparadas de los archivos de datos de la base de datos Oracle en un almacenamiento de disco adicional ubicado en el host del servidor de base de datos.  Estas copias de imágenes se pueden actualizar de forma incremental a diario utilizando RMAN.  En caso de falla, el administrador de base de datos (DBA) puede cambiar rápidamente la base de datos Oracle del medio fallido a la copia de imagen, eliminando la necesidad de una restauración completa del medio de la base de datos.  El resultado es un SLA muy mejorado, aunque a costa de duplicar el almacenamiento de base de datos requerido.
@@ -37,6 +38,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -49,18 +51,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 La prueba y validación de esta solución se realizó en un entorno AWS FSx ONTAP y EC2 que podría no coincidir con el entorno de implementación final. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:aws-ora-fsx-ec2-vldb-architecture.png["Esta imagen proporciona una imagen detallada de la implementación de la fusión incremental de Oracle VLDB en la nube pública de AWS con FSx ONTAP."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -92,6 +97,7 @@ image:aws-ora-fsx-ec2-vldb-architecture.png["Esta imagen proporciona una imagen 
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * *Disposición de almacenamiento Oracle VLDB para fusión incremental RMAN.*  En nuestras pruebas y validaciones, el volumen NFS para la copia de seguridad y la combinación incrementales de Oracle se asigna desde un único sistema de archivos FSx, que tiene un rendimiento de 4 GBps, 160 000 IOPS de SSD sin procesar y un límite de capacidad de 192 TiB.  Para la implementación por encima de los umbrales, se pueden concatenar múltiples sistemas de archivos FSx en paralelo con múltiples puntos de montaje NFS para proporcionar una mayor capacidad.
@@ -106,6 +112,7 @@ image:aws-ora-fsx-ec2-vldb-architecture.png["Esta imagen proporciona una imagen 
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 Se supone que ya tiene su Oracle VLDB implementado en el entorno AWS EC2 dentro de una VPC.  Si necesita ayuda con la implementación de Oracle en AWS, consulte los siguientes informes técnicos para obtener ayuda.
@@ -119,6 +126,7 @@ Su Oracle VLDB puede ejecutarse en un FSx ONTAP o en cualquier otro almacenamien
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -141,6 +149,7 @@ NOTE: Asegúrese de haber asignado al menos 50G en el volumen raíz de la instan
 ====
 
 
+[[provision-and-export-nfs-volume-to-be-mounted-to-ec2-db-instance-host]]
 === Aprovisionar y exportar un volumen NFS para montarlo en el host de instancia de EC2 DB
 
 [%collapsible%open]
@@ -200,6 +209,7 @@ sudo chown oracle:oinstall /nfsfsxn
 ====
 
 
+[[setup-oracle-rman-incremental-merge-to-image-copy-on-fsx]]
 === Configurar la fusión incremental de Oracle RMAN en la copia de imagen en FSx
 
 [%collapsible%open]
@@ -637,6 +647,7 @@ Esto completa la configuración de la copia de seguridad y la combinación de im
 ====
 
 
+[[switch-oracle-db-to-image-copy-for-quick-recovery]]
 === Cambie Oracle DB a una copia de imagen para una recuperación rápida
 
 [%collapsible%open]
@@ -920,6 +931,7 @@ SQL>
 ====
 
 
+[[oracle-db-recovery-from-image-copy-to-different-ec2-db-instance-host]]
 === Recuperación de Oracle DB desde una copia de imagen a un host de instancia de EC2 DB diferente
 
 [%collapsible%open]
@@ -1661,6 +1673,7 @@ Esto completa la recuperación de la base de datos Oracle VLDB desde la copia de
 ====
 
 
+[[clone-oracle-standby-image-copy-for-other-use-cases]]
 === Clonar una copia de imagen en espera de Oracle para otros casos de uso
 
 [%collapsible%open]
@@ -2464,6 +2477,7 @@ NOTE: Si se produce algún error `RMAN-06571: datafile 1 does not have recoverab
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

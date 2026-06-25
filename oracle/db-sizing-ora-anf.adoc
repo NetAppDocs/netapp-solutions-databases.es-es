@@ -20,6 +20,7 @@ Esta solución proporciona un kit de herramientas útil para dimensionar el proc
 
 
 
+[[purpose]]
 == Objetivo
 
 Mover la carga de trabajo existente de Oracle de una plataforma a otra, por ejemplo, de una instalación local a una nube pública, requiere dimensionar el cómputo y el almacenamiento en la plataforma de destino para cumplir con los requisitos de rendimiento y nivel de servicio.  Esta documentación demuestra un conjunto de herramientas simple para lograr ese objetivo.
@@ -34,6 +35,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -45,6 +47,7 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[license]]
 == Licencia
 
 Al acceder, descargar, instalar o utilizar el contenido de este repositorio de herramientas, usted acepta los términos de la Licencia establecidos enlink:https://netapp.sharepoint.com/sites/CIEBuilt-OnsTeam-DatabasesandApps/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FCIEBuilt%2DOnsTeam%2DDatabasesandApps%2FShared%20Documents%2FDatabases%20and%20Apps%2FDatabase%20Solutions%2FDB%20Sizing%20Toolkits%2FOracle%20Sizing%20Guidance%20for%20ANF%2FLICENSE%2ETXT&parent=%2Fsites%2FCIEBuilt%2DOnsTeam%2DDatabasesandApps%2FShared%20Documents%2FDatabases%20and%20Apps%2FDatabase%20Solutions%2FDB%20Sizing%20Toolkits%2FOracle%20Sizing%20Guidance%20for%20ANF["Archivo de licencia"^] .
@@ -54,10 +57,12 @@ NOTE: Existen ciertas restricciones en torno a la producción y/o intercambio de
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -71,6 +76,7 @@ La implementación requiere los siguientes requisitos previos.
 ====
 
 
+[[download-the-toolkit]]
 === Descargar el kit de herramientas
 
 [%collapsible%open]
@@ -80,6 +86,7 @@ Recuperar el kit de herramientas del repositoriolink:https://netapp.sharepoint.c
 ====
 
 
+[[how-to-use-the-toolkit]]
 === ¿Cómo utilizar el kit de herramientas?
 
 [%collapsible%open]
@@ -95,6 +102,7 @@ El kit de herramientas consta de un analizador HTML basado en web y dos scripts 
 ====
 
 
+[[toolkit-usage-demonstration]]
 === Demostración de uso del kit de herramientas
 
 [%collapsible%open]

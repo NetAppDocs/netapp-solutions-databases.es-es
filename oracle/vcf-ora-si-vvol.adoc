@@ -20,6 +20,7 @@ La solución proporciona una descripción general y detalles para la implementac
 
 
 
+[[purpose]]
 == Objetivo
 
 VMware vSphere Virtual Volumes (vVols) es un marco de integración y administración de SAN/NAS que expone discos virtuales como objetos de almacenamiento nativos y permite operaciones basadas en matrices a nivel de disco virtual.  En otras palabras, vVols hace que los dispositivos SAN/NAS sean compatibles con las máquinas virtuales y desbloquea la capacidad de aprovechar los servicios de datos basados en matrices con un enfoque centrado en la máquina virtual en la granularidad de un solo disco virtual. vVols permite a los clientes aprovechar las capacidades únicas de sus inversiones de almacenamiento actuales y realizar la transición sin interrupciones a un modelo operativo más simple y eficiente, optimizado para entornos virtuales que funcionan en todos los tipos de almacenamiento.
@@ -35,6 +36,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -47,18 +49,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 La prueba y validación de esta solución se realizó en un entorno de laboratorio con VCF con almacén de datos vVols en almacenamiento NetApp ONTAP AFF que podría no coincidir con el entorno de implementación final. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:vcf-ora-si-vvols-architecture.png["Esta imagen proporciona una imagen detallada de la configuración de implementación de Oracle en la nube pública de AWS con iSCSI y ASM."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -105,6 +110,7 @@ image:vcf-ora-si-vvols-architecture.png["Esta imagen proporciona una imagen deta
 |===
 
 
+[[oracle-database-configuration-in-vcf]]
 === Configuración de la base de datos Oracle en VCF
 
 [cols="33%, 33%, 33%"]
@@ -124,6 +130,7 @@ image:vcf-ora-si-vvols-architecture.png["Esta imagen proporciona una imagen deta
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * *Protocolo para conectividad de vVols al clúster ONTAP .*  NFS o iSCSI son buenas opciones.  Los niveles de rendimiento son equivalentes.  En esta demostración de solución, utilizamos NFS como protocolo de almacenamiento para la conectividad de vVols al clúster de almacenamiento ONTAP subrayado.  Si la infraestructura VCF lo admite, los protocolos FC/FCoE y NVMe/FC también son compatibles con los almacenes de datos vVols en NetApp ONTAP.
@@ -135,12 +142,14 @@ image:vcf-ora-si-vvols-architecture.png["Esta imagen proporciona una imagen deta
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 Las siguientes secciones proporcionan procedimientos paso a paso para la implementación de Oracle 19c en VCF con almacenes de datos vVols en almacenamiento NetApp ONTAP en una configuración de instancia única de Oracle.
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -159,6 +168,7 @@ NOTE: Asegúrese de haber asignado al menos 50G en el volumen raíz de Oracle VM
 ====
 
 
+[[create-storage-capability-profile]]
 === Crear un perfil de capacidad de almacenamiento
 
 [%collapsible%open]
@@ -198,6 +208,7 @@ image:vcf-ora-vvol-scp-007.png["Captura de pantalla que muestra una configuraci�
 ====
 
 
+[[create-and-configure-vvols-datastore]]
 === Crear y configurar el almacén de datos vVols
 
 [%collapsible%open]
@@ -243,6 +254,7 @@ NOTE: Tenga en cuenta que cuando se clona una base de datos Oracle, se agrega un
 ====
 
 
+[[create-vm-storage-policy-based-on-storage-capability-profile]]
 === Crear una política de almacenamiento de VM basada en el perfil de capacidad de almacenamiento
 
 [%collapsible%open]
@@ -286,6 +298,7 @@ image:vcf-ora-vvol-vm-policy-007.png["Captura de pantalla que muestra una config
 ====
 
 
+[[allocate-disks-to-db-vm-from-vvols-datastores-and-configure-db-storage]]
 === Asignar discos a la máquina virtual de base de datos desde almacenes de datos vVols y configurar el almacenamiento de base de datos
 
 [%collapsible%open]
@@ -430,6 +443,7 @@ UUID=aff942c4-b224-4b62-807d-6a5c22f7b623 /boot                   xfs     defaul
 ====
 
 
+[[oracle-database-deployment-in-vcf]]
 === Implementación de base de datos Oracle en VCF
 
 [%collapsible%open]
@@ -495,6 +509,7 @@ ansible-playbook -i hosts 5-destroy.yml -u admin -e @vars/vars.yml
 ====
 
 
+[[oracle-backup-restore-and-clone-in-vcf-with-snapcenter]]
 === Copia de seguridad, restauración y clonación de Oracle en VCF con SnapCenter
 
 
@@ -848,6 +863,7 @@ Esto completa la demostración de la copia de seguridad, restauración y clonaci
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

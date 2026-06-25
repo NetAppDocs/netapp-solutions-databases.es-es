@@ -18,6 +18,7 @@ Esta solución ha sido diseñada para ejecutarse en un entorno AWX/Tower.
 
 
 
+[[awxtower]]
 == AWX/Torre
 
 Para los entornos AWX/Tower, se le guiará a través de la creación de un inventario de su administración de clústeres ONTAP y del servidor Oracle (IP y nombres de host), la creación de credenciales, la configuración de un proyecto que extrae el código Ansible de NetApp Automation Github y la plantilla de trabajo que inicia la automatización.
@@ -31,6 +32,7 @@ Para los entornos AWX/Tower, se le guiará a través de la creación de un inven
 
 
 
+[[requirements]]
 == Requisitos
 
 [role="tabbed-block"]
@@ -133,6 +135,7 @@ Para los entornos AWX/Tower, se le guiará a través de la creación de un inven
 ====
 
 
+[[automation-details]]
 == Detalles de la automatización
 
 [role="tabbed-block"]
@@ -266,12 +269,14 @@ Esta implementación automatizada está diseñada con un único manual de Ansibl
 ====
 
 
+[[default-parameters]]
 == Parámetros predeterminados
 
 Para simplificar la automatización, hemos preestablecido muchos parámetros de Oracle requeridos con valores predeterminados.  Por lo general, no es necesario cambiar los parámetros predeterminados para la mayoría de las implementaciones.  Un usuario más avanzado puede realizar cambios en los parámetros predeterminados con precaución.  Los parámetros predeterminados se encuentran en cada carpeta de función, en el directorio de valores predeterminados.
 
 
 
+[[license]]
 == Licencia
 
 Debes leer la información de la licencia tal como se indica en el repositorio de Github.  Al acceder, descargar, instalar o utilizar el contenido de este repositorio, usted acepta los términos de la licencia establecidalink:https://github.com/NetApp-Automation/na_oracle19c_deploy/blob/master/LICENSE.TXT["aquí"^] .

@@ -20,6 +20,7 @@ Esta solución proporciona descripción general y detalles para la implementaci�
 
 
 
+[[purpose]]
 == Objetivo
 
 Las empresas han estado ejecutando Oracle en VMware en centros de datos privados durante décadas.  VMware Cloud (VMC) en AWS ofrece una solución con solo presionar un botón para llevar el software de centro de datos definido por software (SDDC) de clase empresarial de VMware a la infraestructura dedicada, elástica y completa de AWS Cloud.  AWS FSx ONTAP ofrece almacenamiento premium para VMC SDDC y una estructura de datos que permite a los clientes ejecutar aplicaciones críticas para el negocio, como Oracle, en entornos de nube privada, pública e híbrida basados en vSphere, con acceso optimizado a los servicios de AWS.  Ya sea una carga de trabajo de Oracle existente o nueva, VMC en AWS proporciona un entorno de Oracle familiar, simplificado y autoadministrado en VMware con todos los beneficios de la nube de AWS y al mismo tiempo delega toda la administración y optimización de la plataforma en VMware.
@@ -35,6 +36,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -47,18 +49,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 La prueba y validación de esta solución se realizó en un entorno de laboratorio con VMC en AWS que podría no coincidir con el entorno de implementación final. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:aws-ora-fsx-vmc-architecture.png["Esta imagen proporciona una imagen detallada de la configuración de implementación de Oracle en la nube pública de AWS con iSCSI y ASM."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -105,6 +110,7 @@ image:aws-ora-fsx-vmc-architecture.png["Esta imagen proporciona una imagen detal
 |===
 
 
+[[oracle-database-configuration-in-vmc-on-aws]]
 === Configuración de la base de datos Oracle en VMC en AWS
 
 [cols="33%, 33%, 33%"]
@@ -130,6 +136,7 @@ image:aws-ora-fsx-vmc-architecture.png["Esta imagen proporciona una imagen detal
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * *Conectividad de FSx a VMC.*  Cuando implementa su SDDC en VMware Cloud on AWS, se crea dentro de una cuenta de AWS y una VPC dedicada a su organización y administrada por VMware.  También debe conectar el SDDC a una cuenta de AWS que le pertenezca, denominada cuenta de AWS del cliente.  Esta conexión permite que su SDDC acceda a los servicios de AWS que pertenecen a su cuenta de cliente.  FSx ONTAP es un servicio de AWS implementado en su cuenta de cliente.  Una vez que el VMC SDDC esté conectado a su cuenta de cliente, el almacenamiento FSx estará disponible para las máquinas virtuales en el VMC SDDC para el montaje directo del invitado.
@@ -143,12 +150,14 @@ image:aws-ora-fsx-vmc-architecture.png["Esta imagen proporciona una imagen detal
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 Las siguientes secciones proporcionan procedimientos paso a paso para la implementación de Oracle 19c en VMC en AWS con almacenamiento FSx ONTAP montado directamente en la máquina virtual de base de datos en un solo nodo. Reiniciar la configuración con Oracle ASM como administrador de volumen de base de datos.
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -176,6 +185,7 @@ NOTE: Asegúrese de haber asignado al menos 50G en el volumen raíz de Oracle VM
 ====
 
 
+[[db-vm-kernel-configuration]]
 === Configuración del kernel de la máquina virtual de base de datos
 
 [%collapsible%open]
@@ -396,6 +406,7 @@ chmod 440 /etc/sudoers
 ====
 
 
+[[provision-and-map-fsx-ontap-luns-to-the-db-vm]]
 === Aprovisionar y asignar LUN de FSx ONTAP a la máquina virtual de base de datos
 
 [%collapsible%open]
@@ -528,6 +539,7 @@ nim        /vol/ora_02_logs/ora_02_u03_02            ora_02        6  iscsi
 ====
 
 
+[[db-vm-storage-configuration]]
 === Configuración de almacenamiento de la máquina virtual de base de datos
 
 [%collapsible%open]
@@ -821,6 +833,7 @@ systemctl restart multipathd
 ====
 
 
+[[oracle-grid-infrastructure-installation]]
 === Instalación de infraestructura de red de Oracle
 
 [%collapsible%open]
@@ -1082,6 +1095,7 @@ CRS-4638: Oracle High Availability Services is online
 ====
 
 
+[[oracle-database-installation]]
 === Instalación de la base de datos Oracle
 
 [%collapsible%open]
@@ -1469,6 +1483,7 @@ Esto completa la implementación de reinicio de Oracle 19c versión 19.18 en un 
 ====
 
 
+[[oracle-backup-restore-and-clone-with-snapcenter]]
 === Copia de seguridad, restauración y clonación de Oracle con SnapCenter
 
 
@@ -1891,6 +1906,7 @@ Esto completa la demostración de la copia de seguridad, restauración y clonaci
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

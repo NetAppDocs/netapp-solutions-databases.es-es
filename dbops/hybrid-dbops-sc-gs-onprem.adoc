@@ -18,10 +18,12 @@ La herramienta NetApp SnapCenter utiliza control de acceso basado en roles (RBAC
 
 
 
+[[on-premises]]
 == En las instalaciones
 
 
 
+[[1-setup-database-admin-user-in-snapcenter]]
 === 1. Configurar el usuario administrador de la base de datos en SnapCenter
 
 Tiene sentido tener un ID de usuario administrador dedicado para cada plataforma de base de datos compatible con SnapCenter para realizar copias de seguridad, restaurar o recuperar ante desastres de bases de datos.  También puede utilizar una única ID para administrar todas las bases de datos.  En nuestros casos de prueba y demostración, creamos un usuario administrador dedicado tanto para Oracle como para SQL Server, respectivamente.
@@ -39,6 +41,7 @@ image:snapctr-admin-users.png["Figura que muestra el diálogo de entrada/salida 
 
 
 
+[[2-snapcenter-plugin-installation-prerequisites]]
 === 2. Requisitos previos para la instalación del complemento SnapCenter
 
 SnapCenter realiza copias de seguridad, restauraciones, clonaciones y otras funciones mediante un agente de complemento que se ejecuta en los hosts de la base de datos.  Se conecta al host de la base de datos y a la base de datos a través de credenciales configuradas en la pestaña Configuración y Credenciales para la instalación del complemento y otras funciones de administración.  Existen requisitos de privilegios específicos según el tipo de host de destino, como Linux o Windows, así como el tipo de base de datos.
@@ -70,6 +73,7 @@ Host Unix para Oracle:
 
 
 
+[[3-snapcenter-host-plugin-installation]]
 === 3. Instalación del complemento de host de SnapCenter
 
 
@@ -161,6 +165,7 @@ image:snapctr-add-linux-host-006.png["Figura que muestra el diálogo de entrada/
 
 
 
+[[4-database-resource-discovery]]
 === 4. Descubrimiento de recursos de bases de datos
 
 Con una instalación exitosa del complemento, los recursos de la base de datos en el host se pueden descubrir de inmediato.  Haga clic en la pestaña Recursos en el menú de la izquierda.  Dependiendo del tipo de plataforma de base de datos, hay varias vistas disponibles, como la base de datos, el grupo de recursos, etc.  Es posible que tengas que hacer clic en la pestaña Actualizar recursos si no se detectan ni se muestran los recursos del host.
@@ -185,6 +190,7 @@ image:snapctr-add-windows-host-011.png["Figura que muestra el diálogo de entrad
 
 
 
+[[5-setup-storage-cluster-peering-and-db-volumes-replication]]
 === 5. Configurar el emparejamiento de clústeres de almacenamiento y la replicación de volúmenes de bases de datos
 
 Para proteger los datos de su base de datos local utilizando una nube pública como destino, los volúmenes de base de datos del clúster ONTAP local se replican en el CVO de la nube mediante la tecnología SnapMirror de NetApp .  Los volúmenes de destino replicados se pueden clonar luego para DEV/OPS o recuperación ante desastres.  Los siguientes pasos de alto nivel le permiten configurar el emparejamiento de clústeres y la replicación de volúmenes de bases de datos.
@@ -226,6 +232,7 @@ image:snapctr-vol-snapmirror-003.png["Figura que muestra el diálogo de entrada/
 
 
 
+[[6-add-cvo-database-storage-svm-to-snapcenter]]
 === 6. Agregue el almacenamiento de base de datos CVO SVM a SnapCenter
 
 . Inicie sesión en SnapCenter con un ID de usuario con privilegios de SnapCenterAdmin.
@@ -245,6 +252,7 @@ image:snapctr-add-cvo-svm-003.png["Figura que muestra el diálogo de entrada/sal
 
 
 
+[[7-setup-database-backup-policy-in-snapcenter]]
 === 7. Configurar la política de copia de seguridad de la base de datos en SnapCenter
 
 Los siguientes procedimientos demuestran cómo crear una política de copia de seguridad completa de una base de datos o de un archivo de registro.  La política puede luego implementarse para proteger los recursos de las bases de datos.  El objetivo de punto de recuperación (RPO) o el objetivo de tiempo de recuperación (RTO) dicta la frecuencia de las copias de seguridad de bases de datos y/o registros.
@@ -392,6 +400,7 @@ image:snapctr-sql-policy-log-006.png["Figura que muestra el diálogo de entrada/
 
 
 
+[[8-implement-backup-policy-to-protect-database]]
 === 8. Implementar una política de respaldo para proteger la base de datos
 
 SnapCenter utiliza un grupo de recursos para realizar copias de seguridad de una base de datos en una agrupación lógica de recursos de base de datos, como varias bases de datos alojadas en un servidor, una base de datos que comparte los mismos volúmenes de almacenamiento, varias bases de datos que respaldan una aplicación comercial, etc.  La protección de una única base de datos crea un grupo de recursos propio.  Los siguientes procedimientos demuestran cómo implementar una política de respaldo creada en la sección 7 para proteger las bases de datos de Oracle y SQL Server.
@@ -542,6 +551,7 @@ image:snapctr-sql-rgroup-log-007.png["Figura que muestra el diálogo de entrada/
 
 
 
+[[9-validate-backup]]
 === 9. Validar copia de seguridad
 
 Una vez creados los grupos de recursos de respaldo de la base de datos para proteger los recursos de la base de datos, los trabajos de respaldo se ejecutan de acuerdo con la programación predefinida.  Verifique el estado de ejecución del trabajo en la pestaña Monitor.

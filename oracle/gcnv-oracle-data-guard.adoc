@@ -19,6 +19,8 @@ Este procedimiento describe cómo habilitar el broker en ambas bases de datos, c
 
 
 
+[[step-1-enable-data-guard-broker]]
+[[enable-broker-on-both-databases]]
 == Paso 1: activar Data Guard Broker
 
 Activa Data Guard Broker en ambos hosts de base de datos y crea la configuración del broker que vincula las bases de datos primaria y de reserva bajo una gestión unificada.
@@ -72,6 +74,8 @@ DGMGRL> SHOW CONFIGURATION VERBOSE;
 
 
 
+[[step-2-confirm-flashback-for-fsfo]]
+[[confirm-flashback-required-for-fsfo]]
 == Paso 2: Confirma el flashback para FSFO
 
 Confirma que la base de datos flashback esté habilitada en ambos hosts. Flashback es necesario para la auto-reinstalación de FSFO, lo que permite que el antiguo primario se reincorpore automáticamente a la configuración como secundario después de una conmutación por fallo.
@@ -102,6 +106,8 @@ SQL'
 
 
 
+[[step-3-configure-and-enable-fsfo]]
+[[configure-fsfo-properties-and-enable]]
 == Paso 3: configura y activa FSFO
 
 Configura el transporte SYNC redo, configura el modo de protección MaxAvailability, define los destinos FSFO en cada base de datos y habilita Fast-Start Failover.
@@ -138,6 +144,8 @@ DGMGRL> SHOW FAST_START FAILOVER;
 
 
 
+[[step-4-install-instant-client-on-observer]]
+[[install-instant-client-on-observer]]
 == Paso 4: instala Instant Client en Observer
 
 Instala Oracle Instant Client en la máquina virtual dedicada de Observer (`oradg-obs`), crea un usuario dedicado del sistema operativo `oracle` y configura el entorno Oracle Net para que Observer pueda conectarse a ambos miembros de la base de datos en TCP/1521.
@@ -190,6 +198,8 @@ sudo chown oracle:oracle /etc/oracle/network/admin/tnsnames.ora
 
 
 
+[[step-5-run-observer-as-a-systemd-service]]
+[[start-observer-systemd]]
 == Paso 5: Ejecuta Observer como servicio de systemd
 
 Crea un monedero con inicio de sesión automático que contenga las credenciales de ambos miembros de la base de datos, luego configura e inicia el Observer como un servicio de systemd para que sobreviva a los reinicios y se vuelva a conectar automáticamente a la configuración.
@@ -302,6 +312,8 @@ DGMGRL> SHOW CONFIGURATION;       -- Configuration Status: SUCCESS, FSFO: ENABLE
 
 
 
+[[step-6-test-fsfo]]
+[[test-fsfo-switchover-and-failover]]
 == Paso 6: Probar FSFO
 
 Valida la configuración de Data Guard con `VALIDATE DATABASE`, luego realiza una conmutación de sitios planificada y, en una ventana de pruebas, una conmutación por error no planificada tras un reinicio de la máquina virtual para confirmar que FSFO funciona de principio a fin.
@@ -323,6 +335,7 @@ Utiliza la opción *Reset* de la máquina virtual (prueba de tipo crash); una *S
 
 
 
+[[whats-next]]
 == ¿Qué sigue?
 
 Ya está lista la configuración de Oracle Data Guard Broker, Fast-Start Failover y Observer para esta implementación.

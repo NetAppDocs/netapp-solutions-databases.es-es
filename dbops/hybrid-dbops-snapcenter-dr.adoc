@@ -18,6 +18,7 @@ Las empresas han adoptado la nube pública como un recurso viable y un destino p
 
 
 
+[[clone-an-on-premises-oracle-production-db-to-cloud-for-dr]]
 == Clonar una base de datos de producción Oracle local a la nube para recuperación ante desastres
 
 . Para validar que la recuperación del clon se ejecute a través del último registro disponible, creamos una pequeña tabla de prueba e insertamos una fila.  Los datos de prueba se recuperarían después de una recuperación completa al último registro disponible.
@@ -97,6 +98,7 @@ image:snapctr-ora-dr-016-a.png["Figura que muestra el diálogo de entrada/salida
 
 
 
+[[post-dr-clone-validation-and-configuration-for-oracle]]
 == Validación y configuración posterior a la clonación DR para Oracle
 
 . Valide la última transacción de prueba que se ha vaciado, replicado y recuperado en la ubicación de recuperación ante desastres en la nube.
@@ -117,6 +119,7 @@ NOTE: La división de clones puede generar un uso de espacio de almacenamiento t
 
 
 
+[[clone-an-on-premises-sql-production-db-to-cloud-for-dr]]
 == Clonar una base de datos de producción SQL local a la nube para recuperación ante desastres
 
 . De manera similar, para validar que la recuperación del clon SQL se ejecutó a través del último registro disponible, creamos una pequeña tabla de prueba e insertamos una fila.  Los datos de prueba se recuperarían después de una recuperación completa al último registro disponible.
@@ -162,6 +165,7 @@ image:snapctr-sql-dr-010.png["Figura que muestra el diálogo de entrada/salida o
 
 
 
+[[post-dr-clone-validation-and-configuration-for-sql]]
 == Validación y configuración posterior a la clonación DR para SQL
 
 . Supervisar el estado del trabajo de clonación.
@@ -179,6 +183,7 @@ image:snapctr-sql-dr-012.png["Figura que muestra el diálogo de entrada/salida o
 
 
 
+[[where-to-go-for-help]]
 == ¿A dónde acudir para obtener ayuda?
 
 Si necesita ayuda con esta solución y casos de uso, únase a lalink:https://netapppub.slack.com/archives/C021R4WC0LC["Canal de Slack de soporte de la comunidad de automatización de soluciones de NetApp"] y busca el canal de automatización de soluciones para publicar tus dudas o consultas.

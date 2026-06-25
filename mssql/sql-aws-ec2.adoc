@@ -18,6 +18,7 @@ Esta solución cubre la implementación de SQL Server en AWS EC2 utilizando Amaz
 
 
 
+[[introduction]]
 == Introducción
 
 Muchas empresas que desean migrar aplicaciones desde sus instalaciones locales a la nube descubren que el esfuerzo se ve obstaculizado por las diferencias en las capacidades que ofrecen los sistemas de almacenamiento locales y los servicios de almacenamiento en la nube.  Esa brecha ha hecho que la migración de aplicaciones empresariales como Microsoft SQL Server sea mucho más problemática.  En particular, las brechas en los servicios necesarios para ejecutar una aplicación empresarial, como instantáneas robustas, capacidades de eficiencia de almacenamiento, alta disponibilidad, confiabilidad y rendimiento consistente, han obligado a los clientes a hacer concesiones de diseño o renunciar a la migración de aplicaciones.  Con FSx ONTAP, los clientes ya no necesitan hacer concesiones.  FSx ONTAP es un servicio nativo (de primera parte) de AWS vendido, respaldado, facturado y totalmente administrado por AWS.  Utiliza el poder de NetApp ONTAP para brindar las mismas capacidades de almacenamiento y gestión de datos de nivel empresarial que NetApp ha proporcionado en las instalaciones durante tres décadas en AWS como un servicio administrado.
@@ -26,6 +27,7 @@ Con SQL Server en instancias EC2, los administradores de bases de datos pueden a
 
 
 
+[[benefits-of-using-amazon-fsx-ontap-with-sql-server]]
 == Beneficios de usar Amazon FSx ONTAP con SQL Server
 
 Amazon FSx ONTAP es el almacenamiento de archivos ideal para implementaciones de SQL Server en AWS.  Los beneficios incluyen lo siguiente:
@@ -47,12 +49,14 @@ La implementación de bases de datos de SQL Server en FSx ONTAP con el protocolo
 
 
 
+[[before-you-begin]]
 == Antes de empezar
 
 La combinación de Amazon FSx ONTAP y SQL Server en la instancia EC2 permite la creación de diseños de almacenamiento de bases de datos de nivel empresarial que pueden satisfacer los requisitos de aplicaciones más exigentes de la actualidad.  Para optimizar ambas tecnologías, es vital comprender los patrones y características de E/S de SQL Server.  Un diseño de almacenamiento bien diseñado para una base de datos de SQL Server favorece el rendimiento de SQL Server y la administración de la infraestructura de SQL Server.  Una buena distribución del almacenamiento también permite que la implementación inicial sea exitosa y que el entorno crezca sin problemas con el tiempo a medida que crece su negocio.
 
 
 
+[[prerequisites]]
 === Prerrequisitos
 
 Antes de completar los pasos de este documento, debe tener los siguientes requisitos previos:
@@ -133,6 +137,7 @@ NOTE: El exceso de compromiso de almacenamiento se debe considerar y gestionar c
 ====
 
 
+[[configure-storage-for-sql-server-and-deploy-snapcenter-for-backup-restore-and-clone-operations]]
 == Configurar el almacenamiento para SQL Server e implementar Snapcenter para operaciones de copia de seguridad, restauración y clonación
 
 Para realizar operaciones de servidor SQL con SnapCenter, primero debe crear volúmenes y LUN para el servidor SQL.
@@ -565,6 +570,7 @@ Para conocer más sobre este proceso, mire el siguiente vídeo:
 video::27f28284-433d-4273-8748-b01200fb3cd7[panopto]
 
 
+[[appendices]]
 == Apéndices
 
 .Apéndice A: Archivo YAML para usar en la plantilla de formación de nubes
@@ -701,6 +707,7 @@ Ejecutar el archivo `EnableMPIO.ps1` El primer y segundo script se ejecutan auto
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 * Amazon FSx ONTAP

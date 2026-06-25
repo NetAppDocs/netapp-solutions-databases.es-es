@@ -18,6 +18,7 @@ La solución proporciona una descripción general y detalles para configurar Ora
 
 
 
+[[purpose]]
 == Objetivo
 
 Oracle Data Guard garantiza alta disponibilidad, protección de datos y recuperación ante desastres para datos empresariales en una configuración de replicación de base de datos principal y de base de datos en espera.  Oracle Active Data Guard permite a los usuarios acceder a bases de datos en espera mientras la replicación de datos está activa desde la base de datos principal a las bases de datos en espera.  Data Guard es una característica de Oracle Database Enterprise Edition.  No requiere licencia separada.  Por otro lado, Active Data Guard es una opción de Oracle Database Enterprise Edition y, por lo tanto, requiere una licencia independiente.  Varias bases de datos en espera pueden recibir replicación de datos desde una base de datos principal en la configuración de Active Data Guard.  Sin embargo, cada base de datos de reserva adicional requiere una licencia de Active Data Guard y almacenamiento adicional al tamaño de la base de datos principal.  Los costos operativos se acumulan rápidamente.
@@ -33,6 +34,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -45,18 +47,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 La prueba y validación de esta solución se realizó en una configuración de laboratorio en la nube de Azure que podría no coincidir con el entorno de implementación del usuario real. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:azure-ora-anf-data-guard-architecture.png["Esta imagen proporciona una imagen detallada de la implementación de Oracle Data Guard en la nube de Azure en ANF."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -91,6 +96,7 @@ image:azure-ora-anf-data-guard-architecture.png["Esta imagen proporciona una ima
 |===
 
 
+[[oracle-data-guard-configuration-with-hypothetical-ny-to-la-dr-setup]]
 === Configuración de Oracle Data Guard con configuración hipotética de DR de NY a LA
 
 [cols="33%, 33%, 33%"]
@@ -110,6 +116,7 @@ image:azure-ora-anf-data-guard-architecture.png["Esta imagen proporciona una ima
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * *Clonación de base de datos en espera.*  Al recibir y aplicar registros de transacciones de la base de datos principal, la base de datos física en espera se puede clonar y montar en una máquina virtual de base de datos para soportar otras cargas de trabajo como DEV, TEST o Report.  El clon puede ser un clon delgado o grueso.  En este momento, ANF solo admite clones gruesos, que son una copia completa de la base de datos en espera.  La opción de clon delgado de ANF se lanzará en breve.  Para copias clonadas finamente de volúmenes de bases de datos, comparte los mismos volúmenes de base de datos de la base de datos en espera y utiliza tecnología de copia en escritura para dar servicio a las E/S de escritura.  Por lo tanto, los clones son muy eficientes en términos de almacenamiento y pueden usarse para muchos otros casos de uso con una asignación de almacenamiento nuevo mínima e incremental para nuevas E/S de escritura.  Esto proporciona un enorme ahorro en costos de almacenamiento al reducir sustancialmente el espacio de almacenamiento de Active Data Guard.  NetApp recomienda minimizar las actividades de FlexClone en caso de que la base de datos cambie del almacenamiento principal al almacenamiento ANF en espera para mantener el rendimiento de Oracle en un alto nivel.
@@ -123,6 +130,7 @@ image:azure-ora-anf-data-guard-architecture.png["Esta imagen proporciona una ima
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 Se supone que ya tiene su base de datos Oracle principal implementada en un entorno de nube de Azure dentro de una VNet como punto de partida para configurar Oracle Data Guard.  Lo ideal es que la base de datos principal se implemente en un almacenamiento ANF con montaje NFS.  Se crean tres puntos de montaje NFS para el almacenamiento de la base de datos de Oracle: mount /u01 para los archivos binarios de Oracle, mount /u02 para los archivos de datos de Oracle y un archivo de control, mount /u03 para los archivos de registro actuales y archivados de Oracle, y un archivo de control redundante.
@@ -131,6 +139,7 @@ Su base de datos Oracle principal también puede ejecutarse en un almacenamiento
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -170,6 +179,7 @@ Validar que los flujos de tráfico estén establecidos (click en los tres puntos
 ====
 
 
+[[prepare-the-primary-database-for-data-guard]]
 === Preparar la base de datos principal para Data Guard
 
 [%collapsible%open]
@@ -480,6 +490,7 @@ Esto completa la configuración de la base de datos principal para Data Guard.
 ====
 
 
+[[prepare-standby-database-and-activate-data-guard]]
 === Preparar la base de datos en espera y activar Data Guard
 
 [%collapsible%open]
@@ -842,6 +853,7 @@ Esto completa la configuración de protección de Data Guard para NTAP desde el 
 ====
 
 
+[[setup-data-guard-broker]]
 === Configurar Data Guard Broker
 
 [%collapsible%open]
@@ -939,6 +951,7 @@ En caso de falla, se puede utilizar Data Guard Broker para conmutar por error la
 ====
 
 
+[[clone-standby-database-for-other-use-cases]]
 === Clonar base de datos en espera para otros casos de uso
 
 [%collapsible%open]
@@ -1139,6 +1152,7 @@ Esto completa la demostración del clon de base de datos en espera de Oracle en 
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

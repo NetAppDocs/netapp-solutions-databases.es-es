@@ -20,6 +20,7 @@ La solución proporciona una descripción general y detalles para la recuperaci�
 
 
 
+[[purpose]]
 == Objetivo
 
 Recuperar una base de datos muy grande (VLDB) en Oracle mediante la herramienta de respaldo Oracle Recovery Manager (RMAN) puede ser una tarea muy desafiante.  El proceso de restauración de la base de datos desde medios de respaldo en caso de falla puede consumir mucho tiempo, retrasar la recuperación de la base de datos y potencialmente afectar significativamente su Acuerdo de Nivel de Servicio (SLA).  La situación está empeorando aún más para Oracle VLDB implementado en la nube, ya que la copia de seguridad de RMAN generalmente se transmite al almacenamiento de objetos debido a consideraciones de costos.  Como resultado, no es viable restaurar y recuperar un VLDB si el SLA es esencial.  A partir de la versión 10g, Oracle introdujo una función RMAN que permite a los usuarios crear copias de imágenes preparadas de los archivos de datos de la base de datos Oracle en un almacenamiento de disco adicional ubicado en el host del servidor de base de datos.  Estas copias de imágenes se pueden actualizar de forma incremental mediante RMAN en un intervalo definido por el usuario.  En caso de falla, el administrador de base de datos (DBA) puede cambiar rápidamente la base de datos Oracle del medio fallido a la copia de imagen, eliminando la necesidad de una restauración completa del medio de la base de datos.  El resultado es un SLA muy mejorado, aunque a costa de duplicar el almacenamiento de base de datos requerido.
@@ -35,6 +36,7 @@ Esta solución aborda los siguientes casos de uso:
 
 
 
+[[audience]]
 == Audiencia
 
 Esta solución está destinada a las siguientes personas:
@@ -47,18 +49,21 @@ Esta solución está destinada a las siguientes personas:
 
 
 
+[[solution-test-and-validation-environment]]
 == Entorno de prueba y validación de soluciones
 
 Las pruebas y la validación de esta solución se realizaron en grupos de almacenamiento de Google Cloud NetApp Volumes y máquinas virtuales de Google Compute Engine que podrían no coincidir con el entorno de implementación final. Para más información, consulte la sección <<Factores clave a considerar en la implementación>> .
 
 
 
+[[architecture]]
 === Arquitectura
 
 image:gcp-ora-gcnv-inc-merge-architecture.png["Esta imagen proporciona una imagen detallada de la implementación de la fusión incremental de Oracle VLDB en Google Cloud con GCNV."]
 
 
 
+[[hardware-and-software-components]]
 === Componentes de hardware y software
 
 [cols="33%, 33%, 33%"]
@@ -99,6 +104,7 @@ image:gcp-ora-gcnv-inc-merge-architecture.png["Esta imagen proporciona una image
 |===
 
 
+[[key-factors-for-deployment-consideration]]
 === Factores clave a considerar en la implementación
 
 * *Nivel de servicio del grupo de almacenamiento GCNV.*  El grupo de almacenamiento GCNV ofrece cuatro niveles de servicio: Estándar, Premium, Extremo y Flex.  De forma predeterminada, se aplica una QoS automática a un volumen creado dentro de un grupo de almacenamiento, lo que restringe el rendimiento del volumen en función de su tamaño y del nivel de servicio.  La única excepción es que los volúmenes asignados desde el grupo de almacenamiento Flex comparten el rendimiento disponible para el grupo de almacenamiento.
@@ -111,12 +117,14 @@ image:gcp-ora-gcnv-inc-merge-architecture.png["Esta imagen proporciona una image
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 La solución supone que ya hay un Oracle VLDB implementado en el entorno de Google Cloud dentro de una VPC.  Oracle VLDB puede ejecutarse en el almacenamiento GCNV o en cualquier otra opción de almacenamiento dentro del ecosistema de Google Cloud.  La siguiente sección proporciona procedimientos de implementación paso a paso para configurar una copia de seguridad de imagen de Oracle VLDB y una fusión incremental a través de RMAN a un sistema de archivos NFS montado desde un grupo de almacenamiento GCNV.  Oracle VLDB también tiene su almacenamiento principal alojado en un grupo de almacenamiento GCNV diferente.
 
 
 
+[[prerequisites-for-deployment]]
 === Requisitos previos para la implementación
 
 [%collapsible%open]
@@ -137,6 +145,7 @@ image:gcp-ora-gcnv-inc-merge-vol-002.png["Esta imagen muestra la pantalla de vol
 ====
 
 
+[[mount-a-nfs-volume-from-gcnv-to-the-primary-oracle-vldb-server]]
 === Montar un volumen NFS desde GCNV al servidor Oracle VLDB principal
 
 [%collapsible%open]
@@ -175,6 +184,7 @@ sudo vi /etc/fstab
 ====
 
 
+[[setup-oracle-rman-incremental-merge-to-image-copy-on-gcnv-for-in-server-vldb-backup]]
 === Configurar la fusión incremental de Oracle RMAN con la copia de imagen en GCNV para la copia de seguridad VLDB en el servidor
 
 [%collapsible%open]
@@ -1202,6 +1212,7 @@ Esto completa la configuración de una copia de seguridad de imagen en espera de
 ====
 
 
+[[oracle-vldb-quick-recovery-using-backup-image-copy]]
 === Recuperación rápida de Oracle VLDB mediante copia de imagen de respaldo
 
 
@@ -4050,6 +4061,7 @@ Esto completa la recuperación en un punto determinado del tiempo de la base de 
 ====
 
 
+[[clone-a-oracle-vldb-for-other-use-cases-from-the-backup-image-copy]]
 === Clonar una VLDB de Oracle para otros casos de uso desde la copia de imagen de respaldo
 
 [%collapsible%open]
@@ -4068,6 +4080,7 @@ NOTE: En este momento, solo los usuarios internos de NetApp con acceso a Bitbuck
 ====
 
 
+[[where-to-find-additional-information]]
 == Dónde encontrar información adicional
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:

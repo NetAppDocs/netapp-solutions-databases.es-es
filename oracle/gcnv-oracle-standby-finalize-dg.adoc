@@ -17,6 +17,8 @@ Finaliza la base de datos en espera para Oracle Data Guard en Google Cloud NetAp
 
 
 
+[[step-1-create-standby-redo-log-files]]
+[[standby-redo-log-files]]
 == Paso 1: crea archivos de registro de recuperación en modo de espera
 
 Crea archivos de registro de recuperación en modo de espera en ambos hosts de la base de datos para permitir Fast-Start Failover. El tamaño debe ser mayor o igual que el del registro de recuperación en línea primario más grande, y la cantidad debe ser igual a (grupos en línea por hilo) + 1. Después de la siembra de GCNV, elimina y vuelve a crear los registros de recuperación en modo de espera en el standby para corregir las rutas replicadas.
@@ -46,6 +48,8 @@ ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT
 
 
 
+[[step-2-enable-flashback-and-start-recovery]]
+[[enable-flashback-on-standby]]
 == Paso 2: activa flashback e inicia la recuperación
 
 Habilita flashback database en el servidor en espera para permitir la restauración automática tras una conmutación por error y luego inicia la recuperación gestionada con aplicación en tiempo real. Flashback debe habilitarse antes de iniciar la recuperación gestionada porque no se puede habilitar mientras MRP está activo.
@@ -85,6 +89,8 @@ SQL'
 
 
 
+[[step-3-enable-redo-shipping]]
+[[enable-redo-shipping-on-primary]]
 == Paso 3: Activar el envío de registro de recuperación
 
 Habilita el transporte de redo desde el primario al standby activando  `LOG_ARCHIVE_DEST_STATE_2`, que se configuró deliberadamente como  `DEFER` en xref:gcnv-oracle-standby-database.adoc#standby-init-ora-and-nomount[Paso 2] del procedimiento de inicialización del standby para suprimir errores de  `ORA-12154` durante la creación del standby.
@@ -121,6 +127,8 @@ Si `dest_2` muestra `ORA-12154`, reinicia el primario. Después de xref:gcnv-ora
 
 
 
+[[step-4-verify-data-guard-state]]
+[[verify-target-dg-state]]
 == Paso 4: comprobar el estado de Data Guard
 
 Comprueba que la base de datos principal esté en modo READ WRITE y que la base de datos en espera esté montada con recuperación gestionada aplicando los redo logs.
@@ -175,6 +183,7 @@ SQL'
 
 
 
+[[whats-next]]
 == ¿Qué sigue?
 
 Para activar la gestión automática de roles y la protección contra fallos, continúa con xref:gcnv-oracle-data-guard.adoc[Configura Oracle Data Guard Broker, Fast-Start Failover y el Observer].

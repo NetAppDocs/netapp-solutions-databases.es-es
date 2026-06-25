@@ -20,6 +20,7 @@ Las siguientes secciones describen las consideraciones clave al implementar una 
 
 
 
+[[vm-performance]]
 == Rendimiento de la máquina virtual
 
 Seleccionar el tamaño de VM correcto es importante para el rendimiento óptimo de una base de datos relacional en una nube pública.  Para un mejor rendimiento, NetApp recomienda utilizar una instancia EC2 M5 Series para la implementación de Oracle, que está optimizada para cargas de trabajo de bases de datos.  El mismo tipo de instancia también se utiliza para alimentar una instancia RDS para Oracle de AWS.
@@ -30,6 +31,7 @@ Seleccionar el tamaño de VM correcto es importante para el rendimiento óptimo 
 
 
 
+[[storage-layout-and-settings]]
 == Disposición y configuración del almacenamiento
 
 NetApp recomienda el siguiente diseño de almacenamiento:
@@ -54,6 +56,7 @@ Revisar ellink:https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/performance.htm
 
 
 
+[[nfs-configuration]]
 == Configuración de NFS
 
 Linux, el sistema operativo más común, incluye capacidades NFS nativas.  Oracle ofrece el cliente NFS directo (dNFS) integrado de forma nativa en Oracle.  Oracle ha admitido NFSv3 durante más de 20 años. dNFS es compatible con NFSv3 con todas las versiones de Oracle.  NFSv4 es compatible con todos los sistemas operativos que siguen el estándar NFSv4. La compatibilidad de dNFS con NFSv4 requiere Oracle 12.1.0.2 o superior.  NFSv4.1 requiere soporte de sistema operativo específico.  Consulte la herramienta Matriz de interoperabilidad de NetApp (IMT) para conocer los sistemas operativos compatibles. La compatibilidad de dNFS con NFSv4.1 requiere Oracle versión 19.3.0.0 o superior.
@@ -82,6 +85,7 @@ NOTE: Antes de usar dNFS, verifique que estén instalados los parches descritos 
 
 
 
+[[high-availability]]
 == Alta disponibilidad
 
 Como se indica en la arquitectura de la solución, HA se basa en la replicación a nivel de almacenamiento.  Por lo tanto, la puesta en marcha y la disponibilidad de Oracle dependen de la rapidez con la que se puedan poner en funcionamiento y recuperar el cómputo y el almacenamiento.  Vea los siguientes factores clave:

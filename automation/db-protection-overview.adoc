@@ -18,6 +18,7 @@ Esta página describe el método automatizado para implementar Oracle19c en el a
 
 
 
+[[automated-data-protection-for-oracle-databases]]
 == Protección de datos automatizada para bases de datos Oracle
 
 Las organizaciones están automatizando sus entornos para ganar eficiencia, acelerar las implementaciones y reducir el esfuerzo manual.  Se están utilizando herramientas de gestión de configuración como Ansible para optimizar las operaciones de bases de datos empresariales.  En esta solución, demostramos cómo puede utilizar Ansible para automatizar la protección de datos de Oracle con NetApp ONTAP.  Al permitir que los administradores de almacenamiento, administradores de sistemas y DBA configuren de manera consistente y rápida la replicación de datos en un centro de datos externo o en la nube pública, obtiene los siguientes beneficios:
@@ -32,6 +33,7 @@ NetApp proporciona a los clientes módulos y roles de Ansible validados para ace
 
 
 
+[[on-prem-to-on-prem-replication]]
 === Replicación local a local
 
 * Crear LIF entre clústeres en origen y destino
@@ -43,6 +45,7 @@ NetApp proporciona a los clientes módulos y roles de Ansible validados para ace
 
 
 
+[[on-prem-to-cvo-in-aws]]
 === De local a CVO en AWS
 
 * Crear un conector de AWS

@@ -15,6 +15,7 @@ Verifica el acceso a Google Cloud NetApp Volumes, la activación de la API, los 
 
 
 
+[[access-and-apis]]
 == Acceso y APIs
 
 Utiliza esta lista de comprobación para verificar los permisos y la preparación de la plataforma antes de iniciar el aprovisionamiento de hosts y almacenamiento.
@@ -53,6 +54,7 @@ timedatectl
 |===
 
 
+[[whats-next]]
 == ¿Qué sigue?
 
 Para aprovisionar la infraestructura del host Oracle para alta disponibilidad, continúa con xref:gcnv-oracle-provision-compute.adoc[Provisionar instancias de Google Compute Engine para Oracle Database 26ai].

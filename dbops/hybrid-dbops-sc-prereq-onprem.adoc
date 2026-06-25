@@ -18,6 +18,7 @@ Las siguientes tareas deben completarse localmente para preparar el entorno de c
 
 
 
+[[snapcenter-installation-and-configuration]]
 == Instalación y configuración de SnapCenter
 
 La herramienta NetApp SnapCenter es una aplicación basada en Windows que normalmente se ejecuta en un entorno de dominio de Windows, aunque también es posible la implementación en grupos de trabajo.  Se basa en una arquitectura de varios niveles que incluye un servidor de administración centralizado (el servidor SnapCenter ) y un complemento de SnapCenter en los hosts del servidor de base de datos para las cargas de trabajo de la base de datos.  A continuación se presentan algunas consideraciones clave para la implementación de la nube híbrida.
@@ -34,6 +35,7 @@ Después de una cuidadosa planificación y consideración previa a la instalaci�
 
 
 
+[[on-premises-database-server-storage-configuration]]
 == Configuración de almacenamiento del servidor de base de datos local
 
 El rendimiento del almacenamiento juega un papel importante en el rendimiento general de las bases de datos y las aplicaciones.  Un diseño de almacenamiento bien diseñado no solo puede mejorar el rendimiento de la base de datos, sino que también facilita la gestión de la copia de seguridad y la recuperación de la base de datos.  Se deben tener en cuenta varios factores al definir el diseño de almacenamiento, incluido el tamaño de la base de datos, la tasa de cambio de datos esperada para la base de datos y la frecuencia con la que realiza copias de seguridad.
@@ -65,6 +67,7 @@ Para facilitar la reubicación de las bases de datos de Oracle, el binario de Or
 
 
 
+[[licensing-requirements]]
 == Requisitos de licencia
 
 SnapCenter es un software con licencia de NetApp.  Generalmente se incluye en una licencia ONTAP local.  Sin embargo, para la implementación de nube híbrida, también se requiere una licencia de nube para SnapCenter para agregar CVO a SnapCenter como destino de replicación de datos.  Revise los siguientes enlaces para obtener detalles sobre la licencia basada en capacidad estándar de SnapCenter :
@@ -73,6 +76,7 @@ link:https://docs.netapp.com/us-en/snapcenter/install/concept_snapcenter_standar
 
 
 
+[[networking-and-security]]
 == Redes y seguridad
 
 En una operación de base de datos híbrida que requiere una base de datos de producción local que se pueda expandir a la nube para desarrollo/prueba y recuperación ante desastres, la red y la seguridad son factores importantes a tener en cuenta al configurar el entorno y conectarse a la nube pública desde un centro de datos local.
@@ -90,6 +94,7 @@ Para consideraciones de red y seguridad, revise las reglas CVO entrantes y salie
 
 
 
+[[using-ansible-automation-to-sync-db-instances-between-on-premises-and-the-cloud-optional]]
 == Uso de la automatización de Ansible para sincronizar instancias de base de datos entre las instalaciones locales y la nube (opcional)
 
 Para simplificar la administración de un entorno de base de datos de nube híbrida, NetApp recomienda enfáticamente, pero no exige, que implemente un controlador Ansible para automatizar algunas tareas de administración, como mantener sincronizadas las instancias de cómputo locales y en la nube.  Esto es particularmente importante porque una instancia de cómputo desincronizada en la nube podría hacer que la base de datos recuperada en la nube sea propensa a errores debido a paquetes de kernel faltantes y otros problemas.
