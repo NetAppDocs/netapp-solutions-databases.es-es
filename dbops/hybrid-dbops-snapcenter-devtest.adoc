@@ -1,10 +1,10 @@
 ---
 sidebar: sidebar 
 permalink: dbops/hybrid-dbops-snapcenter-devtest.html 
-summary: La agilidad de la nube pública, el tiempo para obtener valor y el ahorro de costos son propuestas de valor significativas para que las empresas adopten la nube pública para el desarrollo de aplicaciones de bases de datos y el esfuerzo de prueba.  No hay mejor herramienta que SnapCenter para hacer esto realidad rápidamente.  SnapCenter no solo puede proteger su base de datos de producción local, sino que también puede clonar rápidamente una copia para el desarrollo de aplicaciones o pruebas de código en la nube pública consumiendo muy poco almacenamiento adicional.  A continuación se detallan los procesos paso a paso utilizando la herramienta. 
-keywords: hybrid cloud, database, solutions, dev/test, workflow 
+summary: La agilidad de la nube pública, el tiempo de retorno de la inversión y el ahorro de costes son propuestas de valor significativas para las empresas que adoptan la nube pública para el desarrollo de aplicaciones y pruebas de aplicaciones de bases de datos. 
+keywords: hybrid cloud, database, solutions, devtest, workflow 
 ---
-= Flujo de trabajo para desarrollo y pruebas que se trasladan a la nube
+= Flujo de trabajo para dev/test bursting a la nube
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 

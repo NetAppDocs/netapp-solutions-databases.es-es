@@ -1,0 +1,180 @@
+---
+sidebar: sidebar 
+permalink: oracle/gcnv-oracle-standby-finalize-dg.html 
+keywords: oracle database, standby database, data guard, standby redo logs, flashback database, redo transport, managed recovery 
+summary: Finaliza la configuración de la base de datos en espera para Data Guard en Google Cloud NetApp Volumes creando archivos de registro de recuperación en espera, habilitando flashback database, activando el envío de registros de recuperación y verificando el estado de Data Guard. Este procedimiento solo es necesario para Prod HA Data Guard y el nivel FSFO. 
+---
+= Finaliza la base de datos de reserva para Data Guard en Google Cloud NetApp Volumes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Finaliza la base de datos en espera para Oracle Data Guard en Google Cloud NetApp Volumes creando archivos de registro de recuperación, habilitando flashback database, activando el envío de registros de recuperación y verificando el estado de Data Guard.
+
+*Específico del nivel:* Este procedimiento solo es necesario para el nivel *Prod HA (Data Guard + FSFO)*.
+
+
+
+== Paso 1: crea archivos de registro de recuperación en modo de espera
+
+Crea archivos de registro de recuperación en modo de espera en ambos hosts de la base de datos para permitir Fast-Start Failover. El tamaño debe ser mayor o igual que el del registro de recuperación en línea primario más grande, y la cantidad debe ser igual a (grupos en línea por hilo) + 1. Después de la siembra de GCNV, elimina y vuelve a crear los registros de recuperación en modo de espera en el standby para corregir las rutas replicadas.
+
+. Crea archivos de registro de recuperación en modo de espera en la base de datos principal (`orcl`):
++
+[source]
+----
+ALTER SYSTEM SET db_create_file_dest='+DATA' SCOPE=BOTH;
+ALTER DATABASE ADD STANDBY LOGFILE THREAD 1 ('+DATA') SIZE 1024M;
+-- repeat (online log groups + 1) times
+----
+. Elimina y vuelve a crear los archivos de registro de recuperación en espera (`orcls` después de la inicialización de GCNV. Las rutas replicadas bajo `+DATA/ORCL/…` provocan `ORA-19527` / `ORA-16086` hasta que se reconstruyan:
++
+[source]
+----
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE CANCEL;
+ALTER SYSTEM SET standby_file_management=MANUAL SCOPE=BOTH;
+-- DROP STANDBY LOGFILE GROUP for each group# in v$standby_log;
+ALTER SYSTEM SET db_create_file_dest='+DATA' SCOPE=BOTH;
+ALTER SYSTEM SET standby_file_management=AUTO SCOPE=BOTH;
+ALTER DATABASE ADD STANDBY LOGFILE THREAD 1 ('+DATA') SIZE 1024M;
+-- repeat (online groups + 1) times; one member per group
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+----
+
+
+
+
+== Paso 2: activa flashback e inicia la recuperación
+
+Habilita flashback database en el servidor en espera para permitir la restauración automática tras una conmutación por error y luego inicia la recuperación gestionada con aplicación en tiempo real. Flashback debe habilitarse antes de iniciar la recuperación gestionada porque no se puede habilitar mientras MRP está activo.
+
+. Apaga la base de datos en espera, reiníciala en modo MOUNT y activa la función flashback database en `oracdb2`:
++
+[source, bash]
+----
+# On oracdb2
+sudo -u oracle bash -c '
+. ~/.bash_profile
+export ORACLE_SID=orcls
+sqlplus / as sysdba <<SQL
+SHUTDOWN IMMEDIATE;
+STARTUP MOUNT;
+ALTER SYSTEM SET db_flashback_retention_target=1440 SCOPE=BOTH;
+ALTER DATABASE FLASHBACK ON;
+EXIT
+SQL'
+----
+. Inicia la recuperación gestionada con aplicación en tiempo real:
++
+[source, bash]
+----
+sudo -u oracle bash -c '
+. ~/.bash_profile
+export ORACLE_SID=orcls
+sqlplus / as sysdba <<SQL
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+EXIT
+SQL'
+----
++
+`USING CURRENT LOGFILE` permite la aplicación en tiempo real (el redo se aplica en cuanto llega a los SRL).
+
+
+
+
+
+== Paso 3: Activar el envío de registro de recuperación
+
+Habilita el transporte de redo desde el primario al standby activando  `LOG_ARCHIVE_DEST_STATE_2`, que se configuró deliberadamente como  `DEFER` en xref:gcnv-oracle-standby-database.adoc#standby-init-ora-and-nomount[Paso 2] del procedimiento de inicialización del standby para suprimir errores de  `ORA-12154` durante la creación del standby.
+
+. Cambia `LOG_ARCHIVE_DEST_STATE_2` por `ENABLE` y fuerza un cambio de registro para iniciar el trasvase de registros:
++
+[source, bash]
+----
+sudo -u oracle bash -c '
+. ~/.bash_profile
+sqlplus / as sysdba <<SQL
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_STATE_2=ENABLE SCOPE=BOTH;
+ALTER SYSTEM SWITCH LOGFILE;
+ALTER SYSTEM ARCHIVE LOG CURRENT;
+EXIT
+SQL'
+----
+. Comprueba que el envío de redo funciona correctamente:
++
+[source, bash]
+----
+sudo -u oracle bash -c '
+. ~/.bash_profile
+sqlplus / as sysdba <<SQL
+SELECT dest_id, status, error FROM v\$archive_dest_status WHERE dest_id IN (1,2);
+EXIT
+SQL'
+# Expected: dest_id=2, STATUS=VALID, ERROR null.
+----
++
+Si `dest_2` muestra `ORA-12154`, reinicia el primario. Después de xref:gcnv-oracle-data-guard.adoc#enable-broker-on-both-databases[Paso 1: Habilitar el broker en ambas bases de datos], gestiona el transporte vía DGMGRL.
+
+
+
+
+
+== Paso 4: comprobar el estado de Data Guard
+
+Comprueba que la base de datos principal esté en modo READ WRITE y que la base de datos en espera esté montada con recuperación gestionada aplicando los redo logs.
+
+. Comprueba el rol de la base de datos principal y el modo de apertura en `oracdb1`:
++
+[source, bash]
+----
+sudo -u oracle sqlplus -s / as sysdba \
+  <<<"SELECT database_role || ' | ' || open_mode FROM v\$database;"
+# Expected: PRIMARY | READ WRITE
+----
+. Comprueba la función de la base de datos en espera, el modo de apertura y el estado de la recuperación gestionada en `oracdb2`:
++
+[source, bash]
+----
+gcloud compute ssh oracdb2 --tunnel-through-iap --zone=us-west1-b
+
+sudo -u oracle bash <<'BASH'
+. ~/.bash_profile
+export ORACLE_SID=orcls
+
+sqlplus -s / as sysdba <<'SQL'
+SELECT database_role || ' | ' || open_mode
+FROM v$database;
+
+SELECT process, status, sequence#
+FROM v$managed_standby
+WHERE process IN ('MRP0','RFS');
+
+EXIT
+SQL
+BASH
+----
++
+Se espera que estén disponibles en el standby: `PHYSICAL STANDBY | MOUNTED`; `MRP0` con `APPLYING_LOG`.
+
+. Si el servidor en espera muestra  `MOUNTED` pero apply no se está ejecutando, reinicia la recuperación gestionada en  `oracdb2`:
++
+[source, bash]
+----
+sudo -u oracle bash -c '
+. ~/.bash_profile
+export ORACLE_SID=orcls
+sqlplus / as sysdba <<SQL
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE CANCEL;
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+EXIT
+SQL'
+----
+
+
+
+
+== ¿Qué sigue?
+
+Para activar la gestión automática de roles y la protección contra fallos, continúa con xref:gcnv-oracle-data-guard.adoc[Configura Oracle Data Guard Broker, Fast-Start Failover y el Observer].

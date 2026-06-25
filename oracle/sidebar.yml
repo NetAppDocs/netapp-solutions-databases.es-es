@@ -1,0 +1,31 @@
+---
+section: gcnv-oracle
+title: Google Cloud NetApp Volumes para Oracle Database 26ai
+entries:
+- title: Flujo de trabajo de implementación
+  url: "/oracle/gcnv-oracle-deployment.html"
+- title: Conoce Google Cloud NetApp Volumes para Oracle HA
+  entries:
+  - title: Arquitectura de la solución
+    url: "/oracle/gcnv-oracle-solution-architecture.html"
+  - title: Opciones de implementación
+    url: "/oracle/gcnv-oracle-deployment-options.html"
+  - title: Acceso y APIs
+    url: "/oracle/gcnv-oracle-access-and-apis.html"
+- title: Implementa Google Cloud NetApp Volumes con Oracle HA
+  pdf-filename: Implementa Google Cloud NetApp Volumes con Oracle HA
+  entries:
+  - title: Provisionar instancias de Compute Engine
+    url: "/oracle/gcnv-oracle-provision-compute.html"
+  - title: Provisiona almacenamiento iSCSI de GCNV
+    url: "/oracle/gcnv-oracle-provision-storage.html"
+  - title: Instala el software de Oracle
+    url: "/oracle/gcnv-oracle-install-software.html"
+  - title: Crear la base de datos principal
+    url: "/oracle/gcnv-oracle-primary-database.html"
+  - title: Crear la base de datos de reserva
+    url: "/oracle/gcnv-oracle-standby-database.html"
+  - title: Finaliza la base de datos en espera para Data Guard
+    url: "/oracle/gcnv-oracle-standby-finalize-dg.html"
+  - title: Configura Data Guard Broker, FSFO y Observer
+    url: "/oracle/gcnv-oracle-data-guard.html"

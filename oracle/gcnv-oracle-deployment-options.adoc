@@ -1,0 +1,149 @@
+---
+sidebar: sidebar 
+permalink: oracle/gcnv-oracle-deployment-options.html 
+keywords: oracle database, google cloud netapp volumes, gcnv, deployment options, high availability, disaster recovery, data guard, fsfo 
+summary: Opciones de implementación para Google Cloud NetApp Volumes con Oracle Database 26ai, desde desarrollo y pruebas hasta niveles de alta disponibilidad en producción. 
+---
+= Conoce las opciones de implementación de Google Cloud NetApp Volumes para Oracle Database 26ai
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Google Cloud NetApp Volumes es compatible con Oracle Database 26ai en múltiples niveles de implementación, desde entornos de desarrollo y pruebas hasta configuraciones de alta disponibilidad en producción con Data Guard y Fast-Start Failover. Consulta los requisitos de implementación, compara los niveles de alta disponibilidad e identifica la secuencia de tareas para la arquitectura que hayas elegido en Google Cloud NetApp Volumes.
+
+
+
+== Requisitos de implementación
+
+Asegúrate de que dispones de los siguientes elementos antes de aprovisionar Google Cloud NetApp Volumes para la alta disponibilidad de Oracle Database 26ai:
+
+* Un proyecto de Google Cloud con permisos para Compute Engine, redes VPC, configuración de cortafuegos, IAM y NetApp Volumes
++
+[cols="1,2"]
+|===
+| Tarea | Acceso obligatorio 
+
+
+| Crear máquinas virtuales de Compute Engine | Administrador de instancias informáticas (o equivalente) 
+
+
+| Cortafuegos / Políticas de cortafuegos | Administrador de red o administrador de políticas delegado 
+
+
+| Crear grupos y volúmenes GCNV | Administrador de volúmenes de NetApp 
+
+
+| Configura PSA | Administrador de redes en el proyecto del host 
+
+
+| SSH a través de IAP | Usuario del túnel protegido por IAP + inicio de sesión en el sistema operativo (si se usa) 
+|===
+* La API de volúmenes de NetApp está habilitada
+* Una VPC y una subred configuradas para la región de destino
+* Private Services Access (PSA) configurado para Google Cloud NetApp Volumes
+* Oracle Linux 10 para todas las máquinas virtuales necesarias
+* Se ha configurado el DNS y la resolución de nombres de host para los hosts de la base de datos y el host Observer
+* Medios de instalación y archivos de parches de Oracle disponibles para Oracle Database 26ai y Grid Infrastructure
+* Familiaridad con Oracle Data Guard, Oracle Restart y conceptos de almacenamiento iSCSI
+* La sincronización de la hora está configurada para todas las máquinas virtuales.
++
+Puedes utilizar los siguientes comandos:
+
++
+[source, bash]
+----
+gcloud services enable netapp.googleapis.com
+chronyc tracking
+timedatectl
+----
+
+
+
+
+== Ejemplo de configuración de implementación
+
+Esta solución utiliza la siguiente configuración de implementación:
+
+* Tres máquinas virtuales de Google Compute Engine:
++
+** `oracdb1` para la base de datos principal
+** `oracdb2` para la base de datos de reserva
+** `oradg-obs` para el observador de conmutación por error de inicio rápido
+
+
+* Un grupo de almacenamiento unificado GCNV Flex por zona de base de datos
+* Cinco volúmenes iSCSI de GCNV por cada host de base de datos
+* Oracle Data Guard Broker y Fast-Start Failover para la conmutación automática por error
+* Almacenamiento dedicado por servidor de base de datos; los servidores principal y de reserva no comparten volúmenes iSCSI
+
+
+Sustituye todos los valores de ejemplo de los comandos por los valores de tu entorno, incluidos los nombres de host, las direcciones IP, las zonas, los nombres de los proyectos, las direcciones IP del portal, las contraseñas y los nombres de los archivos multimedia de Oracle.
+
+
+
+== Opciones de implementación
+
+La siguiente tabla compara los modelos de implementación de HA y DR y destaca en qué aspectos la automatización aporta mayores ventajas operativas.
+
+[cols="1,1,1,1,1,1,1"]
+|===
+| Ambiente | Requisito | Arquitectura recomendada | HA | DR | Automatización | Ventaja principal 
+
+
+| Desarrollo y pruebas | Costo más bajo | Instancia única | No | Sí | No | Clon de instantánea 
+
+
+| Prod Basic (Reinicio) | Reduce el tiempo de inactividad provocado por los fallos del sistema | + Oracle Restart | No | Sí | Solo local | Reinicio automático 
+
+
+| Prod HA (sin DG) | DR manual aceptable | + Instantáneas / RMAN | Parcial | Sí | Parcial | Recuperación del clon GCNV 
+
+
+| Prod HA (DG + FSFO) | Alta disponibilidad real (sin DBA) | Data Guard + FSFO | Sí | Sí | Completo | Alta disponibilidad real + conmutación rápida por fallo 
+|===
+.HA/DR/Automatización
+* Sí = cumple el objetivo del nivel
+* No = fuera del ámbito de aplicación
+* Parcial = solo pasos a nivel de almacenamiento o manuales
+
+
+
+
+== Tareas de implementación por nivel de alta disponibilidad
+
+La xref:gcnv-oracle-deployment.html[flujo de trabajo de implementación] proporciona una secuencia de pasos numerados para todos los niveles de implementación. Todos los niveles completan las tareas básicas de implementación que se muestran a continuación y luego añaden tareas específicas de cada nivel para la alta disponibilidad en producción:
+
+*Implementación básica (todos los niveles):*
+
+. xref:gcnv-oracle-solution-architecture.html[Revisa la arquitectura de la solución]
+. Consulta las opciones y los requisitos de implementación (esta página)
+. xref:gcnv-oracle-access-and-apis.html[Verifica el acceso y las API]
+. xref:gcnv-oracle-provision-compute.html[Aprovisiona instancias de Google Compute Engine]
+. xref:gcnv-oracle-provision-storage.html[Provisiona almacenamiento iSCSI de GCNV]
+. xref:gcnv-oracle-install-software.html[Instalar Oracle Grid Infrastructure y Oracle Database 26ai]
+. xref:gcnv-oracle-primary-database.html[Crear la base de datos principal]
+. xref:gcnv-oracle-standby-database.html[Crear la base de datos de reserva]
+
+
+*Tareas específicas de cada nivel (solo Prod HA):*
+
+[cols="1,2"]
+|===
+| Nivel | Pasos para la implementación 
+
+
+| Niveles «desarrollo y pruebas» y «Prod Basic» (reinicio) | Realiza únicamente los pasos del 1 al 7 de la instalación básica. No se requiere base de datos en espera. 
+
+
+| Prod HA (sin Data Guard) | Completa los pasos del 1 al 8 de la instalación básica. 
+
+
+| Prod HA (Data Guard + FSFO) | Sigue todos los pasos básicos de implementación y, a continuación, añade: + Paso 9: xref:gcnv-oracle-standby-finalize-dg.html[Finaliza la base de datos en espera para Data Guard] + Paso 10: xref:gcnv-oracle-data-guard.html[Configura Data Guard Broker y la conmutación por error de inicio rápido] 
+|===
+
+
+== ¿Qué sigue?
+
+Para preparar tu entorno antes de la implementación, continúa con xref:gcnv-oracle-access-and-apis.html[Acceso y API para Oracle Database 26ai en Google Cloud NetApp Volumes].
