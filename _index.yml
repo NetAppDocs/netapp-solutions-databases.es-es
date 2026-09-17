@@ -66,13 +66,13 @@ indexpage:
     - title: Migrar la carga de trabajo de SQL local a FSx ONTAP
       url: "/mssql/customer-usecase-mssql-fsx1.html"
     - title: SAP con Microsoft SQL Server en Windows utilizando datos agrupados ONTAP
-      url: https://www.netapp.com/pdf.html?item=/media/16865-tr-4467pdf.pdf
+      url: https://www.netapp.com/pdf.html?item=/media/16865-tr-4467.pdf
     - title: Modernizar Microsoft SQL Server
       url: https://www.netapp.com/pdf.html?item=/media/15613-na-446.pdf
     - title: Mejores prácticas para Microsoft SQL Server con ONTAP
       url: https://www.netapp.com/pdf.html?item=/media/8585-tr4590.pdf
     - title: Mejores prácticas para Microsoft SQL Server con EF-Series
-      url: https://www.netapp.com/pdf.html?item=/media/17086-tr4764pdf.pdf
+      url: https://www.netapp.com/pdf.html?item=/media/17086-tr4764.pdf
   - title: Soluciones de bases de datos en la nube híbrida
     links:
     - title: Implementar y proteger Oracle RAC con vVols en VCF
@@ -86,7 +86,7 @@ indexpage:
     - title: Implemente Oracle19c en ONTAP con automatización
       url: "/automation/db-protection-overview.html"
     - title: Ejecute bases de datos Oracle en NetApp EF-Series
-      url: https://www.netapp.com/pdf.html?item=/media/17248-tr4794pdf.pdf
+      url: https://www.netapp.com/pdf.html?item=/media/17248-tr4794.pdf
   - title: bases de datos de código abierto
     links:
     - title: Implementar una base de datos PostgreSQL y configurar la recuperación

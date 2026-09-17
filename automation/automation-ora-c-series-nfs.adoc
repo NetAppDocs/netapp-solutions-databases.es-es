@@ -693,6 +693,6 @@ NetApp recomienda la herramienta de interfaz de usuario SnapCenter para administ
 
 Para obtener más información sobre la información descrita en este documento, revise los siguientes documentos y/o sitios web:
 
-* link:https://www.netapp.com/pdf.html?item=/media/81583-da-4240-aff-c-series.pdf["Serie C de AFF de NetApp"^]
+* link:https://www.netapp.com/pdf.html?item=/media/81583-ds-4240-aff-c-series.pdf["Serie C de AFF de NetApp"^]
 * link:https://docs.oracle.com/en/database/oracle/oracle-database/19/ladbi/deploying-dnfs.html#GUID-D06079DB-8C71-4F68-A1E3-A75D7D96DCE2["Implementación de Oracle Direct NFS"^]
 

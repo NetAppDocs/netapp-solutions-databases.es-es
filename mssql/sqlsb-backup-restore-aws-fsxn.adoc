@@ -622,9 +622,9 @@ image:sqlsb-aws-093.png["Figura que muestra el diálogo de entrada/salida o repr
 
 Para obtener más información sobre la información que se describe en este documento, revise los siguientes documentos y/o sitios web:
 
-* https://www.netapp.com/pdf.html?item=/media/12400-tr4714pdf.pdf["TR-4714: Guía de mejores prácticas para Microsoft SQL Server con NetApp SnapCenter"^]
+* https://www.netapp.com/pdf.html?item=/media/12400-tr4714.pdf["TR-4714: Guía de mejores prácticas para Microsoft SQL Server con NetApp SnapCenter"^]
 +
-https://www.netapp.com/pdf.html?item=/media/12400-tr4714pdf.pdf["https://www.netapp.com/pdf.html?item=/media/12400-tr4714pdf.pdf"^]
+https://www.netapp.com/pdf.html?item=/media/12400-tr4714.pdf["https://www.netapp.com/pdf.html?item=/media/12400-tr4714pdf.pdf"^]
 
 * https://docs.netapp.com/us-en/snapcenter-45/protect-scsql/concept_requirements_for_restoring_a_database.html["Requisitos para restaurar una base de datos"^]
 +
